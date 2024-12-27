@@ -1,0 +1,125 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "git@latest": {
+      "last_modified": "2024-11-28T07:51:56Z",
+      "resolved": "github:NixOS/nixpkgs/226216574ada4c3ecefcbbec41f39ce4655f78ef#git",
+      "source": "devbox-search",
+      "version": "2.47.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/w5rggkxjd7z2cjk4fia9za7gb485pydw-git-2.47.0",
+              "default": true
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/8r3g3kpmrgk1ih1wfyfxv0qrybaqqk6r-git-2.47.0-doc"
+            }
+          ],
+          "store_path": "/nix/store/w5rggkxjd7z2cjk4fia9za7gb485pydw-git-2.47.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/4ahzcjrsrv96qbcpmm4ybqkdjcbgblvc-git-2.47.0",
+              "default": true
+            },
+            {
+              "name": "debug",
+              "path": "/nix/store/g1iyg13q0f05vf5yllvmrhqhzgggg5lf-git-2.47.0-debug"
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/6md7q4bvv9zzw2xycra4b2msg4f37n34-git-2.47.0-doc"
+            }
+          ],
+          "store_path": "/nix/store/4ahzcjrsrv96qbcpmm4ybqkdjcbgblvc-git-2.47.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/w7a374fz8ai3swihnynx4r7hgqsw9xvd-git-2.47.0",
+              "default": true
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/zm42fzcd69sc8jqcn22z5dhnj5rvrk39-git-2.47.0-doc"
+            }
+          ],
+          "store_path": "/nix/store/w7a374fz8ai3swihnynx4r7hgqsw9xvd-git-2.47.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/1zgzrsbq3b0f06k76pha0r8hmfwvjvc0-git-2.47.0",
+              "default": true
+            },
+            {
+              "name": "debug",
+              "path": "/nix/store/i48viyk4j244008yxb5snhiffhwkgh00-git-2.47.0-debug"
+            },
+            {
+              "name": "doc",
+              "path": "/nix/store/g4qfyzlr8gfink7g62kwh7cyan9zv91d-git-2.47.0-doc"
+            }
+          ],
+          "store_path": "/nix/store/1zgzrsbq3b0f06k76pha0r8hmfwvjvc0-git-2.47.0"
+        }
+      }
+    },
+    "neovim@latest": {
+      "last_modified": "2024-12-03T12:40:06Z",
+      "resolved": "github:NixOS/nixpkgs/566e53c2ad750c84f6d31f9ccb9d00f823165550#neovim",
+      "source": "devbox-search",
+      "version": "0.10.2",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/d34dlv51k6fcb0qr5cbjnqv46vlhzd57-neovim-0.10.2",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/d34dlv51k6fcb0qr5cbjnqv46vlhzd57-neovim-0.10.2"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/f70bxj5fp3jh9acp5i7h7n1gypzfgj1y-neovim-0.10.2",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/f70bxj5fp3jh9acp5i7h7n1gypzfgj1y-neovim-0.10.2"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/ybl5dxhrz1vhpz59vm0ad0lml7xpc40l-neovim-0.10.2",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/ybl5dxhrz1vhpz59vm0ad0lml7xpc40l-neovim-0.10.2"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/mx5r32xdnqa708civzxbx2agl9m0ff0a-neovim-0.10.2",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/mx5r32xdnqa708civzxbx2agl9m0ff0a-neovim-0.10.2"
+        }
+      }
+    }
+  }
+}
