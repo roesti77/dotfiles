@@ -2,7 +2,10 @@
   "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.10.6/.schema/devbox.schema.json",
   "packages": [
     "git@latest",
-    "neovim@latest"
+    "neovim@latest",
+    "oh-my-zsh@latest",
+    "zsh-powerlevel10k@latest",
+    "direnv@latest"
   ],
   "shell": {
     "init_hook": [
