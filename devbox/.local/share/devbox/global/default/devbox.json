@@ -5,7 +5,11 @@
     "neovim@latest",
     "oh-my-zsh@latest",
     "zsh-powerlevel10k@latest",
-    "direnv@latest"
+    "direnv@latest",
+    "tmux@latest",
+    "lua-language-server@latest",
+    "clang@latest",
+    "lazygit@latest"
   ],
   "shell": {
     "init_hook": [
