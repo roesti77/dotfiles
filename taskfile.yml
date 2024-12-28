@@ -7,3 +7,5 @@ tasks:
       - stow tig
       - stow nvim
       - stow devbox
+      - stow lazygit
+
