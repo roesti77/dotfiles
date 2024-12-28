@@ -1,0 +1,9 @@
+version: '3'
+
+tasks:
+  setup:
+    cmds:
+      - stow zsh
+      - stow tig
+      - stow nvim
+      - stow devbox
