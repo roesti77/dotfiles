@@ -6,6 +6,7 @@ tasks:
       - stow zsh
       - stow tig
       - stow nvim
+      - stow zellij
       - stow devbox
       - stow lazygit
 
