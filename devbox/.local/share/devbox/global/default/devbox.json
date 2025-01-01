@@ -6,10 +6,14 @@
     "oh-my-zsh@latest",
     "zsh-powerlevel10k@latest",
     "direnv@latest",
-    "tmux@latest",
-    "lua-language-server@latest",
     "clang@latest",
-    "lazygit@latest"
+    "lazygit@latest",
+    "zellij@latest",
+    "lua-language-server@latest",
+    "luarocks@latest",
+    "ripgrep@latest",
+    "stylua@latest",
+    "xclip@latest"
   ],
   "shell": {
     "init_hook": [
