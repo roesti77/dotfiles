@@ -97,6 +97,74 @@
         }
       }
     },
+    "fzf@latest": {
+      "last_modified": "2024-12-23T21:10:33Z",
+      "resolved": "github:NixOS/nixpkgs/de1864217bfa9b5845f465e771e0ecb48b30e02d#fzf",
+      "source": "devbox-search",
+      "version": "0.57.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/8iaarhsqpdvg0ndwdvjcx6rp8fnw2fzk-fzf-0.57.0",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/gszq21lhpz1iy57paszhzna44ig3z6d1-fzf-0.57.0-man",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/8iaarhsqpdvg0ndwdvjcx6rp8fnw2fzk-fzf-0.57.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/4m0q1zccd891q3phq23dg1b4dfnyqw6r-fzf-0.57.0",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/pzvqwg3xsk0llfmwp49mv0q1yj0506i0-fzf-0.57.0-man",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/4m0q1zccd891q3phq23dg1b4dfnyqw6r-fzf-0.57.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/dgkgwwdwilbg1bfqw1hdym0v206pdxwd-fzf-0.57.0",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/chwh9bxf1miy4gbym0f2pasnpg6n26pb-fzf-0.57.0-man",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/dgkgwwdwilbg1bfqw1hdym0v206pdxwd-fzf-0.57.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/qb76l3bdjlld3xdvr2clbqwsi8l1rh5j-fzf-0.57.0",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/709q83k1ma94r5qwiwm330sm67fh3bgs-fzf-0.57.0-man",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/qb76l3bdjlld3xdvr2clbqwsi8l1rh5j-fzf-0.57.0"
+        }
+      }
+    },
     "git@latest": {
       "last_modified": "2024-12-23T21:10:33Z",
       "resolved": "github:NixOS/nixpkgs/de1864217bfa9b5845f465e771e0ecb48b30e02d#git",
@@ -319,6 +387,54 @@
         }
       }
     },
+    "nerdfonts@latest": {
+      "last_modified": "2024-11-16T04:25:12Z",
+      "resolved": "github:NixOS/nixpkgs/34a626458d686f1b58139620a8b2793e9e123bba#nerdfonts",
+      "source": "devbox-search",
+      "version": "3.2.1",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/kjp1v736v5adydkwfh1wy5m71v7y02ww-nerdfonts-3.2.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/kjp1v736v5adydkwfh1wy5m71v7y02ww-nerdfonts-3.2.1"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/cw6dv2xzf2gq2d4n558jd76mspwqmlkw-nerdfonts-3.2.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/cw6dv2xzf2gq2d4n558jd76mspwqmlkw-nerdfonts-3.2.1"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/r6r5vzi72a5vx8b3lhl1aq9hma99m2b1-nerdfonts-3.2.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/r6r5vzi72a5vx8b3lhl1aq9hma99m2b1-nerdfonts-3.2.1"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/c8z07qzzpg17vg0chvfz56gkj48frhww-nerdfonts-3.2.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/c8z07qzzpg17vg0chvfz56gkj48frhww-nerdfonts-3.2.1"
+        }
+      }
+    },
     "oh-my-zsh@latest": {
       "last_modified": "2024-12-23T21:10:33Z",
       "resolved": "github:NixOS/nixpkgs/de1864217bfa9b5845f465e771e0ecb48b30e02d#oh-my-zsh",
@@ -460,6 +576,130 @@
             }
           ],
           "store_path": "/nix/store/6y2rlwdsp6w3k7ghjrmgg5pwfqpqbhqm-stylua-2.0.2"
+        }
+      }
+    },
+    "sudo@latest": {
+      "last_modified": "2024-12-23T21:10:33Z",
+      "resolved": "github:NixOS/nixpkgs/de1864217bfa9b5845f465e771e0ecb48b30e02d#sudo",
+      "source": "devbox-search",
+      "version": "1.9.16p2",
+      "systems": {
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/bzwgc983820nyaszzh3jp5inrjkf75n7-sudo-1.9.16p2",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/bzwgc983820nyaszzh3jp5inrjkf75n7-sudo-1.9.16p2"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/dmcp26ld9lmx2yc2d99hp911zrr8p4m9-sudo-1.9.16p2",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/dmcp26ld9lmx2yc2d99hp911zrr8p4m9-sudo-1.9.16p2"
+        }
+      }
+    },
+    "unzip@latest": {
+      "last_modified": "2024-12-23T21:10:33Z",
+      "resolved": "github:NixOS/nixpkgs/de1864217bfa9b5845f465e771e0ecb48b30e02d#unzip",
+      "source": "devbox-search",
+      "version": "6.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/qdjjh8zy5shspc7hk7xdmpk1w7yqjnx2-unzip-6.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/qdjjh8zy5shspc7hk7xdmpk1w7yqjnx2-unzip-6.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/k2ga3r9vzwpkz25ybp6jcb5nkb8v6cgf-unzip-6.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/k2ga3r9vzwpkz25ybp6jcb5nkb8v6cgf-unzip-6.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/6fs10f11x99fcj3q4znpyjpg4ll1vxq6-unzip-6.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/6fs10f11x99fcj3q4znpyjpg4ll1vxq6-unzip-6.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/mpncgrbpnsrh62qplwzr6mcnq1by79rn-unzip-6.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/mpncgrbpnsrh62qplwzr6mcnq1by79rn-unzip-6.0"
+        }
+      }
+    },
+    "wget@latest": {
+      "last_modified": "2024-12-23T21:10:33Z",
+      "resolved": "github:NixOS/nixpkgs/de1864217bfa9b5845f465e771e0ecb48b30e02d#wget",
+      "source": "devbox-search",
+      "version": "1.25.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/rjsz2sx5q97jdcx677ndw4c0bdlfh55m-wget-1.25.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/rjsz2sx5q97jdcx677ndw4c0bdlfh55m-wget-1.25.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/792w23wrd0r0brvkrd3ni3gmk34f3pi7-wget-1.25.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/792w23wrd0r0brvkrd3ni3gmk34f3pi7-wget-1.25.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/lnw7sb4mkxrb769pknwdldxb6dgjsw2q-wget-1.25.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/lnw7sb4mkxrb769pknwdldxb6dgjsw2q-wget-1.25.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/3kfrvmzrng8b1g7639n1f89f6dymlgin-wget-1.25.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/3kfrvmzrng8b1g7639n1f89f6dymlgin-wget-1.25.0"
         }
       }
     },
