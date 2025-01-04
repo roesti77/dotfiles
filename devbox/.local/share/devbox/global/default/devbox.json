@@ -13,7 +13,12 @@
     "luarocks@latest",
     "ripgrep@latest",
     "stylua@latest",
-    "xclip@latest"
+    "xclip@latest",
+    "fzf@latest",
+    "nerdfonts@latest",
+    "wget@latest",
+    "unzip@latest",
+    "sudo@latest"
   ],
   "shell": {
     "init_hook": [
