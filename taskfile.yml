@@ -10,6 +10,7 @@ tasks:
       - stow zellij
       - stow devbox
       - stow lazygit
+      - stow ghostty
 
   clone-plugins:
     cmds:
