@@ -1,25 +1,29 @@
 {
   "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.10.6/.schema/devbox.schema.json",
-  "packages": [
-    "git@latest",
-    "neovim@latest",
-    "oh-my-zsh@latest",
-    "zsh-powerlevel10k@latest",
-    "direnv@latest",
-    "clang@latest",
-    "lazygit@latest",
-    "zellij@latest",
-    "lua-language-server@latest",
-    "luarocks@latest",
-    "ripgrep@latest",
-    "stylua@latest",
-    "xclip@latest",
-    "fzf@latest",
-    "nerdfonts@latest",
-    "wget@latest",
-    "unzip@latest",
-    "sudo@latest"
-  ],
+  "packages": {
+    "git":                 "latest",
+    "neovim":              "latest",
+    "oh-my-zsh":           "latest",
+    "zsh-powerlevel10k":   "latest",
+    "direnv":              "latest",
+    "clang":               "latest",
+    "lazygit":             "latest",
+    "zellij":              "latest",
+    "lua-language-server": "latest",
+    "luarocks":            "latest",
+    "ripgrep":             "latest",
+    "stylua":              "latest",
+    "xclip":               "latest",
+    "fzf":                 "latest",
+    "nerdfonts":           "latest",
+    "wget":                "latest",
+    "unzip":               "latest",
+    "sudo": {
+      "version":            "latest",
+      "excluded_platforms": ["x86_64-darwin"]
+    },
+    "git-lfs": "latest"
+  },
   "shell": {
     "init_hook": [
       "echo 'Welcome to devbox!' > /dev/null"

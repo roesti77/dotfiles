@@ -8,7 +8,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-P10K=$(find /nix/store -type d -name "*powerlevel10k*" 2>/dev/null | grep -m 1 "powerlevel10k")
+P10K=$(find /nix/store -type d -name "*powerlevel10k-*" 2>/dev/null | grep -m 1 "powerlevel10k")
 if [ -n "$P10K" ]; then
   source $P10K/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
 else
