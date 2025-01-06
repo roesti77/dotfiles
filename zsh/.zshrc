@@ -8,23 +8,23 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-P10K=$(find /nix/store -type d -name "*powerlevel10k-*" 2>/dev/null | grep -m 1 "powerlevel10k")
-if [ -n "$P10K" ]; then
-  source $P10K/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+P10K_CACHE="$HOME/.cache/p10k_path"
+if [ -f "$P10K_CACHE" ]; then
+  P10K=$(cat "$P10K_CACHE")
 else
-  echo "Powerlevel10k not found"
+  P10K=$(find /nix/store -type d -name "*powerlevel10k-*" 2>/dev/null | grep -m 1 "powerlevel10k")
+  echo "$P10K" > "$P10K_CACHE"
 fi
 
+source $P10K/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Path to your oh-my-zsh installation.
-ZSH=$(find /nix/store -type d -name "oh-my-zsh" 2>/dev/null | grep -m 1 "share/oh-my-zsh")
-
-if [ -n "$ZSH" ] && [ -f "$ZSH/oh-my-zsh.sh" ]; then
-    export ZSH="$ZSH"
-    source $ZSH/oh-my-zsh.sh
+ZSH_CACHE="$HOME/.cache/ohmyzsh_path"
+if [ -f "$ZSH_CACHE" ]; then
+  ZSH=$(cat "$ZSH_CACHE")
 else
-    echo "oh-my-zsh not found"
+  ZSH=$(find /nix/store -type d -name "oh-my-zsh" 2>/dev/null | grep -m 1 "share/oh-my-zsh")
+  echo "$ZSH" > "$ZSH_CACHE"
 fi
 
 ZSH_CUSTOM=$HOME/.config/ohmyzsh/custom
@@ -62,6 +62,7 @@ setopt hist_ignore_space
 
 alias repos="cd ~/repos"
 alias vim="nvim"
+alias cat="bat"
 
 #source <(kubectl completion zsh)
 #alias kubectl="kubecolor"
@@ -73,8 +74,12 @@ alias vim="nvim"
 autoload -U +X bashcompinit && bashcompinit
 #complete -o nospace -C /usr/local/bin/terraform terraform
 
-autoload -U compinit
-compinit -i
+autoload -Uz compinit
+if [ -f ~/.zcompdump ]; then
+    compinit -C
+else
+    compinit
+fi
 
-eval "$(direnv hook zsh)"
-eval "$(zellij setup --generate-auto-start zsh)"
+ eval "$(direnv hook zsh)"
+ eval "$(zellij setup --generate-auto-start zsh)"
