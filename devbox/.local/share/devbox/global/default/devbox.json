@@ -23,7 +23,8 @@
       "excluded_platforms": ["x86_64-darwin"]
     },
     "git-lfs": "latest",
-    "bat":     "latest"
+    "bat":     "latest",
+    "watch":   "latest"
   },
   "shell": {
     "init_hook": [
