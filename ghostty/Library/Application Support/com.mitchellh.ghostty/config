@@ -2,6 +2,7 @@
 
 clipboard-read = allow
 clipboard-write = allow
+font-feature = -liga
 background-opacity = 1
 theme = MaterialOcean
 background = #0f111a
@@ -26,6 +27,19 @@ palette = 12=#82aaff
 palette = 13=#c792ea
 palette = 14=#89ddff
 palette = 15=#ffffff
-font-size = 24
+font-size = 16
 font-thicken = true
+font-family = Hack
+cursor-style = bar
+quick-terminal-screen = mouse
+quick-terminal-autohide = false
+shell-integration = zsh
+confirm-close-surface = false
+
 keybind = global:cmd+f12=toggle_quick_terminal
+keybind = cmd+t=unbind
+keybind = cmd+n=unbind
+keybind = cmd+c=unbind
+keybind = cmd+w=unbind
+keybind = cmd+opt+left=unbind
+keybind = cmd+opt+right=unbind

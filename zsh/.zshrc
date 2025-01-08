@@ -1,6 +1,12 @@
 
 eval "$(devbox global shellenv)"
 
+# Ghostty shell integration for Bash. This should be at the top of your bashrc!
+if [ -n "${GHOSTTY_RESOURCES_DIR}" ]; then
+    builtin source "${GHOSTTY_RESOURCES_DIR}/shell-integration/bash/ghostty.bash"
+fi
+
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -64,6 +70,8 @@ alias repos="cd ~/repos"
 alias vim="nvim"
 alias cat="bat"
 
+export LLM_KEY=NONE
+
 #source <(kubectl completion zsh)
 #alias kubectl="kubecolor"
 #compdef kubecolor=kubectl
@@ -82,4 +90,6 @@ else
 fi
 
  eval "$(direnv hook zsh)"
+
  eval "$(zellij setup --generate-auto-start zsh)"
+
