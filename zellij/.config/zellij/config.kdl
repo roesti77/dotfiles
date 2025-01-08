@@ -264,12 +264,14 @@ theme "catppuccin-mocha"
 // Choose the base input mode of zellij.
 // Default: normal
 // 
-default_mode "normal"
- 
+default_mode "locked"
+//default_layout "compact"
+
+
 // Choose the path to the default shell that zellij will use for opening new panes
 // Default: $SHELL
 // 
-// default_shell "fish"
+default_shell "zsh"
  
 // Choose the path to override cwd that zellij will use for opening new panes
 // 
@@ -304,7 +306,7 @@ default_mode "normal"
 //   - true (default, enabled)
 //   - false
 // 
-// pane_frames false
+pane_frames false
  
 // When attaching to an existing session with other users,
 // should the session be mirrored (true)
