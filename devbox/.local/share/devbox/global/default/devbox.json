@@ -24,7 +24,10 @@
     },
     "git-lfs": "latest",
     "bat":     "latest",
-    "watch":   "latest"
+    "watch":   "latest",
+    "kubectl": "latest",
+    "kubectx": "latest",
+    "k9s":     "latest"
   },
   "shell": {
     "init_hook": [
