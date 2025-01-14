@@ -27,7 +27,8 @@
     "watch":   "latest",
     "kubectl": "latest",
     "kubectx": "latest",
-    "k9s":     "latest"
+    "k9s":     "latest",
+    "cargo":   "latest"
   },
   "shell": {
     "init_hook": [

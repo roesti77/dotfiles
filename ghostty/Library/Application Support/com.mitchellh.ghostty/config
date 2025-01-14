@@ -41,5 +41,6 @@ keybind = cmd+t=unbind
 keybind = cmd+n=unbind
 keybind = cmd+c=unbind
 keybind = cmd+w=unbind
+keybind = alt+,=unbind
 keybind = cmd+opt+left=unbind
 keybind = cmd+opt+right=unbind
