@@ -903,34 +903,6 @@
         }
       }
     },
-    "sudo@latest": {
-      "last_modified": "2024-12-23T21:10:33Z",
-      "resolved": "github:NixOS/nixpkgs/de1864217bfa9b5845f465e771e0ecb48b30e02d#sudo",
-      "source": "devbox-search",
-      "version": "1.9.16p2",
-      "systems": {
-        "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/bzwgc983820nyaszzh3jp5inrjkf75n7-sudo-1.9.16p2",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/bzwgc983820nyaszzh3jp5inrjkf75n7-sudo-1.9.16p2"
-        },
-        "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/dmcp26ld9lmx2yc2d99hp911zrr8p4m9-sudo-1.9.16p2",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/dmcp26ld9lmx2yc2d99hp911zrr8p4m9-sudo-1.9.16p2"
-        }
-      }
-    },
     "unzip@latest": {
       "last_modified": "2024-12-23T21:10:33Z",
       "resolved": "github:NixOS/nixpkgs/de1864217bfa9b5845f465e771e0ecb48b30e02d#unzip",

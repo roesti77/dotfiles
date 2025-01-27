@@ -18,10 +18,6 @@
     "nerdfonts":           "latest",
     "wget":                "latest",
     "unzip":               "latest",
-    "sudo": {
-      "version":            "latest",
-      "excluded_platforms": ["x86_64-darwin"]
-    },
     "git-lfs": "latest",
     "bat":     "latest",
     "watch":   "latest",
