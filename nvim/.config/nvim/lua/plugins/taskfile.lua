@@ -1,3 +1,0 @@
-return {
-  "ShadowApex/Taskfile.nvim"
-}

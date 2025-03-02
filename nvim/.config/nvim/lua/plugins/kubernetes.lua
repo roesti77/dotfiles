@@ -1,3 +1,0 @@
-return {
-  "andrewstuart/vim-kubernetes"
-}
