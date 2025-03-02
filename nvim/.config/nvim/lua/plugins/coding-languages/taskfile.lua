@@ -1,0 +1,3 @@
+return {
+    'ShadowApex/Taskfile.nvim',
+}

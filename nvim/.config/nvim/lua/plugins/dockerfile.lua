@@ -1,3 +1,0 @@
-return {
-  "ekalinin/Dockerfile.vim"
-}
