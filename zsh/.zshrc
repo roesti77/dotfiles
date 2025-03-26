@@ -89,8 +89,9 @@ else
     compinit
 fi
 
- eval "$(direnv hook zsh)"
+eval "$(direnv hook zsh)"
+eval "$(zellij setup --generate-auto-start zsh)"
 
- eval "$(zellij setup --generate-auto-start zsh)"
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
- source <(fzf --zsh)
+source <(fzf --zsh)

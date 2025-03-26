@@ -41,3 +41,32 @@ vim.opt.shortmess:append 'c' -- don't give |ins-completion-menu| messages
 vim.opt.iskeyword:append '-' -- hyphenated words recognized by searches
 vim.opt.formatoptions:remove { 'c', 'r', 'o' } -- don't insert the current comment leader automatically for auto-wrapping comments using 'textwidth', hitting <Enter> in insert mode, or hitting 'o' or 'O' in normal mode.
 vim.opt.runtimepath:remove '/usr/share/vim/vimfiles' -- separate vim plugins from neovim in case vim still in use
+
+local function zellij(mode)
+  vim.schedule(function()
+    if vim.env.ZELLIJ ~= nil then
+      vim.fn.system { 'zellij', 'action', 'switch-mode', mode }
+    end
+  end)
+end
+
+vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter' }, {
+  group = vim.api.nvim_create_augroup('zellij_lock', { clear = true }),
+  callback = function()
+    zellij 'locked'
+  end,
+})
+
+vim.api.nvim_create_autocmd({ 'FocusLost', 'VimLeavePre' }, {
+  group = vim.api.nvim_create_augroup('zellij_normal', { clear = true }),
+  callback = function()
+    zellij 'normal'
+  end,
+})
+
+vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+  pattern = '*.gitlab-ci*.{yml,yaml}',
+  callback = function()
+    vim.bo.filetype = 'yaml.gitlab'
+  end,
+})

@@ -118,10 +118,10 @@ keybinds clear-defaults=true {
         }
     }
     shared_except "locked" {
-        bind "Alt left" { MoveFocusOrTab "left"; }
-        bind "Alt down" { MoveFocus "down"; }
-        bind "Alt up" { MoveFocus "up"; }
-        bind "Alt right" { MoveFocusOrTab "right"; }
+        bind "Ctrl left" { MoveFocusOrTab "left"; }
+        bind "Ctrl down" { MoveFocus "down"; }
+        bind "Ctrl up" { MoveFocus "up"; }
+        bind "Ctrl right" { MoveFocusOrTab "right"; }
         bind "Alt +" { Resize "Increase"; }
         bind "Alt -" { Resize "Decrease"; }
         bind "Alt =" { Resize "Increase"; }
@@ -129,11 +129,11 @@ keybinds clear-defaults=true {
         bind "Ctrl a" { NextSwapLayout; }
         bind "alt f" { ToggleFloatingPanes; }
         bind "Ctrl g" { SwitchToMode "locked"; }
-        bind "Alt h" { MoveFocusOrTab "left"; }
-        bind "Alt i" { MoveTab "left"; }
-        bind "Alt j" { MoveFocus "down"; }
-        bind "Alt k" { MoveFocus "up"; }
-        bind "Alt l" { MoveFocusOrTab "right"; }
+        bind "Ctrl h" { MoveFocusOrTab "left"; }
+        bind "Ctrl i" { MoveTab "left"; }
+        bind "Ctrl j" { MoveFocus "down"; }
+        bind "Ctrl k" { MoveFocus "up"; }
+        bind "Ctrl l" { MoveFocusOrTab "right"; }
         bind "Alt n" { NewPane; }
         bind "Alt o" { MoveTab "right"; }
         bind "Ctrl q" { Quit; }
@@ -242,11 +242,19 @@ plugins {
     welcome-screen location="zellij:session-manager" {
         welcome_screen true
     }
+//    autolock location="https://github.com/fresh2dev/zellij-autolock/releases/latest/download/zellij-autolock.wasm" {
+//        is_enabled true
+//        reaction_seconds "0.3"
+//        triggers "nvim|vim|v|nv"  // Lock when any open these programs open. They are expected to unlock themselves when closed (e.g., using zellij.vim plugin).
+ //       watch_triggers "fzf|zoxide|atuin|atac"  // Lock when any of these open and monitor until closed.
+ //       watch_interval "1.0"  // When monitoring, check every X seconds.
+ //   }
 }
 // Plugins to load in the background when a new session starts
 // eg. "file:/path/to/my-plugin.wasm"
 // eg. "https://example.com/my-plugin.wasm"
 load_plugins {
+    // autolock
 }
  
 // Use a simplified UI without special fonts (arrow glyphs)
@@ -262,10 +270,10 @@ load_plugins {
 theme "catppuccin-mocha"
  
 // Choose the base input mode of zellij.
-// Default: normal
+// Def/ault: normal
 // 
-default_mode "locked"
-//default_layout "compact"
+default_mode "normal"
+default_layout "compact"
 
 
 // Choose the path to the default shell that zellij will use for opening new panes

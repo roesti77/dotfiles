@@ -31,6 +31,7 @@ require('lazy').setup {
   require 'plugins.core.ufo',
   require 'plugins.core.zenmode',
   require 'plugins.core.snacks',
+  require 'plugins.core.zellij',
   --- AI
   require 'plugins.ai.avante',
   require 'plugins.ai.codeium',
@@ -40,6 +41,15 @@ require('lazy').setup {
   require 'plugins.coding.autocompletion',
   require 'plugins.coding.cmp-cmdline',
   require 'plugins.coding.none-ls',
+  require 'plugins.coding.navigator',
+  require 'plugins.coding.trouble',
+  require 'plugins.coding.test',
+  require 'plugins.coding.database',
   --- Coding Languages
+  require 'plugins.coding-languages.go',
   require 'plugins.coding-languages.taskfile',
+  require 'plugins.coding-languages.markdown',
+  require 'plugins.coding-languages.yaml-companion',
+  --- Debug
+  require 'plugins.debug.dap',
 }
