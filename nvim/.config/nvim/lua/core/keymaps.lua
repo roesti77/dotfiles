@@ -46,7 +46,7 @@ vim.keymap.set('n', '<C-Right>', ':vertical resize +2<CR>', opts)
 -- Buffers
 vim.keymap.set('n', '<Tab>', ':bnext<CR>', opts)
 vim.keymap.set('n', '<S-Tab>', ':bprevious<CR>', opts)
-vim.keymap.set('n', '<leader>x', ':Bdelete!<CR>', opts)   -- close buffer
+vim.keymap.set('n', '<leader>q', ':Bdelete!<CR>', opts)   -- close buffer
 vim.keymap.set('n', '<leader>b', '<cmd> enew <CR>', opts) -- new buffer
 
 -- Increment/decrement numbers
@@ -103,10 +103,10 @@ vim.keymap.set('n', '<leader>do', function()
     diagnostics_active = not diagnostics_active
 
     if diagnostics_active then
-    vim.diagnostic.enable(0)
-  else
-    vim.diagnostic.disable(0)
-  end
+        vim.diagnostic.enable(0)
+    else
+        vim.diagnostic.disable(0)
+    end
 end)
 
 -- Diagnostic keymaps
