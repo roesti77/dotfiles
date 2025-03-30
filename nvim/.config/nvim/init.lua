@@ -52,4 +52,9 @@ require('lazy').setup {
   require 'plugins.coding-languages.yaml-companion',
   --- Debug
   require 'plugins.debug.dap',
+  require 'plugins.debug.dap-ui',
+  require 'plugins.debug.virtual-text',
+  require 'plugins.debug.go',
 }
+
+require 'core.completition'

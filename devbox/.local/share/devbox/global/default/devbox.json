@@ -2,13 +2,10 @@
   "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.10.6/.schema/devbox.schema.json",
   "packages": {
     "git":                  "latest",
-    "neovim":               "latest",
     "oh-my-zsh":            "latest",
     "zsh-powerlevel10k":    "latest",
     "direnv":               "latest",
-    "clang":                "latest",
     "lazygit":              "latest",
-    "zellij":               "latest",
     "lua-language-server":  "latest",
     "luarocks":             "latest",
     "ripgrep":              "latest",
@@ -31,13 +28,9 @@
     "kubelogin-oidc":       "latest"
   },
   "shell": {
-    "init_hook": [
-      "echo 'Welcome to devbox!' > /dev/null"
-    ],
+    "init_hook": ["echo 'Welcome to devbox!' > /dev/null"],
     "scripts": {
-      "test": [
-        "echo \"Error: no test specified\" && exit 1"
-      ]
+      "test": ["echo \"Error: no test specified\" && exit 1"]
     }
   }
 }
