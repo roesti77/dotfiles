@@ -89,9 +89,15 @@ else
     compinit
 fi
 
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
+
 eval "$(direnv hook zsh)"
 eval "$(zellij setup --generate-auto-start zsh)"
 
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
+export CC=/usr/bin/clang
+unset ARCHFLAGS
 
 source <(fzf --zsh)

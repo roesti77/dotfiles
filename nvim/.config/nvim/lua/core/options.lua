@@ -70,3 +70,12 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
     vim.bo.filetype = 'yaml.gitlab'
   end,
 })
+
+vim.api.nvim_create_user_command('DebugCurrentGo', function()
+  require('dap').run {
+    type = 'go',
+    name = "Debug current file's folder",
+    request = 'launch',
+    program = vim.fn.expand '%:p:h',
+  }
+end, {})
