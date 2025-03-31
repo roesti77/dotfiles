@@ -11,6 +11,7 @@ return {
     },
     behaviour = {
       auto_suggestions = false, -- Optional: disable auto suggestions
+      enable_cursor_planning_mode = true,
     },
     mappings = {
       suggestion = {
