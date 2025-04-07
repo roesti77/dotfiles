@@ -32,7 +32,6 @@ require('lazy').setup {
   require 'plugins.core.zenmode',
   require 'plugins.core.snacks',
   require 'plugins.core.todo-comments',
-  require 'plugins.core.treesj',
   require 'plugins.core.zellij',
   --- AI
   require 'plugins.ai.avante',
