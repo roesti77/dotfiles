@@ -33,6 +33,7 @@ require('lazy').setup {
   require 'plugins.core.snacks',
   require 'plugins.core.todo-comments',
   require 'plugins.core.zellij',
+  require 'plugins.core.surround',
   --- AI
   require 'plugins.ai.avante',
   require 'plugins.ai.codeium',
