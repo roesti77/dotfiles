@@ -56,6 +56,8 @@ require('lazy').setup {
   require 'plugins.debug.dap-ui',
   require 'plugins.debug.virtual-text',
   require 'plugins.debug.go',
+  --- Tools
+  require 'plugins.tools.codesnap',
 }
 
 require 'core.completition'
