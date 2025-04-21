@@ -25,7 +25,11 @@
     "nmap":                 "latest",
     "java-language-server": "latest",
     "kubelogin":            "latest",
-    "kubelogin-oidc":       "latest"
+    "kubelogin-oidc":       "latest",
+    "lazydocker":           "latest",
+    "dive":                 "latest",
+    "snyk":                 "latest",
+    "universal-ctags":      "latest"
   },
   "shell": {
     "init_hook": ["echo 'Welcome to devbox!' > /dev/null"],
