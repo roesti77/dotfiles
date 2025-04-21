@@ -3,9 +3,11 @@ return {
   dependencies = {
     'moll/vim-bbye',
     'nvim-tree/nvim-web-devicons',
+    'tiagovla/scope.nvim',
   },
   config = function()
     -- vim.opt.linespace = 8
+    require('scope').setup()
 
     require('bufferline').setup {
       options = {
