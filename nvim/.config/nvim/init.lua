@@ -48,16 +48,19 @@ require('lazy').setup {
     require 'plugins.coding.trouble',
     require 'plugins.coding.test',
     require 'plugins.coding.database',
+    require 'plugins.coding.outline',
     --- Coding Languages
     require 'plugins.coding-languages.go',
     require 'plugins.coding-languages.taskfile',
     require 'plugins.coding-languages.markdown',
     require 'plugins.coding-languages.yaml-companion',
+    require 'plugins.coding-languages.jinja',
     --- Debug
     require 'plugins.debug.dap',
     require 'plugins.debug.dap-ui',
     require 'plugins.debug.virtual-text',
     require 'plugins.debug.go',
+    require 'plugins.debug.python',
     --- Tools
     require 'plugins.tools.codesnap',
 }

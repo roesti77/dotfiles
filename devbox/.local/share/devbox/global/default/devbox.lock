@@ -1,6 +1,54 @@
 {
   "lockfile_version": "1",
   "packages": {
+    "argocd@latest": {
+      "last_modified": "2025-05-12T14:38:58Z",
+      "resolved": "github:NixOS/nixpkgs/eaeed9530c76ce5f1d2d8232e08bec5e26f18ec1#argocd",
+      "source": "devbox-search",
+      "version": "2.14.10",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/5w08j6prpl9ag6kbix2qfnykh29gwgkh-argocd-2.14.10",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/5w08j6prpl9ag6kbix2qfnykh29gwgkh-argocd-2.14.10"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/250jhng8d1j18slv6cnq0gg982b4m7b8-argocd-2.14.10",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/250jhng8d1j18slv6cnq0gg982b4m7b8-argocd-2.14.10"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/ikscx5hvg1xvi5ng7wnj1chlgsfh5h6g-argocd-2.14.10",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/ikscx5hvg1xvi5ng7wnj1chlgsfh5h6g-argocd-2.14.10"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/8v132m808z029b9lsicfcvhjaf4rvhfr-argocd-2.14.10",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/8v132m808z029b9lsicfcvhjaf4rvhfr-argocd-2.14.10"
+        }
+      }
+    },
     "bat@latest": {
       "last_modified": "2024-12-23T21:10:33Z",
       "resolved": "github:NixOS/nixpkgs/de1864217bfa9b5845f465e771e0ecb48b30e02d#bat",
@@ -142,6 +190,74 @@
             }
           ],
           "store_path": "/nix/store/zj3p2qrvighch9qq663d003s9ag872p7-dive-0.13.1"
+        }
+      }
+    },
+    "eza@latest": {
+      "last_modified": "2025-04-05T00:48:53Z",
+      "resolved": "github:NixOS/nixpkgs/250b695f41e0e2f5afbf15c6b12480de1fe0001b#eza",
+      "source": "devbox-search",
+      "version": "0.21.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/p95snhf2n8xc125lnhm3i1fmmm2waxxh-eza-0.21.0",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/92054cc810992iv1k9njmv81fial3p16-eza-0.21.0-man",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/p95snhf2n8xc125lnhm3i1fmmm2waxxh-eza-0.21.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/n86hvy3g1w00v9i2zahmdnvl8pc4pwp8-eza-0.21.0",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/gvkm5nfkykqzmp36x7fgph3m0llfm7qa-eza-0.21.0-man",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/n86hvy3g1w00v9i2zahmdnvl8pc4pwp8-eza-0.21.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/3qrdxmvialjlcnjd0ny8jkw56jcddbw7-eza-0.21.0",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/29lnmzypyjv3m4ajvd8bvykn2ybx1qll-eza-0.21.0-man",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/3qrdxmvialjlcnjd0ny8jkw56jcddbw7-eza-0.21.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/79gk7hachh60m6xxi6fvr6crhw6dlwva-eza-0.21.0",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/qmlvm7rx9qvcimd8f8pi7wssx81h8qwq-eza-0.21.0-man",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/79gk7hachh60m6xxi6fvr6crhw6dlwva-eza-0.21.0"
         }
       }
     },

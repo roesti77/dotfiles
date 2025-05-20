@@ -69,6 +69,7 @@ setopt hist_ignore_space
 alias repos="cd ~/repos"
 alias vim="nvim"
 alias cat="bat"
+alias ls="eza"
 
 export LLM_KEY=NONE
 
@@ -99,5 +100,7 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 export CC=/usr/bin/clang
 unset ARCHFLAGS
+
+source <(argocd completion zsh) 
 
 source <(fzf --zsh)
