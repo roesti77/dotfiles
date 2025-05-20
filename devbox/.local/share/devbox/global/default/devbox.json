@@ -29,7 +29,9 @@
     "lazydocker":           "latest",
     "dive":                 "latest",
     "snyk":                 "latest",
-    "universal-ctags":      "latest"
+    "universal-ctags":      "latest",
+    "eza":                  "latest",
+    "argocd":               "latest"
   },
   "shell": {
     "init_hook": ["echo 'Welcome to devbox!' > /dev/null"],
