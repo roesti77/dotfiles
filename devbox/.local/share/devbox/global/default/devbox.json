@@ -31,7 +31,8 @@
     "snyk":                 "latest",
     "universal-ctags":      "latest",
     "eza":                  "latest",
-    "argocd":               "latest"
+    "argocd":               "latest",
+    "kubent":               "latest"
   },
   "shell": {
     "init_hook": ["echo 'Welcome to devbox!' > /dev/null"],

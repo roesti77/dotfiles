@@ -821,6 +821,54 @@
         }
       }
     },
+    "kubent@latest": {
+      "last_modified": "2025-05-16T20:19:48Z",
+      "resolved": "github:NixOS/nixpkgs/12a55407652e04dcf2309436eb06fef0d3713ef3#kubent",
+      "source": "devbox-search",
+      "version": "0.7.3",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/qz826hdbqn2nfw96p395r83wmmgz2iix-kubent-0.7.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/qz826hdbqn2nfw96p395r83wmmgz2iix-kubent-0.7.3"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/f9037kgayxmzsiybq8jqm7j2zl5d4hgz-kubent-0.7.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/f9037kgayxmzsiybq8jqm7j2zl5d4hgz-kubent-0.7.3"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/iaj3nws750yvfr27lbhb2pa8rq11kms9-kubent-0.7.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/iaj3nws750yvfr27lbhb2pa8rq11kms9-kubent-0.7.3"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/splc1jyikq2pg4w76d6i8ymyd0rqlai5-kubent-0.7.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/splc1jyikq2pg4w76d6i8ymyd0rqlai5-kubent-0.7.3"
+        }
+      }
+    },
     "lazydocker@latest": {
       "last_modified": "2025-03-23T05:31:05Z",
       "resolved": "github:NixOS/nixpkgs/dd613136ee91f67e5dba3f3f41ac99ae89c5406b#lazydocker",
