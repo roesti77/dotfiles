@@ -63,6 +63,7 @@ require('lazy').setup {
     require 'plugins.debug.python',
     --- Tools
     require 'plugins.tools.codesnap',
+    require 'plugins.tools.obsidian',
 }
 
 require 'core.completition'
