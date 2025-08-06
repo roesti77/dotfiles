@@ -210,6 +210,15 @@ return { -- LSP Configuration & Plugins
       bashls = {},
       dockerls = {},
       docker_compose_language_service = {},
+      intelephense = {
+        settings = {
+          intelephense = {
+            files = {
+              maxSize = 5000000, -- optional, für größere Projekte
+            },
+          },
+        },
+      },
       -- tailwindcss = {},
       -- graphql = {},
       -- html = { filetypes = { 'html', 'twig', 'hbs' } },
@@ -226,6 +235,7 @@ return { -- LSP Configuration & Plugins
     local ensure_installed = vim.tbl_keys(servers or {})
     vim.list_extend(ensure_installed, {
       'stylua', -- Used to format lua code
+      'intelephense',
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
