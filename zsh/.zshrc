@@ -104,3 +104,8 @@ unset ARCHFLAGS
 source <(argocd completion zsh) 
 
 source <(fzf --zsh)
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/robertschneider/.lmstudio/bin"
+# End of LM Studio CLI section
+

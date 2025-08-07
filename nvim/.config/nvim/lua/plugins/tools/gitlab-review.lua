@@ -15,6 +15,9 @@ return {
     local gitlab = require 'gitlab'
     gitlab.setup {
       config_path = '/Users/robertschneider/.config/gitlab.nvim/',
+      discussion_signs = {
+        virtual_text = true,
+      },
     }
 
     local wk = require 'which-key'
