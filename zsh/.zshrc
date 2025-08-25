@@ -109,3 +109,16 @@ source <(fzf --zsh)
 export PATH="$PATH:/Users/robertschneider/.lmstudio/bin"
 # End of LM Studio CLI section
 
+# Fix for Alt+Quotation mark combinations in Ghostty terminal
+# Ensure proper terminal input handling for special characters
+bindkey -e  # Use emacs keymap mode (this is critical for proper input handling)
+
+# Add locale configuration that helps with character input
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+# Ghostty-specific terminal integration
+if [ -n "${GHOSTTY_RESOURCES_DIR}" ]; then
+    builtin source "${GHOSTTY_RESOURCES_DIR}/shell-integration/zsh/ghostty-integration"
+fi
+
