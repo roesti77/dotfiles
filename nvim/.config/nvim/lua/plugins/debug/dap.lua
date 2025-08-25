@@ -190,5 +190,10 @@ return {
                 },
             }
         end
+
+        local project_dap = vim.fn.getcwd() .. '/.nvim/dap.lua'
+        if vim.fn.filereadable(project_dap) == 1 then
+            dofile(project_dap)
+        end
     end,
 }
