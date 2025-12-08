@@ -50,6 +50,8 @@ require('lazy').setup {
   require 'plugins.coding.test',
   require 'plugins.coding.database',
   require 'plugins.coding.outline',
+  require 'plugins.coding.symbols-outline',
+  require 'plugins.coding.refactor',
   --- Coding Languages
   require 'plugins.coding-languages.go',
   require 'plugins.coding-languages.taskfile',
