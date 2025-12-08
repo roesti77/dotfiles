@@ -1,0 +1,53 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama (local)",
+      "options": {
+        "baseURL": "http://127.0.0.1:11434/v1"
+      },
+      "models": {
+        "devstral": {
+          "name": "DevStral (local)"
+        },
+        "qwen3:30b": {
+          "name": "Qwen3 (local)"
+        },
+        "gpt-oss:20b": {
+          "name": "GPT-OpenAI (local)"
+        }
+      }
+    },
+    "lmstudio": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LM Studio (local)",
+      "options": {
+        "baseURL": "http://127.0.0.1:1234/v1"
+      },
+      "models": {
+        "qwen/qwen3-coder-30b": {
+          "name": "Qwen3 Coder (local)"
+        },
+        "openai/gpt-oss-20b": {
+          "name": "GPT-OpenAI (local)"
+        }
+      }
+    }
+  },
+  "mcp": {
+    "docker_mcp_gateway": {
+      "type": "local",
+      "command": ["docker", "mcp", "gateway", "run"],
+      "enabled": true
+    }
+  },
+  "tools": {
+    "docker_mcp_grafana": true,
+    "docker_mcp_notion": true,
+    "docker_mcp_obsidian": true,
+    "docker_mcp_gitmcp": true,
+    "docker_mcp_docker": true,
+    "docker_mcp_fetch": true
+  }
+}

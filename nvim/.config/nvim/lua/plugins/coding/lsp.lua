@@ -75,6 +75,85 @@ return { -- LSP Configuration & Plugins
         -- WARN: This is not Goto Definition, this is Goto Declaration.
         --  For example, in C this would take you to the header
         map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+        
+        -- Zusätzliche Sprungbefehle
+        map('gh', vim.lsp.buf.hover, 'Show hover information')  -- Alternative zu K
+        map('gH', function() 
+          vim.diagnostic.open_float(0, { scope = 'cursor' }) 
+        end, 'Show line diagnostics')
+        
+        -- Spezielle Sprungbefehle mit Telescope
+        -- Erweiterte LSP-Telescope Funktionen
+        map('gR', function()
+          require('telescope.builtin').lsp_references({
+            show_line = true,  -- Zeige Zeilennummern
+            include_declaration = true,  -- Inkludiere Deklarationen
+            trim_text = true,  -- Beschneide langen Text
+          })
+        end, 'Show detailed references')
+
+        map('gU', function()
+          require('telescope.builtin').lsp_incoming_calls({
+            show_line = true,
+            layout_strategy = 'vertical',
+            layout_config = { width = 0.9, height = 0.9 }
+          })
+        end, 'Show incoming calls/usages')
+
+        map('gO', function()
+          require('telescope.builtin').lsp_document_symbols({
+            symbols = {
+              'Class', 
+              'Function', 
+              'Method', 
+              'Constructor', 
+              'Interface', 
+              'Module', 
+              'Struct', 
+              'Enum'
+            },
+            symbol_width = 50,  -- Maximale Breite des Symbolnamens
+          })
+        end, 'Show document symbols')
+
+        map('gS', function()
+          require('telescope.builtin').lsp_dynamic_workspace_symbols({
+            symbol_type = {'class', 'function', 'method'},
+            show_line = true,
+            ignore_filename = false,  -- Zeige Dateinamen
+          })
+        end, 'Search workspace symbols')
+
+        map('gi', function()
+          require('telescope.builtin').lsp_implementations({
+            show_line = true,
+            trim_text = true,
+            layout_strategy = 'vertical',
+            layout_config = { width = 0.9, height = 0.9 }
+          })
+        end, 'Show implementations with details')
+
+        -- Navigiere durch Diagnostics (Fehler/Warnungen)
+        map('[d', vim.diagnostic.goto_prev, 'Go to previous diagnostic')
+        map(']d', vim.diagnostic.goto_next, 'Go to next diagnostic')
+        map('<leader>q', vim.diagnostic.setloclist, 'Open diagnostics quicklist')
+
+        -- Zusätzliche Symbol-Navigation
+        -- Zusätzliche Code-Referenz-Suche
+        map('<leader>fc', function()
+          require('telescope.builtin').grep_string({
+            prompt_title = '🔍 Find Code References',
+            search = vim.fn.input('Search Code: '),
+            use_regex = true,
+            additional_args = {'-i'},  -- Case-insensitive
+          })
+        end, 'Find Code References')
+
+        -- Signature Help
+        map('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+
+        -- Workspace-Diagnostics
+        map('<leader>wd', require('telescope.builtin').diagnostics, '[W]orkspace [D]iagnostics')
 
         map('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
         map('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
