@@ -23,7 +23,22 @@ return {
             {
                 name = 'work',
                 path = '/Users/robertschneider/repos/davitec-intern/knowledge-base-dv',
+                overrides = {
+                    templates = {
+                        folder = '_Pool/Vorlagen',
+                    },
+                },
             },
+        },
+
+        callbacks = {
+            -- Runs right before writing the buffer for a note.
+            ---@param client obsidian.Client
+            ---@param note obsidian.Note
+            ---@diagnostic disable-next-line: unused-local
+            pre_write_note = function(client, note)
+                note:add_field('date modified', os.date())
+            end,
         },
 
         -- see below for full list of options 👇
