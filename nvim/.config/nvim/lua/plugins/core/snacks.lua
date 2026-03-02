@@ -5,6 +5,7 @@ return {
   ---@type snacks.Config
   opts = {
     bigfile = { enabled = true },
+    picker = { enabled = true },
     dashboard = { enabled = true },
     indent = { enabled = true },
     input = { enabled = true },
@@ -138,6 +139,13 @@ return {
       end,
       desc = 'Prev Reference',
       mode = { 'n', 't' },
+    },
+    {
+      '<leader>fp',
+      function()
+        Snacks.picker.projects()
+      end,
+      desc = 'Projects',
     },
     {
       '<leader>N',
