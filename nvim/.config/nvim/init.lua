@@ -37,8 +37,9 @@ require('lazy').setup {
   require 'plugins.core.lazydocker',
   --- AI
   -- require 'plugins.ai.avante',
-  require 'plugins.ai.codeium',
+  -- require 'plugins.ai.codeium',
   require 'plugins.ai.opencode',
+  require 'plugins.ai.minuet',
   --- Coding
   require 'plugins.coding.treesitter',
   require 'plugins.coding.lsp',
