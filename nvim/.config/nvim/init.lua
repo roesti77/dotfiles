@@ -29,7 +29,6 @@ require('lazy').setup {
   require 'plugins.core.harpoon',
   require 'plugins.core.web-dev-icons',
   require 'plugins.core.ufo',
-  require 'plugins.core.zenmode',
   require 'plugins.core.snacks',
   require 'plugins.core.todo-comments',
   require 'plugins.core.zellij',

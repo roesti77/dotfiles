@@ -17,6 +17,21 @@ return {
     scroll = { enabled = true },
     statuscolumn = { enabled = true },
     words = { enabled = true },
+    zen = {
+      enabled = true,
+      toggles = {
+        dim = true,
+      },
+      win = {
+        width = 180,
+        backdrop = { transparent = true, blend = 40 },
+        wo = {
+          wrap = true,
+          number = false,
+          relativenumber = true,
+        },
+      },
+    },
     styles = {
       notification = {
         -- wo = { wrap = true } -- Wrap notifications
