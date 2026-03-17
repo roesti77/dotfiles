@@ -59,8 +59,14 @@ return {
       },
       completion = { completeopt = 'menu,menuone,noinsert' },
       window = {
-        completion = cmp.config.window.bordered(),
-        documentation = cmp.config.window.bordered(),
+        completion = cmp.config.window.bordered {
+          border = 'rounded',
+          winhighlight = 'Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel',
+        },
+        documentation = cmp.config.window.bordered {
+          border = 'rounded',
+          winhighlight = 'Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel',
+        },
       },
       mapping = cmp.mapping.preset.insert {
         ['<C-j>'] = cmp.mapping.select_next_item(),
@@ -105,9 +111,9 @@ return {
         { name = 'minuet' },
       },
       formatting = {
-        fields = { 'kind', 'abbr', 'menu' },
+        fields = { 'abbr', 'kind', 'menu' },
         format = function(entry, vim_item)
-          vim_item.kind = string.format('%s', kind_icons[vim_item.kind])
+          vim_item.kind = string.format('%s', kind_icons[vim_item.kind] or '')
           vim_item.menu = ({
             nvim_lsp = '[LSP]',
             luasnip = '[Snippet]',

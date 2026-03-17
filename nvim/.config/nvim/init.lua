@@ -40,6 +40,7 @@ require('lazy').setup {
   -- require 'plugins.ai.codeium',
   require 'plugins.ai.opencode',
   require 'plugins.ai.minuet',
+  require 'plugins.ai.vectorcode',
   --- Coding
   require 'plugins.coding.treesitter',
   require 'plugins.coding.lsp',

@@ -1,4 +1,4 @@
 return {
   'mistricky/codesnap.nvim',
-  build = 'make',
+  tag = 'v2.0.0',
 }

@@ -29,8 +29,16 @@ return {
           },
         },
       },
+      -- {
+      --   name = 'AI Research',
+      --   path = '$HOME/repos/company/ai/research/vault',
+      --   overrides = {
+      --     templates = {
+      --       folder = 'Vorlagen',
+      --     },
+      --   },
+      -- },
     },
-
     -- see below for full list of options 👇
   },
 }
