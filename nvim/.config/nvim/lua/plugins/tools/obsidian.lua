@@ -29,8 +29,16 @@ return {
           },
         },
       },
+      -- {
+      --   name = 'AI Research',
+      --   path = '/Users/robertschneider/repos/devoba/ai/research/vault',
+      --   overrides = {
+      --     templates = {
+      --       folder = 'Vorlagen',
+      --     },
+      --   },
+      -- },
     },
-
     -- see below for full list of options 👇
   },
 }

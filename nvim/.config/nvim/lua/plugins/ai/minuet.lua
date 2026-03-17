@@ -1,7 +1,19 @@
 return {
   'milanglacier/minuet-ai.nvim',
-  dependencies = { 'nvim-lua/plenary.nvim' },
+  dependencies = {
+    'nvim-lua/plenary.nvim',
+    'Davidyz/VectorCode',
+  },
   config = function()
+    local has_vc, vectorcode_config = pcall(require, 'vectorcode.config')
+    local vectorcode_cacher = nil
+    if has_vc then
+      vectorcode_cacher = vectorcode_config.get_cacher_backend()
+    end
+    local RAG_Context_Window_Size = 8000
+
+    local rag_ignore_ft = { 'yaml', 'json', 'toml', 'terraform', 'hcl', 'helm' }
+
     require('minuet').setup {
       provider = 'openai_fim_compatible',
       notify = 'warn',
@@ -26,8 +38,16 @@ return {
           end,
           name = 'LM Studio VTRS',
           template = {
-            prompt = function(context_before_cursor, context_after_cursor)
-              return '<|fim_prefix|>' .. context_before_cursor .. '<|fim_suffix|>' .. context_after_cursor .. '<|fim_middle|>'
+            prompt = function(pref, suff, _)
+              local prompt_message = ''
+              local use_rag = has_vc and vectorcode_cacher and not vim.tbl_contains(rag_ignore_ft, vim.bo.filetype)
+              if use_rag then
+                for _, file in ipairs(vectorcode_cacher.query_from_cache(0)) do
+                  prompt_message = prompt_message .. '<|file_sep|>' .. file.path .. '\n' .. file.document
+                end
+                prompt_message = vim.fn.strcharpart(prompt_message, 0, RAG_Context_Window_Size)
+              end
+              return prompt_message .. '<|fim_prefix|>' .. pref .. '<|fim_suffix|>' .. suff .. '<|fim_middle|>'
             end,
             suffix = false,
           },
@@ -37,6 +57,21 @@ return {
             temperature = 0.2,
           },
         },
+      },
+      enable_predicates = {
+        function()
+          local filename = vim.fn.expand '%:t'
+          if filename:match '^%.env' then
+            return false
+          end
+          if filename:match '%-secret%.yaml$' then
+            return false
+          end
+          if filename:match '^%.env%.' then
+            return false
+          end
+          return true
+        end,
       },
       cmp = {
         enable_auto_complete = true,

@@ -1,4 +1,3 @@
--- Highlight, edit, and navigate code
 return {
   'nvim-treesitter/nvim-treesitter',
   build = ':TSUpdate',
@@ -37,10 +36,8 @@ return {
         'html',
         'php',
       },
-
       -- Autoinstall languages that are not installed
       auto_install = true,
-
       highlight = {
         enable = true,
         additional_vim_regex_highlighting = false,
@@ -100,7 +97,6 @@ return {
         },
       },
     }
-
     -- Register additional file extensions
     vim.filetype.add { extension = { tf = 'terraform' } }
     vim.filetype.add { extension = { tfvars = 'terraform' } }
