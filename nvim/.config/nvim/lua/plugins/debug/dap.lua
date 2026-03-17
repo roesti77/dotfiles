@@ -265,5 +265,59 @@ return {
       -- Restore the dynamic adapter for future runs
       dap.adapters.go = old
     end, {})
+
+    -- Persistent breakpoints
+    local breakpoints_file = vim.fn.stdpath 'data' .. '/dap_breakpoints.json'
+
+    local function save_breakpoints()
+      local bps = dap.list_breakpoints()
+      if #bps > 0 then
+        local lines = {}
+        for _, bp in ipairs(bps) do
+          table.insert(lines, {
+            path = bp.source,
+            line = bp.line,
+            condition = bp.condition,
+            log_message = bp.logMessage,
+          })
+        end
+        vim.fn.writefile(lines, breakpoints_file)
+      else
+        vim.fn.delete(breakpoints_file)
+      end
+    end
+
+    local function load_breakpoints()
+      if vim.fn.filereadable(breakpoints_file) == 1 then
+        local ok, lines = pcall(vim.fn.readfile, breakpoints_file)
+        if ok and lines then
+          for _, bp in ipairs(lines) do
+            local ok_decode, data = pcall(vim.json.decode, bp)
+            if ok_decode and data then
+              dap.set_breakpoint(data.condition or data.log_message or '', data.log_message, data.path .. ':' .. data.line)
+            end
+          end
+        end
+      end
+    end
+
+    -- Save on exit
+    vim.api.nvim_create_autocmd('VimLeavePre', {
+      callback = save_breakpoints,
+    })
+
+    -- Load on start (after dap is ready)
+    vim.api.nvim_create_autocmd('FileType', {
+      pattern = 'dap-repl',
+      once = true,
+      callback = function()
+        load_breakpoints()
+      end,
+    })
+
+    -- Load immediately if dap already loaded
+    if package.loaded['dap'] then
+      vim.defer_fn(load_breakpoints, 100)
+    end
   end,
 }

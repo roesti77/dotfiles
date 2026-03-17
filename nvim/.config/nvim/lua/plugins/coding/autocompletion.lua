@@ -49,6 +49,7 @@ return {
       Event = '',
       Operator = '󰆕',
       TypeParameter = '󰊄',
+      Database = '󰆼',
     }
 
     cmp.setup {
@@ -110,6 +111,15 @@ return {
         { name = 'path' },
         { name = 'minuet' },
       },
+
+      cmp.setup.filetype({ 'sql', 'mysql', 'plsql' }, {
+        sources = cmp.config.sources({
+          { name = 'vim-dadbod-completion' },
+        }, {
+          { name = 'buffer' },
+        }),
+      }),
+
       formatting = {
         fields = { 'abbr', 'kind', 'menu' },
         format = function(entry, vim_item)
@@ -120,6 +130,7 @@ return {
             buffer = '[Buffer]',
             path = '[Path]',
             minuet = '[AI]',
+            ['vim-dadbod-completion'] = '[DB]',
           })[entry.source.name]
           return vim_item
         end,

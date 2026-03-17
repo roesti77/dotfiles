@@ -9,6 +9,15 @@ return {
       end,
       desc = 'Dap UI',
     },
+    {
+      '<leader>dr',
+      function()
+        require('dapui').close()
+        vim.cmd('sleep 100m')
+        require('dapui').open()
+      end,
+      desc = 'Reset Dap UI layout',
+    },
   },
   dependencies = {
     'jay-babu/mason-nvim-dap.nvim',
