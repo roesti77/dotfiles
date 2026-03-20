@@ -5,8 +5,18 @@ return {
     'nvim-treesitter/nvim-treesitter-textobjects',
   },
   config = function()
+    -- Register TOON parser before setup
+    local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
+    parser_config.toon = {
+      install_info = {
+        url = 'https://github.com/3swordman/tree-sitter-toon',
+        files = { 'src/parser.c', 'src/scanner.c' }, -- scanner.c hinzugefügt
+        branch = 'master',
+      },
+      filetype = 'toon',
+    }
+
     require('nvim-treesitter.configs').setup {
-      -- Add languages to be installed here that you want installed for treesitter
       ensure_installed = {
         'lua',
         'python',
@@ -35,8 +45,8 @@ return {
         'css',
         'html',
         'php',
+        'toon',
       },
-      -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
         enable = true,
@@ -55,9 +65,8 @@ return {
       textobjects = {
         select = {
           enable = true,
-          lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+          lookahead = true,
           keymaps = {
-            -- You can use the capture groups defined in textobjects.scm
             ['aa'] = '@parameter.outer',
             ['ia'] = '@parameter.inner',
             ['af'] = '@function.outer',
@@ -68,7 +77,7 @@ return {
         },
         move = {
           enable = true,
-          set_jumps = true, -- whether to set jumps in the jumplist
+          set_jumps = true,
           goto_next_start = {
             [']m'] = '@function.outer',
             [']]'] = '@class.outer',
@@ -97,10 +106,11 @@ return {
         },
       },
     }
-    -- Register additional file extensions
+
     vim.filetype.add { extension = { tf = 'terraform' } }
     vim.filetype.add { extension = { tfvars = 'terraform' } }
     vim.filetype.add { extension = { pipeline = 'groovy' } }
     vim.filetype.add { extension = { multibranch = 'groovy' } }
+    vim.filetype.add { extension = { toon = 'toon' } }
   end,
 }

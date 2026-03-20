@@ -9,4 +9,10 @@ return {
       separator = "-",
     },
   },
+  config = function()
+    local wk = require "which-key"
+    wk.add {
+      { "<leader>gh", "<cmd>Octo<cr>", desc = "GitHub" },
+    }
+  end,
 }

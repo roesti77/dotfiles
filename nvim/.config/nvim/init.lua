@@ -37,7 +37,8 @@ require('lazy').setup {
   --- AI
   -- require 'plugins.ai.avante',
   -- require 'plugins.ai.codeium',
-  require 'plugins.ai.opencode',
+  -- require 'plugins.ai.opencode',
+  require 'plugins.ai.claudecode',
   require 'plugins.ai.minuet',
   require 'plugins.ai.vectorcode',
   --- Coding
@@ -56,9 +57,11 @@ require('lazy').setup {
   --- Coding Languages
   require 'plugins.coding-languages.go',
   require 'plugins.coding-languages.taskfile',
+  require 'plugins.coding-languages.make',
   require 'plugins.coding-languages.markdown',
   require 'plugins.coding-languages.yaml-companion',
   require 'plugins.coding-languages.jinja',
+  require 'plugins.coding-languages.toon',
   --- Debug
   require 'plugins.debug.dap',
   require 'plugins.debug.dap-ui',
@@ -69,6 +72,7 @@ require('lazy').setup {
   require 'plugins.tools.codesnap',
   require 'plugins.tools.obsidian',
   require 'plugins.tools.gitlab-review',
+  require 'plugins.tools.octo',
 }
 
 require 'core.completition'
