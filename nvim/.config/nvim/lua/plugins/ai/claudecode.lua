@@ -7,7 +7,11 @@ return {
     log_level = 'warn',
 
     -- Terminal: snacks (wie dein bisheriges opencode-Setup)
-    terminal = {
+    diff_opts = {
+      layout = 'vertical',
+    },
+
+terminal = {
       provider = 'snacks',
       snacks = {
         auto_insert = true,
@@ -24,6 +28,7 @@ return {
     { '<C-j>', '<cmd>wincmd j<cr>', desc = 'Window down', mode = 't' },
     { '<C-k>', '<cmd>wincmd k<cr>', desc = 'Window up', mode = 't' },
     { '<C-l>', '<cmd>wincmd l<cr>', desc = 'Window right', mode = 't' },
+    { '<Esc><Esc>', '<C-\\><C-n>', desc = 'Exit terminal mode', mode = 't' },
 
     { '<leader>ar', '<cmd>ClaudeCode --resume<cr>', desc = 'Claude: Resume Session' },
     { '<leader>aC', '<cmd>ClaudeCode --continue<cr>', desc = 'Claude: Continue Session' },
