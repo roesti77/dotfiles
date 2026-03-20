@@ -23,7 +23,7 @@ return {
         dim = true,
       },
       win = {
-        width = 180,
+        width = 160,
         backdrop = { transparent = true, blend = 40 },
         wo = {
           wrap = true,
