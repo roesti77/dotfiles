@@ -75,4 +75,3 @@ require('lazy').setup {
   require 'plugins.tools.octo',
 }
 
-require 'core.completition'
