@@ -25,18 +25,10 @@ return {
       provider_options = {
         openai_fim_compatible = {
           model = 'jolovicdev/qwen2.5-coder-1.5b-lf-fim-heavy',
-          end_point = 'http://10.0.10.250:1234/v1/completions',
+          end_point = 'http://localhost:1234/v1/completions',
           stream = false,
-          api_key = function()
-            local f = io.open(vim.fn.expand '~/.local/secrets/lmstudio', 'r')
-            if f then
-              local token = f:read '*l'
-              f:close()
-              return token
-            end
-            return ''
-          end,
-          name = 'LM Studio VTRS',
+          api_key = 'TERM',
+          name = 'LM Studio Local',
           template = {
             prompt = function(pref, suff, _)
               local prompt_message = ''
