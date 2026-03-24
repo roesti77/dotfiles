@@ -96,6 +96,8 @@ return {
       hl_group = 'lualine_c_normal',
     }
 
+    local recorder = require 'recorder'
+
     require('lualine').setup {
       options = {
         icons_enabled = true,
@@ -109,7 +111,15 @@ return {
         lualine_a = { mode },
         lualine_b = { 'branch' },
         lualine_c = { filename, { symbols.get, cond = symbols.has } },
-        lualine_x = { diagnostics, diff, minuet_status, { 'encoding', cond = hide_in_width }, { 'filetype', cond = hide_in_width } },
+        lualine_x = {
+          { recorder.displaySlots, color = { fg = colors.yellow } },
+          { recorder.recordingStatus, color = { fg = colors.red1 } },
+          diagnostics,
+          diff,
+          minuet_status,
+          { 'encoding', cond = hide_in_width },
+          { 'filetype', cond = hide_in_width },
+        },
         lualine_y = { 'location' },
         lualine_z = { 'progress' },
       },

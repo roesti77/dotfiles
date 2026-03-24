@@ -5,6 +5,7 @@ return { -- LSP Configuration & Plugins
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
     'WhoIsSethDaniel/mason-tool-installer.nvim',
+    'b0o/schemastore.nvim',
 
     -- Useful status updates for LSP.
     -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
@@ -26,6 +27,17 @@ return { -- LSP Configuration & Plugins
     },
   },
   config = function()
+    local original_show_message = vim.lsp.handlers["window/showMessage"]
+    vim.lsp.handlers["window/showMessage"] = function(err, result, ctx, config)
+      if ctx and ctx.client_id then
+        local client = vim.lsp.get_client_by_id(ctx.client_id)
+        if client and client.name == "terraformls" and result and result.message and result.message:match("single file") then
+          return
+        end
+      end
+      original_show_message(err, result, ctx, config)
+    end
+
     vim.api.nvim_create_autocmd('LspAttach', {
       group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
       -- Create a function that lets us more easily define mappings specific LSP related items.
@@ -282,10 +294,33 @@ return { -- LSP Configuration & Plugins
       --         },
       --     },
       -- },
-      jsonls = {},
+      jsonls = {
+        settings = {
+          json = {
+            schemas = require("schemastore").json.schemas(),
+            validate = { enable = true },
+          },
+        },
+      },
       sqlls = {},
-      terraformls = {},
-      yamlls = {},
+      terraformls = {
+        init_options = {
+          ignoreSingleFileWarning = true,
+          experimentalFeatures = {
+            validateOnSave = true,
+            prefillRequiredFields = true,
+          },
+        },
+      },
+      ansiblels = {},
+      yamlls = {
+        settings = {
+          yaml = {
+            schemaStore = { enable = false, url = "" },
+            schemas = require("schemastore").yaml.schemas(),
+          },
+        },
+      },
       bashls = {},
       dockerls = {},
       docker_compose_language_service = {},

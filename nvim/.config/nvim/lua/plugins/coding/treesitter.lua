@@ -29,6 +29,7 @@ return {
       'vim',
       'regex',
       'terraform',
+      'hcl',
       'sql',
       'dockerfile',
       'toml',
@@ -124,6 +125,7 @@ return {
       require('nvim-treesitter.incremental_selection').node_decremental()
     end, { desc = 'Decrement treesitter selection' })
 
+    vim.filetype.add { extension = { yml = 'yaml.ansible' }, pattern = { ['.*playbook.*%.yml'] = 'yaml.ansible', ['.*roles.*%.yml'] = 'yaml.ansible', ['.*tasks.*%.yml'] = 'yaml.ansible' } }
     vim.filetype.add { extension = { tf = 'terraform' } }
     vim.filetype.add { extension = { tfvars = 'terraform' } }
     vim.filetype.add { extension = { pipeline = 'groovy' } }
