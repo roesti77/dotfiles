@@ -18,6 +18,9 @@ return {
         'stylua', -- lua formatter
         'eslint_d', -- ts/js linter
         'shfmt',
+        'tflint',
+        'tfsec',
+        'ansible-lint',
         'ruff',
         'php-cs-fixer',
       },
@@ -31,6 +34,10 @@ return {
       formatting.stylua,
       formatting.shfmt.with { args = { '-i', '4' } },
       formatting.terraform_fmt,
+      diagnostics.tflint,
+      diagnostics.tfsec,
+      diagnostics.trivy.with { condition = function() return vim.fn.executable("trivy") == 1 end },
+      diagnostics.ansiblelint,
       require('none-ls.formatting.ruff').with { extra_args = { '--extend-select', 'I' } },
       require 'none-ls.formatting.ruff_format',
       formatting.phpcsfixer,

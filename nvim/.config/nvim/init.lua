@@ -34,6 +34,7 @@ require('lazy').setup {
   require 'plugins.core.zellij',
   require 'plugins.core.surround',
   require 'plugins.core.lazydocker',
+  require 'plugins.core.recorder',
   --- AI
   -- require 'plugins.ai.avante',
   -- require 'plugins.ai.codeium',
@@ -62,6 +63,8 @@ require('lazy').setup {
   require 'plugins.coding-languages.yaml-companion',
   require 'plugins.coding-languages.jinja',
   require 'plugins.coding-languages.toon',
+  require 'plugins.coding-languages.terraform',
+  require 'plugins.coding-languages.ansible',
   --- Debug
   require 'plugins.debug.dap',
   require 'plugins.debug.dap-ui',
@@ -72,6 +75,6 @@ require('lazy').setup {
   require 'plugins.tools.codesnap',
   require 'plugins.tools.obsidian',
   require 'plugins.tools.gitlab-review',
+  require 'plugins.tools.k9s',
   require 'plugins.tools.octo',
 }
-
