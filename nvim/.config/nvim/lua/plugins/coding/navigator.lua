@@ -1,5 +1,6 @@
 return {
   'ray-x/navigator.lua',
+  commit = 'f50ab6f', -- pinned for nvim 0.11, remove pin after upgrade to 0.12
   dependencies = {
     { 'hrsh7th/nvim-cmp' },
     { 'nvim-treesitter/nvim-treesitter' },
