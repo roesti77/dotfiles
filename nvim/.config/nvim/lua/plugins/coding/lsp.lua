@@ -87,13 +87,13 @@ return { -- LSP Configuration & Plugins
         -- WARN: This is not Goto Definition, this is Goto Declaration.
         --  For example, in C this would take you to the header
         map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-        
+
         -- Zusätzliche Sprungbefehle
         map('gh', vim.lsp.buf.hover, 'Show hover information')  -- Alternative zu K
-        map('gH', function() 
-          vim.diagnostic.open_float(0, { scope = 'cursor' }) 
+        map('gH', function()
+          vim.diagnostic.open_float(0, { scope = 'cursor' })
         end, 'Show line diagnostics')
-        
+
         -- Spezielle Sprungbefehle mit Telescope
         -- Erweiterte LSP-Telescope Funktionen
         map('gR', function()
@@ -115,13 +115,13 @@ return { -- LSP Configuration & Plugins
         map('gO', function()
           require('telescope.builtin').lsp_document_symbols({
             symbols = {
-              'Class', 
-              'Function', 
-              'Method', 
-              'Constructor', 
-              'Interface', 
-              'Module', 
-              'Struct', 
+              'Class',
+              'Function',
+              'Method',
+              'Constructor',
+              'Interface',
+              'Module',
+              'Struct',
               'Enum'
             },
             symbol_width = 50,  -- Maximale Breite des Symbolnamens
