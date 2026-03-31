@@ -52,9 +52,9 @@ alias vim="nvim"
 alias cat="bat"
 alias ls="eza"
 export LLM_KEY=NONE
-#source <(kubectl completion zsh)
-#alias kubectl="kubecolor"
-#compdef kubecolor=kubectl
+source <(kubectl completion zsh)
+alias kubectl=kubecolor
+compdef kubecolor=kubectl
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 autoload -U +X bashcompinit && bashcompinit
@@ -90,5 +90,5 @@ if [ -n "${GHOSTTY_RESOURCES_DIR}" ]; then
 fi
 
 eval "$(task --completion zsh)"
-eval "$(vectorcode -s zsh)"
+# eval "$(vectorcode -s zsh
 

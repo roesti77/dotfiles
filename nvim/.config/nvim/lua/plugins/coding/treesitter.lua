@@ -49,6 +49,7 @@ return {
       'css',
       'html',
       'php',
+      'mermaid',
     }
 
     -- Enable highlighting for all filetypes with a parser
