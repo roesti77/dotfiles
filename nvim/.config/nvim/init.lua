@@ -65,6 +65,7 @@ require('lazy').setup {
   require 'plugins.coding-languages.toon',
   require 'plugins.coding-languages.terraform',
   require 'plugins.coding-languages.ansible',
+  require 'plugins.coding-languages.diagram',
   --- Debug
   require 'plugins.debug.dap',
   require 'plugins.debug.dap-ui',
