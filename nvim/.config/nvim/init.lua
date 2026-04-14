@@ -33,6 +33,7 @@ require('lazy').setup {
   require 'plugins.core.todo-comments',
   require 'plugins.core.zellij',
   require 'plugins.core.surround',
+  require 'plugins.core.undotree',
   require 'plugins.core.lazydocker',
   require 'plugins.core.recorder',
   --- AI
