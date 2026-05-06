@@ -36,6 +36,8 @@ require('lazy').setup {
   require 'plugins.core.undotree',
   require 'plugins.core.lazydocker',
   require 'plugins.core.recorder',
+  require 'plugins.core.undotree',
+  require 'plugins.core.oil',
   --- AI
   -- require 'plugins.ai.avante',
   -- require 'plugins.ai.codeium',
@@ -67,6 +69,7 @@ require('lazy').setup {
   require 'plugins.coding-languages.terraform',
   require 'plugins.coding-languages.ansible',
   require 'plugins.coding-languages.diagram',
+  require 'plugins.coding-languages.kotlin',
   --- Debug
   require 'plugins.debug.dap',
   require 'plugins.debug.dap-ui',
