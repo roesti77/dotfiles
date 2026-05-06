@@ -28,9 +28,23 @@ fi
 ZSH_CUSTOM=$HOME/.config/ohmyzsh/custom
 plugins=(git aws colored-man-pages command-not-found common-aliases docker-compose docker git-extras git-flow gitignore helm kubectl minikube nmap rsync screen sudo systemadmin copyzshell zsh-peco-history terraform kubetail vi-mode)
 source $ZSH/oh-my-zsh.sh
-#source <(kubectl completion zsh)
-#source <(kind completion zsh)
-#source <(minikube docker-env -p my-profile)
+
+autoload -U +X bashcompinit && bashcompinit
+#complete -o nospace -C /usr/local/bin/terraform terraform
+autoload -Uz compinit
+if [ -f ~/.zcompdump ]; then
+    compinit -C
+else
+    compinit
+fi
+
+
+source <(kubectl completion zsh)
+command -v kind       &>/dev/null && source <(kind completion zsh)
+command -v argocd     &>/dev/null && source <(argocd completion zsh)
+command -v cilium     &>/dev/null && source <(cilium completion zsh)
+command -v talosctl   &>/dev/null && source <(talosctl completion zsh)
+
 # Save the history in your home directory as .zsh_history
 export HISTFILE=$HOME/.zsh_history 
 # Set the history size to 2000 commands
@@ -57,14 +71,6 @@ alias kubectl=kubecolor
 compdef kubecolor=kubectl
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-autoload -U +X bashcompinit && bashcompinit
-#complete -o nospace -C /usr/local/bin/terraform terraform
-autoload -Uz compinit
-if [ -f ~/.zcompdump ]; then
-    compinit -C
-else
-    compinit
-fi
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 eval "$(direnv hook zsh)"
