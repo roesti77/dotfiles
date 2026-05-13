@@ -82,4 +82,5 @@ require('lazy').setup {
   require 'plugins.tools.gitlab-review',
   require 'plugins.tools.k9s',
   require 'plugins.tools.octo',
+  require 'plugins.tools.ghosttext',
 }
