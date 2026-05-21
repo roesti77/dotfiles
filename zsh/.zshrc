@@ -96,6 +96,10 @@ export KEYTIMEOUT=1  # Minimale ESC-Verzögerung (wichtig für Zellij)
 # Add locale configuration that helps with character input
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+
+# GPG / YubiKey: TTY für pinentry, sonst "Inappropriate ioctl for device"
+export GPG_TTY=$(tty)
+gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1
 # Ghostty-specific terminal integration
 if [ -n "${GHOSTTY_RESOURCES_DIR}" ]; then
     builtin source "${GHOSTTY_RESOURCES_DIR}/shell-integration/zsh/ghostty-integration"
