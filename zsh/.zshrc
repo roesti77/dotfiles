@@ -63,6 +63,12 @@ setopt hist_verify
 setopt hist_ignore_space  
 alias repos="cd ~/repos"
 alias vim="nvim"
+
+# Open Second Brain vault in nvim (cwd = vault root, args are relative paths)
+sb() {
+  (cd "$HOME/Library/Mobile Documents/com~apple~CloudDocs/Second Brain" && nvim "$@")
+}
+
 alias cat="bat"
 alias ls="eza"
 export LLM_KEY=NONE
