@@ -109,8 +109,16 @@ keybinds clear-defaults=true {
             }
             SwitchToMode "normal"
         }
+        bind "r" {
+            Run "sh" "-c" "printf 'Session name: '; read name && [ -n \"$name\" ] && zellij action rename-session \"$name\"" {
+                floating true
+                close_on_exit true
+                name "rename-session"
+            }
+            SwitchToMode "normal"
+        }
         bind "w" {
-            LaunchOrFocusPlugin "session-manager" {
+            LaunchOrFocusPlugin "file:~/.config/zellij/plugins/zellij-choose-tree.wasm" {
                 floating true
                 move_to_focused_tab true
             }
@@ -280,3 +288,8 @@ pane_frames false
 show_startup_tips false
 
 support_kitty_keyboard_protocol true
+
+session_serialization true
+serialize_pane_viewport true
+scrollback_lines_to_serialize 10000
+post_command_discovery_hook "echo ''"
