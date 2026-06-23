@@ -80,11 +80,13 @@ compdef kubecolor=kubectl
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 eval "$(direnv hook zsh)"
-# Skip zellij auto-start inside supacode terminals: supacode spawns a fresh
-# login shell per surface, so auto-start would create a new zellij session for
-# every surface and pile up runaway servers. Opt into zellij there via the
-# worktree run-script (one named session per worktree) instead.
-if [[ -z "$SUPACODE_SOCKET_PATH" ]]; then
+# Skip zellij auto-start inside supacode terminals. supacode spawns a fresh
+# login shell per surface and restarts the surface when its foreground command
+# exits, so an auto-started zellij keeps respawning into runaway, client-less
+# servers. Detect supacode via __CFBundleIdentifier (set by macOS at process
+# start, unlike SUPACODE_SOCKET_PATH which its shell integration injects later).
+# Start zellij manually when needed inside supacode instead.
+if [[ -z "$SUPACODE_SOCKET_PATH" && "$__CFBundleIdentifier" != "app.supabit.supacode" ]]; then
   eval "$(zellij setup --generate-auto-start zsh)"
 fi
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
