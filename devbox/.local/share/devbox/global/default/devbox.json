@@ -41,7 +41,8 @@
     "python3Packages.pygments": "",
     "kind":                     "latest",
     "cilium-cli":               "latest",
-    "talosctl":                 "latest"
+    "talosctl":                 "latest",
+    "argonaut":                 "2.16.0"
   },
   "shell": {
     "init_hook": ["echo 'Welcome to devbox!' > /dev/null"],

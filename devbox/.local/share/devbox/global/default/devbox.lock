@@ -49,6 +49,54 @@
         }
       }
     },
+    "argonaut@2.16.0": {
+      "last_modified": "2026-05-21T08:15:18Z",
+      "resolved": "github:NixOS/nixpkgs/4a29d733e8a7d5b824c3d8c958a946a9867b3eb2#argonaut",
+      "source": "devbox-search",
+      "version": "2.16.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/0sbdyh4kqnxh1p4vckh7jj5n95j4dj7b-argonaut-2.16.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/0sbdyh4kqnxh1p4vckh7jj5n95j4dj7b-argonaut-2.16.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/l1nic0h51l5c6amd4bwfxd6fq7vcgmpy-argonaut-2.16.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/l1nic0h51l5c6amd4bwfxd6fq7vcgmpy-argonaut-2.16.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/qbh9dkmnijclhwhmxjmaw84cbf0314a3-argonaut-2.16.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/qbh9dkmnijclhwhmxjmaw84cbf0314a3-argonaut-2.16.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/3ygx3jb64p1rzhkaphl9ia2bdq6rxkzg-argonaut-2.16.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/3ygx3jb64p1rzhkaphl9ia2bdq6rxkzg-argonaut-2.16.0"
+        }
+      }
+    },
     "bat@latest": {
       "last_modified": "2026-03-21T07:29:51Z",
       "resolved": "github:NixOS/nixpkgs/09061f748ee21f68a089cd5d91ec1859cd93d0be#bat",

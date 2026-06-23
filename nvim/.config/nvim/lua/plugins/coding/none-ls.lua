@@ -18,7 +18,6 @@ return {
         'stylua', -- lua formatter
         'eslint_d', -- ts/js linter
         'shfmt',
-        'tflint',
         'tfsec',
         'ansible-lint',
         'ruff',
@@ -34,7 +33,6 @@ return {
       formatting.stylua,
       formatting.shfmt.with { args = { '-i', '4' } },
       formatting.terraform_fmt,
-      diagnostics.tflint,
       diagnostics.tfsec,
       diagnostics.trivy.with { condition = function() return vim.fn.executable("trivy") == 1 end },
       diagnostics.ansiblelint,

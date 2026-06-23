@@ -17,6 +17,5 @@ return {
         '*confluence*',
       },
     },
-    log_level = 'debug',
   },
 }
