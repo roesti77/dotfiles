@@ -1,0 +1,10 @@
+{
+  "setupScript": "zellij attach --create \"$(basename \"$PWD\")\"",
+  "runScript": "zellij attach --create \"$(basename \"$PWD\")\"",
+  "archiveScript": "zellij delete-session \"$(basename \"$PWD\")\" --force 2>/dev/null || true",
+  "openActionID": "nvim",
+  "worktreeBaseRef": "origin/main",
+  "copyIgnoredOnWorktreeCreate": false,
+  "copyUntrackedOnWorktreeCreate": false,
+  "pullRequestMergeStrategy": "squash"
+}

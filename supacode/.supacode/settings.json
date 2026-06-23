@@ -1,0 +1,45 @@
+{
+  "global" : {
+    "agentPresenceBadgesEnabled" : true,
+    "analyticsEnabled" : true,
+    "appearanceMode" : "dark",
+    "autoUpdateAgentIntegrationsEnabled" : true,
+    "automatedActionPolicy" : "cliOnly",
+    "confirmQuitMode" : "auto",
+    "copyIgnoredOnWorktreeCreate" : false,
+    "copyUntrackedOnWorktreeCreate" : false,
+    "crashReportsEnabled" : true,
+    "defaultEditorID" : "auto",
+    "deleteBranchOnDeleteWorktree" : true,
+    "fetchOriginBeforeWorktreeCreation" : true,
+    "githubIntegrationEnabled" : true,
+    "globalScripts" : [
+
+    ],
+    "hideSingleTabBar" : false,
+    "inAppNotificationsEnabled" : true,
+    "moveNotifiedWorktreeToTop" : true,
+    "notificationSoundEnabled" : true,
+    "promptForWorktreeCreation" : true,
+    "pullRequestMergeStrategy" : "merge",
+    "richAgentNotificationsEnabled" : true,
+    "shortcutOverrides" : {
+
+    },
+    "systemNotificationsEnabled" : true,
+    "terminalThemeSyncEnabled" : true,
+    "terminateSessionsOnQuit" : false,
+    "updateChannel" : "stable",
+    "updatesAutomaticallyCheckForUpdates" : true,
+    "updatesAutomaticallyDownloadUpdates" : false
+  },
+  "pinnedWorktreeIDs" : [
+
+  ],
+  "repositories" : {
+
+  },
+  "repositoryRoots" : [
+
+  ]
+}
