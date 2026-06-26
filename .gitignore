@@ -1,0 +1,10 @@
+# Machine-local Claude Code settings (per-machine permissions / MCP servers)
+**/settings.local.json
+
+# Editor / tool backups & OS cruft
+*.bak
+*.bak.*
+.DS_Store
+
+# Node / runtime artifacts
+node_modules/
