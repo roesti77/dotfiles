@@ -45,6 +45,7 @@ require('lazy').setup {
   require 'plugins.ai.claudecode',
   require 'plugins.ai.minuet',
   require 'plugins.ai.vectorcode',
+  require 'plugins.ai.ninety-nine',
   --- Coding
   require 'plugins.coding.treesitter',
   require 'plugins.coding.lsp',
