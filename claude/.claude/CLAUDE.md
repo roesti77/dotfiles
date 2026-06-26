@@ -17,7 +17,7 @@ Globale Konventionen + Pointer, die über alle Projekte hinweg gelten.
 
 ## Second Brain (Obsidian-Vault, PARA)
 
-**Pfad:** `$HOME/Library/Mobile Documents/com~apple~CloudDocs/Second Brain/`. Trigger: „mein Second Brain", „pack das ins Wissen". → PARA-Routing, Frontmatter, Konventionen: Skill `second-brain`.
+**Pfad:** `~/Library/Mobile Documents/com~apple~CloudDocs/Second Brain/`. Trigger: „mein Second Brain", „pack das ins Wissen". → PARA-Routing, Frontmatter, Konventionen: Skill `second-brain`.
 
 **Was wohin (Routing-Entscheidung):**
 - Generisches Tool-/Konzept-Wissen („wie funktioniert X") → Second Brain (`03_Resources/`).

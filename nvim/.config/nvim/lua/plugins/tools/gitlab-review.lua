@@ -14,7 +14,7 @@ return {
   config = function()
     local gitlab = require 'gitlab'
     gitlab.setup {
-      config_path = '$HOME/.config/gitlab.nvim/',
+      config_path = vim.fn.expand '~/.config/gitlab.nvim/',
       discussion_signs = {
         virtual_text = true,
       },

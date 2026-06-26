@@ -1,4 +1,4 @@
-local vault = '$HOME/Library/Mobile Documents/com~apple~CloudDocs/Second Brain'
+local vault = vim.fn.expand '~/Library/Mobile Documents/com~apple~CloudDocs/Second Brain'
 
 local GERMAN_WEEKDAYS = {
   [0] = 'Sonntag',

@@ -7,7 +7,7 @@ description: "File knowledge into Robert's Obsidian PARA vault. Use when asked t
 
 Persönlicher Obsidian-Vault, iCloud-synced (Mobile + Desktop), PARA-Methode.
 
-**Pfad:** `$HOME/Library/Mobile Documents/com~apple~CloudDocs/Second Brain/`
+**Pfad:** `~/Library/Mobile Documents/com~apple~CloudDocs/Second Brain/`
 
 ## Wo ablegen? (PARA)
 

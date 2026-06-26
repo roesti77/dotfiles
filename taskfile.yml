@@ -15,7 +15,8 @@ tasks:
 
   clone-plugins:
     vars:
-      ZSH_CUSTOM: "$HOME/.config/ohmyzsh/custom"
+      ZSH_CUSTOM:
+        sh: echo "$HOME/.config/ohmyzsh/custom"
     cmds:
       - mkdir -p $ZSH_CUSTOM/plugins
       - if [ ! -d "$ZSH_CUSTOM/plugins/copyzshell" ]; then git clone git@github.com:rutchkiwi/copyzshell.git $ZSH_CUSTOM/plugins/copyzshell; fi
