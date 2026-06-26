@@ -1,0 +1,2 @@
+Allow git commit/push from this main checkout (personal dotfiles, no parallel-session WIP).
+Read by claude/.claude/hooks/worktree-guard.sh
