@@ -16,7 +16,7 @@ and a shared Gateway terminating TLS for `*.localhost.direct`.
    - **Project name** (becomes the directory name and gets substituted into
      cluster name, README title, etc.)
    - **Parent directory** where to create the new project folder
-     (default: `~/repos/company`, but offer the current working directory and
+     (default: `~/repos`, but offer the current working directory and
      a custom path as alternatives)
 2. Validate the target directory `<parent>/<project>` does not already exist.
    If it does, ask the user whether to abort or pick a different name.

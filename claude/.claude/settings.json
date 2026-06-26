@@ -108,18 +108,9 @@
     "refreshInterval": 30
   },
   "enabledPlugins": {
-    "cluster-tool@talos-cluster-tool": true,
     "gopls-lsp@claude-plugins-official": true,
     "lua-lsp@claude-plugins-official": true,
     "nono@always-further": true
-  },
-  "extraKnownMarketplaces": {
-    "talos-cluster-tool": {
-      "source": {
-        "source": "github",
-        "repo": "company/talos-cluster-tool"
-      }
-    }
   },
   "language": "german",
   "skipDangerousModePermissionPrompt": true,

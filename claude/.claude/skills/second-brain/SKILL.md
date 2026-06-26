@@ -21,7 +21,7 @@ Persönlicher Obsidian-Vault, iCloud-synced (Mobile + Desktop), PARA-Methode.
 | `90_Meta/` | Templates + Dashboards |
 | `99_Attachments/` | Bilder, PDFs |
 
-- Domain-Unterordner in `01_/02_/04_`: `beruf | client | privat | hobby`.
+- Domain-Unterordner in `01_/02_/04_`: `beruf | privat | hobby`.
 - In `03_Resources/` themenorientiert (`Tech/Kubernetes/`, `Tech/IaC/`,
   `Tech/Observability/`, `Lichttechnik/`, `AoS/`, `Personen-CRM/`, …).
 

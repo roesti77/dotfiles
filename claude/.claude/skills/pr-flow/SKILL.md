@@ -75,11 +75,9 @@ git -C <repo> worktree remove --force <tmp-pfad>
 git -C <repo> worktree prune
 ```
 
-## company-Talos-Spezifika
+## Repo-Spezifika
 
-- Nur `platform-docs` ist komplett deutsch; alle anderen Talos-Repos
-  (`platform-base`, `-apps`, `seeder-cluster`, `talos-lab-cluster`)
-  sind durchgängig englisch (Code UND Doku/READMEs). colleague weist base-PRs mit
-  deutschen Kommentaren ab.
-- NIEMALS schreibend auf Repos außerhalb von Roberts Orgs (`company` + bestätigte).
-  Vor jeder `gh pr/issue`-Aktion das `--repo`-Ziel prüfen.
+- Repo-spezifische Sprach-Konventionen für Doku/READMEs beachten — manche Repos sind
+  durchgängig englisch, andere erlauben deutsche Doku.
+- NIEMALS schreibend auf Repos außerhalb von Roberts Orgs. Vor jeder `gh pr/issue`-Aktion
+  das `--repo`-Ziel prüfen.

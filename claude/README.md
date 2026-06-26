@@ -12,12 +12,14 @@ state):
 | `~/.claude/settings.json` | Global settings (hooks, statusline, plugins, flags) |
 | `~/.claude/statusline-command.sh` | Statusline script referenced by `settings.json` |
 | `~/.claude/skills/` | Personal skills |
+| `~/.claude/agents/` | Subagent fleet |
+| `~/.claude/workflows/` | Orchestration workflows |
+| `~/.claude/hooks/` | Hook scripts (e.g. worktree-guard) |
 
 ## Intentionally NOT managed here
 
 - `settings.local.json` — machine-local permissions / MCP servers
 - `remote-settings.json` — secrets
-- `agents/` — symlink into the separate `company/ai-agents` repo
 - `projects/`, `file-history/`, `cache/`, `plugins/`, `telemetry/`, … — runtime state
 
 > Note: `settings.json` contains supacode-managed hooks that supacode rewrites
