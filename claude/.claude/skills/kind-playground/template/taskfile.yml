@@ -1,0 +1,16 @@
+version: "3"
+
+dotenv: [".env"]
+
+vars:
+  GIT_ROOT:
+    sh: "git rev-parse --show-toplevel 2>/dev/null || pwd"
+
+includes:
+  kind: ./manifests/kind
+
+tasks:
+  default:
+    desc: "List available tasks"
+    cmds:
+      - task --list

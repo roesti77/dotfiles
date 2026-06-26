@@ -1,0 +1,108 @@
+version: "3"
+
+vars:
+  GIT_ROOT:
+    sh: "git rev-parse --show-toplevel 2>/dev/null || pwd"
+  CLUSTER_NAME: __PROJECT_NAME__-playground
+  CILIUM_VERSION: "1.16.5"
+  GATEWAY_API_VERSION: "v1.2.1"
+  CERT_MANAGER_VERSION: "v1.17.0"
+
+tasks:
+  start-local-cluster:
+    desc: "Starts the local kind cluster"
+    dir: "{{.GIT_ROOT}}"
+    cmds:
+      - docker ps -a --filter "label=io.x-k8s.kind.cluster={{.CLUSTER_NAME}}" --format "{{`{{.ID}}`}}" | xargs -r docker start
+      - kubectx kind-{{.CLUSTER_NAME}}
+
+  stop-local-cluster:
+    desc: "Stop the local kind cluster"
+    dir: "{{.GIT_ROOT}}"
+    cmds:
+      - docker ps --filter "label=io.x-k8s.kind.cluster={{.CLUSTER_NAME}}" --format "{{`{{.ID}}`}}" | xargs -r docker stop
+
+  prepare-local-cluster:
+    desc: "Create kind cluster + install Cilium, Gateway API, cert-manager, mkcert, shared Gateway"
+    dir: "{{.GIT_ROOT}}"
+    cmds:
+      - kind create cluster --name {{.CLUSTER_NAME}} --config manifests/kind/kind-config.yml -v 5 || true
+      - kubectx kind-{{.CLUSTER_NAME}}
+      - task: install-gateway-api-crds
+      - task: install-cilium
+      - task: install-cert-manager-with-mkcert
+      - task: install-shared-gateway
+
+  delete-local-cluster:
+    desc: "Delete the kind cluster"
+    dir: "{{.GIT_ROOT}}"
+    cmds:
+      - kind delete cluster -n {{.CLUSTER_NAME}}
+      - rm -rf .mkcert
+
+  install-gateway-api-crds:
+    desc: "Install Gateway API experimental channel CRDs (Cilium 1.16 requires TLSRoute/TCPRoute CRDs)"
+    dir: "{{.GIT_ROOT}}"
+    internal: true
+    cmds:
+      - kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/{{.GATEWAY_API_VERSION}}/experimental-install.yaml
+
+  install-cilium:
+    desc: "Install Cilium as CNI + kube-proxy replacement + Gateway API implementation"
+    dir: "{{.GIT_ROOT}}"
+    internal: true
+    cmds:
+      - |
+        cilium install \
+          --version {{.CILIUM_VERSION}} \
+          --set kubeProxyReplacement=true \
+          --set gatewayAPI.enabled=true \
+          --set ipam.mode=kubernetes \
+          --set securityContext.capabilities.ciliumAgent="{CHOWN,KILL,NET_ADMIN,NET_RAW,IPC_LOCK,SYS_ADMIN,SYS_RESOURCE,DAC_OVERRIDE,FOWNER,SETGID,SETUID}" \
+          --set securityContext.capabilities.cleanCiliumState="{NET_ADMIN,SYS_ADMIN,SYS_RESOURCE}" \
+          --set cgroup.autoMount.enabled=false \
+          --set cgroup.hostRoot=/sys/fs/cgroup
+      - cilium status --wait
+
+  install-cert-manager-with-mkcert:
+    desc: "Install cert-manager + register mkcert root CA as ClusterIssuer"
+    dir: "{{.GIT_ROOT}}"
+    internal: true
+    cmds:
+      - |
+        mkcert -install
+        mkdir -p .mkcert
+        mkcert -CAROOT > .mkcert/caroot
+        export CAROOT=$(cat .mkcert/caroot)
+        cp "$CAROOT/rootCA.pem" .mkcert/
+        cp "$CAROOT/rootCA-key.pem" .mkcert/
+      - kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/{{.CERT_MANAGER_VERSION}}/cert-manager.yaml
+      - kubectl wait deployment cert-manager-webhook -n cert-manager --for=condition=Available=True --timeout=300s
+      - sleep 10
+      - kubectl create secret tls mkcert-ca --cert=.mkcert/rootCA.pem --key=.mkcert/rootCA-key.pem -n cert-manager --dry-run=client -o yaml | kubectl apply -f -
+      - kubectl apply -f manifests/kind/cert-manager/mkcert-cluster-issuer.yml
+
+  install-shared-gateway:
+    desc: "Create shared Gateway (HTTP+HTTPS) backed by mkcert wildcard cert + patch Service to NodePort 30080/30443"
+    dir: "{{.GIT_ROOT}}"
+    internal: true
+    cmds:
+      - kubectl apply -f manifests/kind/gateway/namespace.yml
+      - kubectl apply -f manifests/kind/gateway/certificate.yml
+      - kubectl wait --for=condition=Ready certificate/localhost-direct-wildcard -n gateway-system --timeout=120s
+      - kubectl apply -f manifests/kind/gateway/gateway.yml
+      - |
+        echo "Waiting for Cilium to create cilium-gateway-shared Service..."
+        until kubectl -n gateway-system get service cilium-gateway-shared >/dev/null 2>&1; do
+          sleep 1
+        done
+      - |
+        kubectl get service cilium-gateway-shared -n gateway-system -o json | \
+          jq '.spec.type = "NodePort" |
+              .spec.ports |= map(
+                if .port == 80 then .nodePort = 30080
+                elif .port == 443 then .nodePort = 30443
+                else . end
+              )' | \
+          kubectl apply -f -
+      - kubectl wait --for=condition=Programmed gateway/shared -n gateway-system --timeout=120s
