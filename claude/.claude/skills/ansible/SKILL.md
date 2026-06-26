@@ -5,7 +5,9 @@ description: "Quality gate for Ansible and plain YAML changes. Use before declar
 
 # Gate: Ansible / YAML
 
-Fehlt ein Tool → **INCONCLUSIVE**, nicht PASS.
+Fehlt ein Tool → **INCONCLUSIVE**, nicht PASS. `yamllint`/`ansible-lint` sind nicht
+global installiert — sie kommen per-Projekt via `devbox shell`; das Gate also im
+Projekt-Kontext laufen lassen.
 
 ```bash
 command -v yamllint >/dev/null && yamllint . || echo "INCONCLUSIVE: yamllint fehlt"

@@ -6,7 +6,8 @@ description: "Quality gate for Terraform / OpenTofu changes. Use before declarin
 # Gate: Terraform / OpenTofu
 
 `tofu` bevorzugen, auf `terraform` zurückfallen, wenn `tofu` fehlt. Fehlt ein Tool →
-**INCONCLUSIVE**, nicht PASS.
+**INCONCLUSIVE**, nicht PASS. Die IaC-Tools sind nicht global installiert — sie kommen
+per-Projekt via `devbox shell`; das Gate also im Projekt-Kontext laufen lassen.
 
 ```bash
 TF=$(command -v tofu || command -v terraform) || echo "INCONCLUSIVE: tofu/terraform fehlt"
