@@ -11,6 +11,7 @@ tasks:
       - stow devbox
       - stow lazygit
       - stow ghostty
+      - stow claude
 
   clone-plugins:
     vars:
