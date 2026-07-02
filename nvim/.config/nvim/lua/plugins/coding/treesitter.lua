@@ -48,7 +48,6 @@ return {
       'tsx',
       'css',
       'html',
-      'php',
       'mermaid',
     }
 

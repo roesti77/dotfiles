@@ -106,9 +106,13 @@ return { -- LSP Configuration & Plugins
           }
         end, 'Show implementations with details')
 
-        map('[d', vim.diagnostic.goto_prev, 'Go to previous diagnostic')
-        map(']d', vim.diagnostic.goto_next, 'Go to next diagnostic')
-        map('<leader>q', vim.diagnostic.setloclist, 'Open diagnostics quicklist')
+        map('[d', function()
+          vim.diagnostic.jump { count = -1, float = true }
+        end, 'Go to previous diagnostic')
+        map(']d', function()
+          vim.diagnostic.jump { count = 1, float = true }
+        end, 'Go to next diagnostic')
+        map('<leader>dq', vim.diagnostic.setloclist, 'Open diagnostics quicklist')
 
         map('<leader>fc', function()
           require('telescope.builtin').grep_string {
@@ -181,32 +185,9 @@ return { -- LSP Configuration & Plugins
           },
         },
       },
-      ruff = {
-        commands = {
-          RuffAutofix = {
-            function()
-              vim.lsp.buf.execute_command {
-                command = 'ruff.applyAutofix',
-                arguments = {
-                  { uri = vim.uri_from_bufnr(0) },
-                },
-              }
-            end,
-            description = 'Ruff: Fix all auto-fixable problems',
-          },
-          RuffOrganizeImports = {
-            function()
-              vim.lsp.buf.execute_command {
-                command = 'ruff.applyOrganizeImports',
-                arguments = {
-                  { uri = vim.uri_from_bufnr(0) },
-                },
-              }
-            end,
-            description = 'Ruff: Format imports',
-          },
-        },
-      },
+      -- ruff exposes fixAll/organizeImports as regular code actions (<leader>ca)
+      ruff = {},
+      gopls = {},
       jsonls = {
         settings = {
           json = {
@@ -242,15 +223,7 @@ return { -- LSP Configuration & Plugins
       bashls = {},
       dockerls = {},
       docker_compose_language_service = {},
-      intelephense = {
-        settings = {
-          intelephense = {
-            files = {
-              maxSize = 5000000,
-            },
-          },
-        },
-      },
+      helm_ls = {},
     }
 
     require('mason').setup()
@@ -258,7 +231,6 @@ return { -- LSP Configuration & Plugins
     local ensure_installed = vim.tbl_keys(servers or {})
     vim.list_extend(ensure_installed, {
       'stylua',
-      'intelephense',
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

@@ -21,11 +21,9 @@ return {
     }
 
     local wk = require 'which-key'
-    wk.register({
-      r = {
-        name = '+Review',
-        x = { gitlab.choose_merge_request, 'Switch Merge Request' },
-      },
-    }, { prefix = '<leader>' })
+    wk.add {
+      { '<leader>r', group = 'Review' },
+      { '<leader>rx', gitlab.choose_merge_request, desc = 'Switch Merge Request' },
+    }
   end,
 }

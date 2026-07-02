@@ -18,10 +18,8 @@ return {
         'stylua', -- lua formatter
         'eslint_d', -- ts/js linter
         'shfmt',
-        'tfsec',
         'ansible-lint',
         'ruff',
-        'php-cs-fixer',
       },
       -- auto-install configured formatters & linters (with null-ls)
       automatic_installation = true,
@@ -32,13 +30,12 @@ return {
       formatting.prettier.with { filetypes = { 'html', 'json', 'yaml', 'markdown' } },
       formatting.stylua,
       formatting.shfmt.with { args = { '-i', '4' } },
-      formatting.terraform_fmt,
-      diagnostics.tfsec,
+      -- tfsec is deprecated and merged into trivy
+      formatting.terraform_fmt.with { command = 'tofu' },
       diagnostics.trivy.with { condition = function() return vim.fn.executable("trivy") == 1 end },
       diagnostics.ansiblelint,
       require('none-ls.formatting.ruff').with { extra_args = { '--extend-select', 'I' } },
       require 'none-ls.formatting.ruff_format',
-      formatting.phpcsfixer,
     }
 
     local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
@@ -47,7 +44,7 @@ return {
       sources = sources,
       -- you can reuse a shared lspconfig on_attach callback here
       on_attach = function(client, bufnr)
-        if client.supports_method 'textDocument/formatting' then
+        if client:supports_method 'textDocument/formatting' then
           vim.api.nvim_clear_autocmds { group = augroup, buffer = bufnr }
           vim.api.nvim_create_autocmd('BufWritePre', {
             group = augroup,
