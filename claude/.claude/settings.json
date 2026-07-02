@@ -107,6 +107,46 @@
       }
     ]
   },
+  "permissions": {
+    "allow": [
+      "Bash(kubectl get *)",
+      "Bash(kubectl describe *)",
+      "Bash(kubectl logs *)",
+      "Bash(kubectl top *)",
+      "Bash(kubectl explain *)",
+      "Bash(kubectl api-resources *)",
+      "Bash(kubectl version *)",
+      "Bash(kubectl diff *)",
+      "Bash(kubectl config get-contexts *)",
+      "Bash(kubectl config current-context)",
+      "Bash(kubectl events *)",
+      "Bash(helm list *)",
+      "Bash(helm status *)",
+      "Bash(helm get *)",
+      "Bash(helm history *)",
+      "Bash(helm show *)",
+      "Bash(helm search *)",
+      "Bash(helm template *)",
+      "Bash(helm lint *)",
+      "Bash(argocd app get *)",
+      "Bash(argocd app list *)",
+      "Bash(argocd app diff *)",
+      "Bash(argocd app history *)",
+      "Bash(argocd app resources *)",
+      "Bash(talosctl get *)",
+      "Bash(talosctl version *)",
+      "Bash(talosctl health *)",
+      "Bash(talosctl config info *)",
+      "Bash(kustomize build *)",
+      "Bash(kubeconform *)"
+    ],
+    "deny": [
+      "Bash(kubectl get secret*)",
+      "Bash(kubectl get -n * secret*)",
+      "Bash(kubectl get --namespace * secret*)",
+      "Bash(kubectl describe secret*)"
+    ]
+  },
   "statusLine": {
     "type": "command",
     "command": "bash $HOME/.claude/statusline-command.sh",
