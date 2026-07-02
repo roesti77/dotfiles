@@ -92,6 +92,19 @@ bar() {  # $1 pct $2 width $3 fillcolor
   printf '%s' "$out"
 }
 
+# ---- kube context (cheap: parse kubeconfig, no API call) -----------------
+kube_ctx=""; kube_col=$DIM
+kcfg=${KUBECONFIG%%:*}; kcfg=${kcfg:-$HOME/.kube/config}
+if [ -f "$kcfg" ]; then
+  kube_ctx=$(sed -nE 's/^current-context:[[:space:]]*"?([^"[:space:]]+)"?.*/\1/p' "$kcfg" | head -1)
+fi
+case "$kube_ctx" in
+  "") ;;
+  kind-*|k3d-*|minikube|docker-desktop|colima|rancher-desktop|orbstack) kube_col=$DIM ;;
+  *prod*|*prd*) kube_col=$RED ;;
+  *) kube_col=$YEL ;;
+esac
+
 # ---- derived values -----------------------------------------------------
 ctx_i=$(to_int "$ctx_pct")
 total_cu=$(( cu_in + cu_cc + cu_cr ))
@@ -107,11 +120,20 @@ left="${DARK}${model}${R}"
 [ -n "$session" ] && left+="   ${CYN}${session}${R}"
 
 right=""
-[ -n "$style" ] && right="${DIM}${style}${R}"
+[ -n "$kube_ctx" ] && right="${kube_col}⎈ ${kube_ctx}${R}"
+if [ -n "$style" ]; then
+  [ -n "$right" ] && right+="   "
+  right+="${DIM}${style}${R}"
+fi
 
 # plain (no-ANSI) versions for width math
 lp="${model}"; [ -n "$effort" ] && lp+="·${effort}"; [ -n "$session" ] && lp+="   ${session}"
-rp="${style}"
+rp=""
+[ -n "$kube_ctx" ] && rp="⎈ ${kube_ctx}"
+if [ -n "$style" ]; then
+  [ -n "$rp" ] && rp+="   "
+  rp+="${style}"
+fi
 
 cols=${COLUMNS:-0}
 [ "$cols" -le 0 ] 2>/dev/null && cols=$(tput cols 2>/dev/null || echo 0)
