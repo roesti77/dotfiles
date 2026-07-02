@@ -38,9 +38,29 @@ description: "Style and language rules for generated code. Apply when writing or
 - Ein Commit = eine logische Änderung. Keine Bulk-Commits mit 15+ Dateien und 300+ Zeilen.
 - Wenn ich nicht explizit nach einem Commit frage, keinen erstellen.
 
+## Over-Engineering (harte Regel)
+
+Die einfachste tragfähige Lösung gewinnt. Konkret verboten, solange keine *gestellte*
+Anforderung es verlangt:
+
+- **Spekulative Abstraktionen**: kein Interface/keine Basisklasse mit nur einer
+  Implementierung, kein Plugin-/Strategy-Pattern „für später". Abstraktion erst beim
+  zweiten echten Nutzer.
+- **Konfigurierbarkeit ohne Aufrufer**: kein Parameter, Flag oder Env-Var, das aktuell
+  nur einen Wert hat. Hartkodieren, bis jemand den zweiten Wert braucht.
+- **Durchreich-Wrapper**: keine eigenen Schichten um Bibliotheken/CLIs, die nur Aufrufe
+  weitergeben.
+- **Resilienz auf Verdacht**: kein Retry, Caching, Fallback oder Feature-Toggle ohne
+  belegtes Problem (Log, Incident, Anforderung).
+- **Scope-Creep im Diff**: Lösung deutlich größer als das Problem → anhalten und
+  hinterfragen, nicht weiterbauen. Im Zweifel klein bauen und nachfragen.
+
+Prüffrage vor Abgabe: *„Welche Zeilen kann ich löschen, ohne dass eine gestellte
+Anforderung bricht?"* — genau die löschen. Review-Werkzeuge: Agent
+`code-quality-pragmatist`, `/simplify`.
+
 ## Stil
 
 - Keinen Code generieren der "zu sauber" ist. Perfekte Strukturierung, lückenlose Dokumentation und null TODOs wirken künstlich.
-- Kein Over-Engineering: keine Extra-Validierungen, keine vorausschauenden Abstraktionen, keine Konfigurierbarkeit die niemand braucht.
 - Bestehenden Code-Stil der Datei/des Repos übernehmen, nicht einen eigenen aufzwingen.
 - Keine `Co-Authored-By` Zeilen in Commits.
