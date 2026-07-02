@@ -27,7 +27,5 @@ return {
         vim.keymap.set("n", "<leader>b", ":Neotree buffers reveal float<CR>")
         vim.keymap.set("v", "<leader>b", ":Neotree buffers reveal float<CR>") -- für die versteckten Dateien
         vim.keymap.set("v", "<leader>f", ":Neotree files reveal float<CR>") -- für die versteckten Dateien
-        vim.keymap.set("n", "<C-f>", ":Files open in a new window<CR>")
-        vim.keymap.set("n", "<C-b>", ":Buffers open in a new window<CR>")
     end
 }

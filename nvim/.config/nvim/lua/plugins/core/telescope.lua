@@ -115,7 +115,6 @@ return {
     vim.keymap.set('n', '<C-p>', builtin.find_files, {})
     vim.keymap.set('n', '<space>fb', ':Telescope file_browser<CR>')
     vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
-    vim.keymap.set('n', '<leader><leader>', builtin.oldfiles, {})
     vim.keymap.set('n', '<leader>?', builtin.oldfiles, { desc = '[?] Find recently opened files' })
     vim.keymap.set('n', '<leader>sb', builtin.buffers, { desc = '[S]earch existing [B]uffers' })
     vim.keymap.set('n', '<leader>sm', builtin.marks, { desc = '[S]earch [M]arks' })

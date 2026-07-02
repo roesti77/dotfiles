@@ -42,7 +42,7 @@ return {
     -- Define a table of themes
     local themes = {
       onedark = onedark_theme,
-      catppuccin = catppuccin,
+      catppuccin = 'catppuccin',
     }
 
     local mode = {
