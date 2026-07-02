@@ -1,5 +1,5 @@
 export const meta = {
-  name: 'sdd',
+  name: 'sdd-plan',
   description: 'Spec-driven planning: turn a spec into a critiqued, spec-covered implementation plan',
   whenToUse: 'Run after a spec exists, before implementing a non-trivial feature. Pass the spec text or path as args.',
   phases: [

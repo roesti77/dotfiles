@@ -1,5 +1,5 @@
 export const meta = {
-  name: 'pr-review',
+  name: 'pr-review-deep',
   description: 'Multi-dimension PR review with adversarial verification of every finding',
   whenToUse: 'Pass a PR number (e.g. "42") or "working" for the uncommitted diff. Reviews across correctness, security, conventions and infra, then tries to refute each finding so only real ones survive.',
   phases: [

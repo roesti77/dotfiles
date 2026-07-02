@@ -1,6 +1,6 @@
 ---
 name: sdd
-description: "Spec-driven development pipeline for non-trivial features and changes. Use when building something with real requirements, architecture, and quality bars (not a quick fix). Drives Spec → Plan → Implement → Gate → Verify, with the spec as source of truth. Wire in the sdd workflow for heavy orchestration."
+description: "Spec-driven development pipeline for non-trivial features and changes. Use when building something with real requirements, architecture, and quality bars (not a quick fix). Drives Spec → Plan → Implement → Gate → Verify, with the spec as source of truth. Wire in the sdd-plan workflow for heavy orchestration."
 ---
 
 # Spec-Driven Development
@@ -10,7 +10,7 @@ Einzeiler. Leitidee: **Die Spec ist die Source of Truth.** Code wird gegen sie g
 und gegen sie verifiziert; bei Drift gewinnt die Spec (oder die Spec wird bewusst
 geändert), nie der Zufall.
 
-Für größere Vorhaben das Orchestrierungs-Skript nutzen: `Workflow({name: "sdd"})`
+Für größere Vorhaben das Orchestrierungs-Skript nutzen: `Workflow({name: "sdd-plan"})`
 (mehrere Agenten parallel). Dieser Skill ist der manuelle, schrittweise Ablauf.
 
 ## Phase 1 — Spec (Source of Truth)
