@@ -37,6 +37,15 @@ Ein Review-Request / `--add-reviewer` ist das Signal „jetzt dran" — kein Sta
 **Nicht taggen,** wenn er via CODEOWNERS beim PR-Open ohnehin schon in der Queue steht
 und sich nichts geändert hat — das ist nur Notification-Rauschen.
 
+**Pflicht — nach einem Findings-adressierenden Push IMMER re-requesten.** Der häufigere
+Fehler ist das *Vergessen*, nicht das Zuviel: ein Push, der ein `CHANGES_REQUESTED`
+adressiert, hebt das Verdikt NICHT auf — GitHub lässt das alte `CHANGES_REQUESTED` **stale**
+stehen, der PR sieht blockiert aus, obwohl er fertig ist. Also: Findings gefixt + gepusht →
+sofort `gh pr edit <N> --add-reviewer <login>` + kurzer Kommentar, was adressiert wurde. Gilt
+auch, wenn jemand anderes (z. B. eine Parallel-Session) den Fix gepusht hat: wer den Stale-
+Zustand bemerkt, re-requestet. (Beobachtet 2026-07: mehrere PRs — dennisboege-Seed, beide
+docs-ADRs — sahen blockiert aus, weil der Fix längst gepusht, aber nie re-requestet war.)
+
 Vorm Taggen prüfen:
 
 ```bash
