@@ -13,6 +13,13 @@ tasks:
       - stow ghostty
       - stow claude
 
+  check:
+    desc: validate claude config (JSON + shell syntax)
+    cmds:
+      - jq -e . claude/.claude/settings.json >/dev/null
+      - for f in claude/.claude/hooks/*.sh claude/.claude/statusline-command.sh; do bash -n "$f"; done
+      - if command -v shellcheck >/dev/null; then shellcheck claude/.claude/hooks/*.sh claude/.claude/statusline-command.sh; fi
+
   clone-plugins:
     vars:
       ZSH_CUSTOM:

@@ -113,9 +113,9 @@
     "nono@always-further": true
   },
   "language": "german",
+  "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true,
-  "tui": "fullscreen"
+  "voiceEnabled": true
 }
