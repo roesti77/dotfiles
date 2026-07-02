@@ -108,27 +108,12 @@ return {
       },
     }
 
-    -- Incremental selection
-    require('nvim-treesitter-textobjects').setup {
-      select = {
-        lookahead = true,
-      },
-    }
-
-    -- Incremental selection keymaps
-    vim.keymap.set('n', '<c-space>', function()
-      require('nvim-treesitter.incremental_selection').init_selection()
-    end, { desc = 'Init treesitter selection' })
-    vim.keymap.set('v', '<c-space>', function()
-      require('nvim-treesitter.incremental_selection').node_incremental()
-    end, { desc = 'Increment treesitter selection' })
-    vim.keymap.set('v', '<M-space>', function()
-      require('nvim-treesitter.incremental_selection').node_decremental()
-    end, { desc = 'Decrement treesitter selection' })
-
     vim.filetype.add {
-      extension = { yml = 'yaml.ansible' },
-      pattern = { ['.*playbook.*%.yml'] = 'yaml.ansible', ['.*roles.*%.yml'] = 'yaml.ansible', ['.*tasks.*%.yml'] = 'yaml.ansible' },
+      pattern = {
+        ['.*playbook.*%.ya?ml'] = 'yaml.ansible',
+        ['.*roles.*%.ya?ml'] = 'yaml.ansible',
+        ['.*tasks.*%.ya?ml'] = 'yaml.ansible',
+      },
     }
     vim.filetype.add { extension = { tf = 'terraform' } }
     vim.filetype.add { extension = { tfvars = 'terraform-vars' } }
