@@ -73,9 +73,7 @@ require('lazy').setup {
   require 'plugins.coding-languages.kotlin',
   --- Debug
   require 'plugins.debug.dap',
-  require 'plugins.debug.dap-ui',
   require 'plugins.debug.virtual-text',
-  require 'plugins.debug.go',
   require 'plugins.debug.python',
   --- Tools
   require 'plugins.tools.codesnap',
