@@ -1,6 +1,5 @@
 ---
 name: cost-optimizer
-temperature: 0.15
 description: >-
   AWS cloud cost analysis, optimization recommendations, and FinOps practices. Use for reviewing AWS bills, identifying waste, right-sizing recommendations, and client-facing cost reduction reports.
 ---

@@ -1,6 +1,5 @@
 ---
 name: dean
-temperature: 0.1
 description: "Deep investigation and root cause analysis for bugs, errors, and system failures. Use when debugging attempts have failed or for complex production issues."
 ---
 

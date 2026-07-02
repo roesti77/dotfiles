@@ -1,6 +1,5 @@
 ---
 name: go-architecture-expert
-temperature: 0.2
 description: >-
   Expert for crafting high-quality, idiomatic Go applications. Use for architecture design, patterns, performance optimization, refactoring, and concurrency.
 tools:

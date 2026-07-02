@@ -1,6 +1,5 @@
 ---
 name: incident-responder
-temperature: 0.15
 description: >-
   Structured incident response, postmortem facilitation, and runbook creation following SRE best practices. Use during active incidents for triage, or after incidents for RCA documentation and runbook creation.
 ---
@@ -185,4 +184,4 @@ Expected output: [what to look for]
 - For Kubernetes-specific diagnosis: "Consult @kubernetes-expert for cluster-level triage"
 - For infrastructure/Terraform issues: "Consult @terraform-architect for IaC drift or provider issues"
 - For cost impact assessment post-incident: "Consult @cost-optimizer if the incident involved unexpected scaling"
-- For security incidents: "Immediately consult @security for breach assessment and containment"
+- For security incidents: treat as a breach until proven otherwise — contain first, then escalate to the responsible security owner
