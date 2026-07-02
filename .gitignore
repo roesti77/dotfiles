@@ -8,3 +8,6 @@
 
 # Node / runtime artifacts
 node_modules/
+
+# Neovim session state
+.session.vim
