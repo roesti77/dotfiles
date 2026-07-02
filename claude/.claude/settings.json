@@ -52,6 +52,11 @@
             "type": "command",
             "command": "bash ~/.claude/hooks/worktree-guard.sh",
             "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/context-guard.sh",
+            "timeout": 10
           }
         ]
       }

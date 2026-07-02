@@ -19,6 +19,7 @@ state):
 ## Intentionally NOT managed here
 
 - `settings.local.json` — machine-local permissions / MCP servers
+- `allowed-contexts` — machine-local kube contexts the context-guard hook may mutate
 - `remote-settings.json` — secrets
 - `projects/`, `file-history/`, `cache/`, `plugins/`, `telemetry/`, … — runtime state
 
