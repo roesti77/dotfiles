@@ -112,14 +112,6 @@ return {
         { name = 'minuet' },
       },
 
-      cmp.setup.filetype({ 'sql', 'mysql', 'plsql' }, {
-        sources = cmp.config.sources({
-          { name = 'vim-dadbod-completion' },
-        }, {
-          { name = 'buffer' },
-        }),
-      }),
-
       formatting = {
         fields = { 'abbr', 'kind', 'menu' },
         format = function(entry, vim_item)
@@ -136,5 +128,13 @@ return {
         end,
       },
     }
+
+    cmp.setup.filetype({ 'sql', 'mysql', 'plsql' }, {
+      sources = cmp.config.sources({
+        { name = 'vim-dadbod-completion' },
+      }, {
+        { name = 'buffer' },
+      }),
+    })
   end,
 }

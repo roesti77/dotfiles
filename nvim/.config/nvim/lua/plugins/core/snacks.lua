@@ -5,14 +5,11 @@ return {
   ---@type snacks.Config
   opts = {
     bigfile = { enabled = true },
-    picker = { enabled = true },
+    picker = { enabled = false }, -- telescope is the one picker
     dashboard = { enabled = true },
     indent = { enabled = true },
     input = { enabled = true },
-    notifier = {
-      enabled = true,
-      timeout = 3000,
-    },
+    notifier = { enabled = false }, -- noice/nvim-notify own vim.notify
     quickfile = { enabled = true },
     scroll = { enabled = true },
     statuscolumn = { enabled = true },
@@ -68,13 +65,6 @@ return {
       desc = 'Select Scratch Buffer',
     },
     {
-      '<leader>n',
-      function()
-        Snacks.notifier.show_history()
-      end,
-      desc = 'Notification History',
-    },
-    {
       '<leader>bd',
       function()
         Snacks.bufdelete()
@@ -97,14 +87,7 @@ return {
       mode = { 'n', 'v' },
     },
     {
-      '<leader>gb',
-      function()
-        Snacks.git.blame_line()
-      end,
-      desc = 'Git Blame Line',
-    },
-    {
-      '<leader>gf',
+      '<leader>gF',
       function()
         Snacks.lazygit.log_file()
       end,
@@ -123,13 +106,6 @@ return {
         Snacks.lazygit.log()
       end,
       desc = 'Lazygit Log (cwd)',
-    },
-    {
-      '<leader>un',
-      function()
-        Snacks.notifier.hide()
-      end,
-      desc = 'Dismiss All Notifications',
     },
     --     { "<c-t>",      function() Snacks.terminal() end, desc = "Toggle Terminal" },
     {
@@ -157,9 +133,7 @@ return {
     },
     {
       '<leader>fp',
-      function()
-        Snacks.picker.projects()
-      end,
+      '<cmd>Telescope project<CR>',
       desc = 'Projects',
     },
     {
