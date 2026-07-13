@@ -59,12 +59,12 @@ const CRITIQUE_SCHEMA = {
 
 const FINAL_SCHEMA = {
   type: 'object',
-  required: ['plan', 'mitigations', 'openQuestions', 'readyToImplement'],
+  required: ['plan', 'mitigations', 'openQuestions', 'critiqueClear'],
   properties: {
     plan: PLAN_SCHEMA,
     mitigations: { type: 'array', items: { type: 'string' } },
     openQuestions: { type: 'array', items: { type: 'string' } },
-    readyToImplement: { type: 'boolean' },
+    critiqueClear: { type: 'boolean' },
   },
 }
 
@@ -118,12 +118,12 @@ const final = await agent(
     `## Spec\n${spec}\n\n## Plan\n${JSON.stringify(plan, null, 2)}\n\n` +
     `## Critiques\n${JSON.stringify(critiques, null, 2)}\n\n` +
     `Fold high-severity gaps into concrete plan changes. List residual mitigations and ` +
-    `open questions. Set readyToImplement=false if any high-severity gap or blocking ` +
+    `open questions. Set critiqueClear=false if any high-severity gap or blocking ` +
     `open question remains.`,
   { agentType: 'castiel', label: 'synthesize', schema: FINAL_SCHEMA },
 )
 
 const highGaps = critiques.flatMap((c) => c.gaps).filter((g) => g.severity === 'high')
-log(`Plan ready: ${final.readyToImplement}. High-severity gaps found: ${highGaps.length}.`)
+log(`Critique clear: ${final.critiqueClear}. High-severity gaps found: ${highGaps.length}.`)
 
 return final
