@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# zj-sessionizer — fuzzy-pick a zellij session, repo or worktree and switch to it.
+# Bound to Ctrl-f in zellij; also usable standalone. Replaces supacode's ⌘P /
+# ⌃1-⌃0 worktree switching.
+set -euo pipefail
+
+# zellij `Run` panes inherit the server's environment, which may miss the
+# interactive PATH; harden it so fzf/zellij/git resolve.
+export PATH="/opt/homebrew/bin:$HOME/bin:$PATH"
+
+sanitize() {
+	printf '%s' "$1" | tr -c 'A-Za-z0-9_-' '-'
+}
+
+sessions=$(zellij list-sessions -ns 2>/dev/null || true)
+
+# Candidate list: existing sessions first, then repos and worktrees. Skip dirs
+# whose derived session name already exists as a session (dedup).
+{
+	printf '%s\n' "$sessions"
+	find "$HOME/repos" -mindepth 2 -maxdepth 2 -type d 2>/dev/null
+	find "$HOME/worktrees" -mindepth 2 -maxdepth 2 -type d 2>/dev/null
+} | awk 'NF' >/tmp/zj-sessionizer-candidates.$$
+
+selection=$(fzf --prompt="session/dir> " --height=40% --reverse <"/tmp/zj-sessionizer-candidates.$$" || true)
+rm -f "/tmp/zj-sessionizer-candidates.$$"
+[ -n "$selection" ] || exit 0
+
+if [ -d "$selection" ]; then
+	# A directory: derive session name. Worktrees live at ~/worktrees/<repo>/<branch>
+	# → "<repo>-<branch>"; plain repos → basename.
+	case "$selection" in
+	"$HOME"/worktrees/*/*)
+		name="$(basename "$(dirname "$selection")")-$(basename "$selection")"
+		;;
+	*)
+		name=$(basename "$selection")
+		;;
+	esac
+	name=$(sanitize "$name")
+	dir="$selection"
+else
+	# An existing session: attach by name, no cwd.
+	name="$selection"
+	dir=""
+fi
+
+if [ -n "${ZELLIJ:-}" ]; then
+	if [ -n "$dir" ]; then
+		zellij pipe --plugin "file:$HOME/.config/zellij/plugins/zellij-switch.wasm" \
+			-- "--session $name --cwd $dir"
+	else
+		zellij pipe --plugin "file:$HOME/.config/zellij/plugins/zellij-switch.wasm" \
+			-- "--session $name"
+	fi
+else
+	[ -n "$dir" ] && cd "$dir"
+	exec zellij attach --create "$name"
+fi
