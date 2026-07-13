@@ -12,7 +12,6 @@ tasks:
       - stow lazygit
       - stow ghostty
       - stow claude
-      - gh extension list | grep -q dlvhdr/gh-dash || gh extension install dlvhdr/gh-dash
 
   check:
     desc: validate claude config (JSON + shell syntax)

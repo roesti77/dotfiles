@@ -9,8 +9,6 @@ sind außerhalb von Supacode aktiv und innerhalb inaktiv.
 |---|---|
 | ⌘N neuer Worktree, Archive | `wt new` / `wt done` |
 | ⌘P / ⌃1-⌃0 Worktree-Switching | `zj-sessionizer` auf `Ctrl f` |
-| GitHub-Sidebar (PRs/Checks) | gh-dash-Pane im `dev`-Layout + Pane-Mode `g` |
-| Statusbar | compact-bar (Default) bzw. optional zjstatus |
 | Agent-Badges/Sounds | Claude-Code-Hook `macos-notify.sh` |
 | Session-Persistenz (zmx) | Zellijs `session_serialization` (bereits aktiv) |
 
@@ -34,32 +32,6 @@ wt list                       # Worktrees + Session-Status
 laufenden Sessions, `~/repos/*/*` und `~/worktrees/*/*`. Innerhalb von Zellij
 wird über das `zellij-switch`-Plugin gewechselt (nested `attach` ist unmöglich),
 außerhalb via `attach --create`.
-
-## PR-Status: gh-dash
-
-- Das `dev`-Layout (Default) hat auf dem ersten Tab eine permanente gh-dash-Pane
-  (25% rechts). Neue Tabs bleiben ohne Sidebar.
-- In anderen Tabs: Pane-Mode (`Ctrl p`) dann `g` öffnet gh-dash on-demand rechts.
-- gh-dash ist cwd-unabhängig; die angezeigten Queries stehen in
-  `~/.config/gh-dash/config.yml` (Default: `is:open involves:@me`).
-- Nach einer wiederhergestellten Session (Serialization) steht die gh-dash-Pane
-  suspendiert da („Press Enter to re-run") — ein Tastendruck startet sie neu.
-
-## Statusbar: zjstatus (optional)
-
-Standard ist die `compact-bar` (Layout `dev`). Optional gibt es die Variante
-`dev-zjstatus` (Layout `dev-zjstatus.kdl`) mit zjstatus: Mode, Session, Tabs,
-PR-State des fokussierten Panes und Uhrzeit.
-
-Umschalten / Rückbau über `default_layout` in `config.kdl`:
-
-- `default_layout "dev-zjstatus"` — zjstatus-Bar + Sidebar
-- `default_layout "dev"` — compact-bar + Sidebar
-- `default_layout "compact"` — Stock, keine Sidebar
-
-Der zjstatus-Teil liegt bewusst in einer eigenen Layout-Datei, damit ein
-`git revert` des zjstatus-Commits (oder ein `default_layout`-Flip) die
-Sidebar-Konfiguration unangetastet lässt.
 
 ## Notifications: `macos-notify.sh`
 
@@ -97,8 +69,7 @@ gemergt, nicht ins Repo committet. Der Rest des `claude`-Packages (`agents`,
 ## Erststart nach dem Merge
 
 ```sh
-cd ~/dotfiles && task setup   # foldet ~/bin, installiert gh-dash
+cd ~/dotfiles && task setup   # foldet ~/bin
 ```
 
-Anschließend eine frische Zellij-Session starten (nicht eine wiederhergestellte),
-damit das `dev`-Layout greift.
+Danach den Notify-Hook wie oben in die Live-`settings.json` einpflegen.
