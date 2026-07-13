@@ -1,0 +1,54 @@
+// dev layout variant with a zjstatus status bar instead of compact-bar.
+// Identical to dev.kdl except for the bar pane. Kept as a separate file so the
+// zjstatus experiment can be reverted by flipping default_layout back to "dev"
+// without touching the sidebar layout.
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="file:~/.config/zellij/plugins/zjstatus.wasm" {
+                format_left   "{mode}#[bg=#24273a,fg=#8aadf4,bold] {session} "
+                format_center "{tabs}"
+                format_right  "{command_ghpr}#[fg=#a5adcb,bg=#24273a] {datetime} "
+                format_space  "#[bg=#24273a]"
+
+                // Catppuccin Macchiato palette
+                mode_normal      "#[bg=#a6da95,fg=#24273a,bold] NORMAL "
+                mode_locked      "#[bg=#6e738d,fg=#24273a,bold] LOCKED "
+                mode_pane        "#[bg=#8aadf4,fg=#24273a,bold] PANE "
+                mode_tab         "#[bg=#8aadf4,fg=#24273a,bold] TAB "
+                mode_resize      "#[bg=#f5a97f,fg=#24273a,bold] RESIZE "
+                mode_move        "#[bg=#f5a97f,fg=#24273a,bold] MOVE "
+                mode_scroll      "#[bg=#eed49f,fg=#24273a,bold] SCROLL "
+                mode_search      "#[bg=#eed49f,fg=#24273a,bold] SEARCH "
+                mode_entersearch "#[bg=#eed49f,fg=#24273a,bold] SEARCH: "
+                mode_renametab   "#[bg=#eed49f,fg=#24273a,bold] RENAME "
+                mode_renamepane  "#[bg=#eed49f,fg=#24273a,bold] RENAME "
+                mode_session     "#[bg=#c6a0f6,fg=#24273a,bold] SESSION "
+                mode_tmux        "#[bg=#ed8796,fg=#24273a,bold] TMUX "
+
+                tab_normal "#[fg=#6e738d,bg=#24273a] {name} "
+                tab_active "#[fg=#eed49f,bg=#363a4f,bold] {name} "
+
+                // PR state of the focused pane's repo; empty when there is no PR
+                // or no GitHub remote. Wide interval to keep API calls cheap.
+                command_ghpr_command   "sh -c 'gh pr view --json state --jq .state 2>/dev/null'"
+                command_ghpr_cwd       "{focused_pane_cwd}"
+                command_ghpr_interval  "120"
+                command_ghpr_rendermode "static"
+                command_ghpr_format    "#[fg=#a6da95,bg=#24273a] {stdout} "
+
+                datetime          "{format}"
+                datetime_format   "%d.%m %H:%M"
+                datetime_timezone "Europe/Berlin"
+            }
+        }
+        children
+    }
+    tab name="dev" focus=true {
+        pane
+        pane size="25%" name="prs" {
+            command "zsh"
+            args "-c" "export PATH=/opt/homebrew/bin:$PATH; exec gh dash"
+        }
+    }
+}
