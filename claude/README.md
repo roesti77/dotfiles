@@ -9,19 +9,35 @@ state):
 | Link | Purpose |
 |------|---------|
 | `~/.claude/CLAUDE.md` | Global memory / cross-project conventions |
-| `~/.claude/settings.json` | Global settings (hooks, statusline, plugins, flags) |
+| `~/.claude/settings.seed.json` | Bootstrap seed for `settings.json` (see below) |
 | `~/.claude/statusline-command.sh` | Statusline script referenced by `settings.json` |
 | `~/.claude/skills/` | Personal skills |
 | `~/.claude/agents/` | Subagent fleet |
 | `~/.claude/workflows/` | Orchestration workflows |
 | `~/.claude/hooks/` | Hook scripts (e.g. worktree-guard) |
 
+## settings.json is machine-managed, not stowed
+
+Supacode rewrites `~/.claude/settings.json` via atomic rename, which replaces
+any symlink with a real file — stowing it is futile and a stale repo copy just
+misleads. The repo instead carries `settings.seed.json` with the user-owned
+config (macos-notify + guard hooks, permissions, statusline, plugins, flags)
+and no supacode-managed hooks.
+
+Bootstrap on a new machine:
+
+```sh
+cp ~/.claude/settings.seed.json ~/.claude/settings.json
+```
+
+Supacode injects its `# supacode-managed-hook` entries into the live file on
+first run. After deliberate settings changes, fold them back into the seed
+(minus the supacode hooks).
+
 ## Intentionally NOT managed here
 
+- `settings.json` — machine-managed by supacode (see above)
 - `settings.local.json` — machine-local permissions / MCP servers
 - `allowed-contexts` — machine-local kube contexts the context-guard hook may mutate
 - `remote-settings.json` — secrets
 - `projects/`, `file-history/`, `cache/`, `plugins/`, `telemetry/`, … — runtime state
-
-> Note: `settings.json` contains supacode-managed hooks that supacode rewrites
-> automatically — expect occasional churn there after running supacode.
