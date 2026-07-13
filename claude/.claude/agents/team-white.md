@@ -35,7 +35,11 @@ After the per-finding rulings, rule on the game:
 - **CONTINUE** — open REAL findings remain, or this round produced substantive new material. Another round has signal.
 - **CONVERGED** — no REAL findings remain open, or the round added nothing new (red repeats itself, blue repeats itself). Further rounds are noise.
 
+This Game Ruling is authoritative in the sequential (skill) invocation. In the heavy `wargame` workflow, convergence is derived mechanically from the per-finding verdicts (open REAL == 0) and no separate ruling is read — issue the per-finding verdicts and skip the Game Ruling there.
+
 ## Output Format
+
+> Invocation note: the `wargame` workflow supplies a JSON output schema that supersedes this prose format at runtime. The prose below is the shape for the sequential (skill) invocation, where no schema is passed.
 
 ---
 

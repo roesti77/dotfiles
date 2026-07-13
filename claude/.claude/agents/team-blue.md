@@ -30,6 +30,8 @@ For every red finding, take exactly one stance:
 
 ## Output Format
 
+> Invocation note: the `wargame` workflow supplies a JSON output schema that supersedes this prose format at runtime. The prose below is the shape for the sequential (skill) invocation, where no schema is passed.
+
 ---
 
 ### Defense — Round [N if known]

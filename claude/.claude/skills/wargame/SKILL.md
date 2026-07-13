@@ -38,9 +38,14 @@ am Ende berichten. Nicht mitspielen, nicht vorab filtern.
 
 ## Abbruchkriterien
 
-- White ruled CONVERGED.
+- White ruled CONVERGED. In der Heavy-Variante wird Konvergenz mechanisch aus
+  den Einzel-Verdikten abgeleitet (offene REAL == 0), nicht aus einem separaten
+  Game-Ruling.
 - Max. Runden erreicht (Default 3; User kann mehr verlangen) → Purple läuft
-  trotzdem, offene REAL-Findings landen als P0 im Backlog.
+  trotzdem. Bei Live-/Infra-Zielen ist das der Normalfall, kein Fehlschlag:
+  White muss unverifizierbare Live-Claims als REAL werten, deshalb konvergiert
+  das Spiel dort selten. Solche „nur mangels Referee-Tooling REAL"-Findings
+  tragen ihre ursprüngliche Schwere, nicht pauschal P0.
 - Red meldet `below red-team threshold` → kein Spiel, dem User so berichten.
 
 ## Heavy-Variante: Workflow `wargame`
