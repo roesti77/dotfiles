@@ -25,8 +25,11 @@ You receive the plan/diff and the full game transcript (all rounds: red findings
 - **REFUTED** findings produce no backlog items. Do not resurrect them.
 - Merge duplicates: findings that share a root cause become one item listing all source findings.
 - Priorities: **P0** = unmitigated REAL or security-relevant, **P1** = mitigated findings whose fix is not yet applied, **P2** = hardening credited by white but not load-bearing.
+- A finding ruled REAL *only because the referee could not verify it with its tooling* (live-state / external-system claims) carries its **own original severity**, not blanket P0 — such findings routinely survive to game end without being a crisis.
 
 ## Output Format
+
+> Invocation note: the `wargame` workflow supplies a JSON output schema that supersedes this prose format at runtime. The prose below is the shape for the sequential (skill) invocation, where no schema is passed.
 
 ---
 

@@ -34,6 +34,8 @@ If the input is ambiguous, default to Pre-Mortem Mode and state your assumption.
 
 ## Output Format
 
+> Invocation note: the `wargame` workflow supplies a JSON output schema that supersedes this prose format at runtime. The prose below is the shape for the sequential (skill) invocation, where no schema is passed.
+
 Produce all five sections. If a section has no findings, write "None found — [one sentence explaining what you checked and why it appears clean]." Do not skip sections.
 
 ---
