@@ -27,6 +27,8 @@ jobs:
         run: |
           fail=0
           for f in claude/.claude/agents/*.md claude/.claude/skills/*/SKILL.md; do
+            # symlinked skills (e.g. hunk-review -> homebrew) resolve only on the host machine
+            [ -L "$f" ] && continue
             head -1 "$f" | grep -qx -- '---' \
               || { echo "::error file=$f::missing frontmatter"; fail=1; continue; }
             fm=$(awk '/^---$/{n++; next} n==1{print}' "$f")
