@@ -1,0 +1,14 @@
+# A custom stow ignore list REPLACES stow's built-in defaults, so the important
+# defaults are repeated here (otherwise README.md would be stowed into ~).
+\.git
+\.gitignore
+.+~
+\#.*\#
+^/README.*
+^/LICENSE.*
+^/COPYING
+
+# settings.json is rewritten live by Claude Code / supacode (format + agent
+# integration hooks), so it is app-managed and must not be a stow symlink.
+# Own hooks (e.g. macos-notify) are merged into the live file, not stowed.
+^/\.claude/settings\.json$
