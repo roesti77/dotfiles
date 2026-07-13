@@ -25,8 +25,8 @@ tasks:
       ZSH_CUSTOM:
         sh: echo "$HOME/.config/ohmyzsh/custom"
     cmds:
-      - mkdir -p $ZSH_CUSTOM/plugins
-      - if [ ! -d "$ZSH_CUSTOM/plugins/copyzshell" ]; then git clone git@github.com:rutchkiwi/copyzshell.git $ZSH_CUSTOM/plugins/copyzshell; fi
-      - if [ ! -d "$ZSH_CUSTOM/plugins/zsh-peco-history" ]; then git clone git@github.com:jimeh/zsh-peco-history.git $ZSH_CUSTOM/plugins/zsh-peco-history; fi
-      - if [ ! -d "$ZSH_CUSTOM/plugins/kubetail" ]; then git clone git@github.com:johanhaleby/kubetail.git $ZSH_CUSTOM/plugins/kubetail; fi
+      - mkdir -p {{.ZSH_CUSTOM}}/plugins
+      - if [ ! -d "{{.ZSH_CUSTOM}}/plugins/copyzshell" ]; then git clone git@github.com:rutchkiwi/copyzshell.git {{.ZSH_CUSTOM}}/plugins/copyzshell; fi
+      - if [ ! -d "{{.ZSH_CUSTOM}}/plugins/zsh-peco-history" ]; then git clone git@github.com:jimeh/zsh-peco-history.git {{.ZSH_CUSTOM}}/plugins/zsh-peco-history; fi
+      - if [ ! -d "{{.ZSH_CUSTOM}}/plugins/kubetail" ]; then git clone git@github.com:johanhaleby/kubetail.git {{.ZSH_CUSTOM}}/plugins/kubetail; fi
 
