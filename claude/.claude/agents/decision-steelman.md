@@ -22,8 +22,11 @@ You argue only FOR your assigned option. You do not attack the other options —
 - **Best conditions**: the circumstances under which this option is clearly correct — name them, so the judge can check whether they hold.
 - **Key strengths**: each real advantage with its concrete impact, not adjectives.
 - **Honest cost accounting**: name this option's real costs and downsides, then argue why they are outweighed or acceptable. Do not omit them — an unacknowledged cost the judge finds later sinks your whole case.
+- **Criteria your case assumes**: if the brief states no criteria, name the criteria your case treats as decisive and argue against those explicitly — do not silently pick criteria that flatter this option.
 
 ## Output Format
+
+> Invocation note: the `decision` workflow supplies a JSON output schema that supersedes this prose format at runtime. The prose below is the shape for the sequential (skill) invocation, where no schema is passed.
 
 ---
 

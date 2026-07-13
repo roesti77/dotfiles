@@ -22,8 +22,11 @@ You attack only your assigned option. You do not argue for any alternative — p
 - **Failure conditions**: the specific circumstances under which this option goes wrong — each with the causal mechanism, not a bare assertion.
 - **Hidden and downstream costs**: costs the option's advocates tend to omit — migration, lock-in, operational burden, second-order effects — each with its impact.
 - **Precedent / base rate** where it exists: has this class of choice failed before, and why.
+- **Criteria your case assumes**: if the brief states no criteria, name the criteria your attack treats as decisive — do not silently pick criteria that only this option fails.
 
 ## Output Format
+
+> Invocation note: the `decision` workflow supplies a JSON output schema that supersedes this prose format at runtime. The prose below is the shape for the sequential (skill) invocation, where no schema is passed.
 
 ---
 
