@@ -44,8 +44,8 @@ const VERDICT_SCHEMA = {
 const DIMENSIONS = [
   { key: 'k8s-enabled', agentType: 'kubernetes-expert', lens: 'Helm/manifest components: does a referenced component (alertmanager_url, *_url, [[plugin]], a values section) actually have its enabled-flag set AND a workload? Flag config that merely points at something as NOT proven deployed (set claimsLiveState=true).' },
   { key: 'iac', agentType: 'terraform-architect', lens: 'Terraform/OpenTofu: drift risk, unpinned versions, state/backend issues, module hygiene.' },
-  { key: 'security', agentType: 'security', lens: 'secrets in plain text, over-broad RBAC, unsafe defaults, missing network policy.' },
-  { key: 'debt', agentType: 'technical-debt-analyzer', lens: 'accumulated debt, deprecated APIs, duplicated config, dead resources.' },
+  { key: 'security', lens: 'secrets in plain text, over-broad RBAC, unsafe defaults, missing network policy.' },
+  { key: 'debt', agentType: 'code-quality-pragmatist', lens: 'accumulated debt, deprecated APIs, duplicated config, dead resources.' },
 ]
 
 phase('Sweep')
@@ -55,7 +55,7 @@ const sweep = (
       agent(
         `Audit target "${target}" ONLY through the ${d.key} lens: ${d.lens} ` +
           `Use read-only tools (rg, kubectl get, helm get values, tofu show) where available. Report concrete findings.`,
-        { agentType: d.agentType, label: `sweep:${d.key}`, phase: 'Sweep', schema: FINDINGS_SCHEMA },
+        { ...(d.agentType && { agentType: d.agentType }), label: `sweep:${d.key}`, phase: 'Sweep', schema: FINDINGS_SCHEMA },
       ),
     ),
   )

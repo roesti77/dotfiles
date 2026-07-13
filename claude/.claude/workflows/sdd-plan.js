@@ -87,7 +87,7 @@ const LENSES = [
   },
   {
     key: 'architecture-risk',
-    agentType: 'software-architect',
+    agentType: 'castiel',
     prompt:
       `Review this plan for architectural soundness and risk: ordering, hidden coupling, ` +
       `failure modes, infra enabled-flags/dependencies. Report weak points as gaps.`,
