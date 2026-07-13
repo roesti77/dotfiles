@@ -34,6 +34,16 @@ Supacode injects its `# supacode-managed-hook` entries into the live file on
 first run. After deliberate settings changes, fold them back into the seed
 (minus the supacode hooks).
 
+## Secret exposure — what the permission list can and cannot do
+
+The `permissions.deny` list blocks the obvious secret reads (`kubectl get
+secret*`, `helm get values`/`all`). It is a string matcher, not a content
+filter: it cannot express "no secret content". `kubectl get <resource> -o
+yaml/jsonpath` on any secret-bearing object (a ServiceAccount token, a
+ConfigMap holding credentials, a workload with inline env secrets) still
+exfiltrates them and stays the operator's responsibility. Durable closure
+would need an allow-only-non-secret model, not attempted here.
+
 ## Intentionally NOT managed here
 
 - `settings.json` — machine-managed by supacode (see above)
