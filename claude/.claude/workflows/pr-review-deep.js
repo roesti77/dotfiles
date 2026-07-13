@@ -43,9 +43,9 @@ const VERDICT_SCHEMA = {
 }
 
 const DIMENSIONS = [
-  { key: 'correctness', agentType: 'reviewer', lens: 'bugs, logic errors, unhandled edge cases, error handling' },
-  { key: 'security', agentType: 'security', lens: 'vulnerabilities, leaked secrets, unsafe defaults, RBAC/permissions' },
-  { key: 'conventions', agentType: 'claude-md-compliance-checker', lens: 'CLAUDE.md + coding-rules: English code/comments, no what-comments, commit/PR conventions, English-only in Talos base repos' },
+  { key: 'correctness', lens: 'bugs, logic errors, unhandled edge cases, error handling' },
+  { key: 'security', lens: 'vulnerabilities, leaked secrets, unsafe defaults, RBAC/permissions' },
+  { key: 'conventions', lens: 'CLAUDE.md + coding-rules: English code/comments, no what-comments, commit/PR conventions, English-only in Talos base repos' },
   { key: 'infra', agentType: 'kubernetes-expert', lens: 'for k8s/helm/manifest/IaC changes: enabled-flags vs actually-deployed state, resource correctness. If no infra files changed, return no findings' },
 ]
 
@@ -56,7 +56,7 @@ const results = await pipeline(
     agent(
       `Run \`${diffCmd}\` to get the diff. Review ONLY through the ${d.key} lens: ${d.lens}. ` +
         `Report concrete findings with file and line. No nitpicks.`,
-      { agentType: d.agentType, label: `review:${d.key}`, phase: 'Review', schema: FINDINGS_SCHEMA },
+      { ...(d.agentType && { agentType: d.agentType }), label: `review:${d.key}`, phase: 'Review', schema: FINDINGS_SCHEMA },
     ),
   (review, d) =>
     parallel(
@@ -65,7 +65,7 @@ const results = await pipeline(
           `Adversarially verify this review finding — try to REFUTE it. Default to refuted=true if ` +
             `uncertain or if it is a stylistic nitpick. Use \`${diffCmd}\` and the repo for context.\n\n` +
             `Finding: ${JSON.stringify(f)}`,
-          { agentType: 'reviewer', label: `verify:${d.key}`, phase: 'Verify', schema: VERDICT_SCHEMA },
+          { label: `verify:${d.key}`, phase: 'Verify', schema: VERDICT_SCHEMA },
         ).then((v) => ({ ...f, dimension: d.key, verdict: v })),
       ),
     ),
