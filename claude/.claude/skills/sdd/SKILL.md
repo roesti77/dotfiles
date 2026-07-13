@@ -10,8 +10,10 @@ Einzeiler. Leitidee: **Die Spec ist die Source of Truth.** Code wird gegen sie g
 und gegen sie verifiziert; bei Drift gewinnt die Spec (oder die Spec wird bewusst
 geändert), nie der Zufall.
 
-Für größere Vorhaben das Orchestrierungs-Skript nutzen: `Workflow({name: "sdd-plan"})`
-(mehrere Agenten parallel). Dieser Skill ist der manuelle, schrittweise Ablauf.
+Für größere Vorhaben Phase 2 (Plan) mit dem Orchestrierungs-Skript fahren:
+`Workflow(name: "sdd-plan", args: "<Spec-Text oder Pfad>")` (mehrere Kritik-Lenses
+parallel). Der Workflow deckt nur **Plan → Critique → Synthesize** ab; Gate (Phase 4)
+und Verify (Phase 5) bleiben manuell. Dieser Skill ist der vollständige Ablauf.
 
 ## Phase 1 — Spec (Source of Truth)
 

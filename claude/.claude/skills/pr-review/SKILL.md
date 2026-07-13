@@ -7,7 +7,7 @@ description: "Reviewing a GitHub PR and recording the verdict. Use when assessin
 
 Dieser Skill regelt die *Konventionen* (Verdikt, Re-Request-Etikette). Für ein
 inhaltliches Multi-Agent-Review mit adversarialer Verifikation der Findings den
-Workflow `pr-review-deep` nutzen: `Workflow({name: "pr-review-deep"}, "<PR-Nr>")`.
+Workflow `pr-review-deep` nutzen: `Workflow(name: "pr-review-deep", args: "<PR-Nr>")`.
 
 ## Verdikt = formaler GitHub-Status, nicht nur Kommentar
 
