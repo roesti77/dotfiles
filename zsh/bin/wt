@@ -1,0 +1,117 @@
+#!/usr/bin/env bash
+# wt — git worktree lifecycle bound to zellij sessions.
+# One worktree = one zellij session, replacing the supacode orchestration layer.
+#
+#   wt new <branch> [repo-path]   create worktree from origin/main, open session
+#   wt done                       remove current worktree, branch and session
+#   wt list                       list worktrees and whether a session exists
+set -euo pipefail
+
+die() {
+	printf 'wt: %s\n' "$1" >&2
+	exit 1
+}
+
+# Zellij session names end up in socket/cache paths, so strip anything that is
+# not alphanumeric, underscore or dash.
+sanitize() {
+	printf '%s' "$1" | tr -c 'A-Za-z0-9_-' '-'
+}
+
+# Switch into a session: pipe to zellij-switch when already inside zellij
+# (nested `attach` is impossible), otherwise attach directly.
+switch_to() {
+	local session="$1" dir="$2"
+	if [ -n "${ZELLIJ:-}" ]; then
+		zellij pipe --plugin "file:$HOME/.config/zellij/plugins/zellij-switch.wasm" \
+			-- "--session $session --cwd $dir"
+	else
+		cd "$dir" && exec zellij attach --create "$session"
+	fi
+}
+
+cmd_new() {
+	local branch="${1:-}" repo="${2:-}"
+	[ -n "$branch" ] || die "usage: wt new <branch> [repo-path]"
+
+	if [ -z "$repo" ]; then
+		git rev-parse --git-dir >/dev/null 2>&1 || die "not in a git repo; pass a repo path"
+		repo="$PWD"
+	fi
+	local common main repo_name safe wt_dir session
+	common=$(git -C "$repo" rev-parse --path-format=absolute --git-common-dir 2>/dev/null) ||
+		die "'$repo' is not a git repo"
+	main=$(dirname "$common")
+	repo_name=$(basename "$main")
+	safe=$(sanitize "$branch")
+	wt_dir="$HOME/worktrees/$repo_name/$safe"
+	session="$repo_name-$safe"
+
+	git -C "$main" fetch origin
+	if git -C "$main" show-ref --verify --quiet "refs/heads/$branch"; then
+		git -C "$main" worktree add "$wt_dir" "$branch"
+	elif git -C "$main" show-ref --verify --quiet "refs/remotes/origin/$branch"; then
+		git -C "$main" worktree add --track -b "$branch" "$wt_dir" "origin/$branch"
+	else
+		git -C "$main" worktree add -b "$branch" "$wt_dir" origin/main
+	fi
+
+	switch_to "$session" "$wt_dir"
+}
+
+cmd_done() {
+	case "$PWD" in
+	"$HOME"/worktrees/*) : ;;
+	*) die "run 'wt done' from inside a ~/worktrees/... directory" ;;
+	esac
+	[ -z "$(git status --porcelain)" ] || die "uncommitted changes present; aborting"
+
+	local wt_dir main branch repo_name session
+	wt_dir=$(git rev-parse --show-toplevel)
+	main=$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")
+	branch=$(git rev-parse --abbrev-ref HEAD)
+	repo_name=$(basename "$main")
+	session="$repo_name-$(sanitize "$branch")"
+
+	# Leave the worktree before removing it; delete the session last since it
+	# kills the shell running this script.
+	cd "$HOME"
+	git -C "$main" worktree remove "$wt_dir"
+	git -C "$main" branch -D "$branch"
+	zellij delete-session "$session" --force 2>/dev/null || true
+}
+
+cmd_list() {
+	local sessions
+	sessions=$(zellij list-sessions -ns 2>/dev/null || true)
+	shopt -s nullglob
+	local d repo_name branch session marker
+	for d in "$HOME"/worktrees/*/*/; do
+		d=${d%/}
+		repo_name=$(basename "$(dirname "$d")")
+		branch=$(basename "$d")
+		session="$repo_name-$branch"
+		if printf '%s\n' "$sessions" | grep -qxF "$session"; then
+			marker="running"
+		else
+			marker="-      "
+		fi
+		printf '%s  %-30s %s\n' "$marker" "$session" "$d"
+	done
+}
+
+case "${1:-}" in
+new)
+	shift
+	cmd_new "$@"
+	;;
+done)
+	cmd_done
+	;;
+list)
+	cmd_list
+	;;
+*)
+	die "usage: wt {new <branch> [repo-path]|done|list}"
+	;;
+esac

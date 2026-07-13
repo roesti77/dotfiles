@@ -173,6 +173,13 @@ keybinds clear-defaults=true {
     }
     shared_except "locked" "scroll" "search" {
         bind "Ctrl s" { SwitchToMode "scroll"; }
+        bind "Ctrl f" {
+            Run "zsh" "-c" "$HOME/bin/zj-sessionizer" {
+                floating true
+                close_on_exit true
+                name "sessionizer"
+            }
+        }
     }
     shared_except "locked" "tab" {
         bind "Ctrl t" { SwitchToMode "tab"; }
