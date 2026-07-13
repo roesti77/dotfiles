@@ -11,6 +11,13 @@ keybinds clear-defaults=true {
         bind "d" { NewPane "down"; SwitchToMode "normal"; }
         bind "e" { TogglePaneEmbedOrFloating; SwitchToMode "normal"; }
         bind "f" { ToggleFocusFullscreen; SwitchToMode "normal"; }
+        bind "g" {
+            Run "zsh" "-c" "export PATH=/opt/homebrew/bin:$PATH; exec gh dash" {
+                direction "right"
+                name "prs"
+            }
+            SwitchToMode "normal"
+        }
         bind "h" { MoveFocus "left"; }
         bind "j" { MoveFocus "down"; }
         bind "k" { MoveFocus "up"; }
@@ -288,7 +295,7 @@ default_mode "normal"
 
 default_shell "zsh"
 
-default_layout "compact"
+default_layout "dev-zjstatus"
 
 pane_frames false
 
