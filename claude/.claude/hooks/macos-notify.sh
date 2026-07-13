@@ -9,14 +9,18 @@ set -euo pipefail
 if [ -n "${SUPACODE_SOCKET_PATH:-}" ]; then exit 0; fi
 if [ "${__CFBundleIdentifier:-}" = "app.supabit.supacode" ]; then exit 0; fi
 
+jq=$(command -v jq || true)
+[ -n "$jq" ] || exit 0
+
 payload=$(cat)
-event=$(printf '%s' "$payload" | /usr/bin/jq -r '.hook_event_name // empty')
-cwd=$(printf '%s' "$payload" | /usr/bin/jq -r '.cwd // empty')
+event=$(printf '%s' "$payload" | "$jq" -r '.hook_event_name // empty' 2>/dev/null || true)
+cwd=$(printf '%s' "$payload" | "$jq" -r '.cwd // empty' 2>/dev/null || true)
 dir=$(basename "${cwd:-$PWD}")
 
 case "$event" in
 Notification)
-	msg=$(printf '%s' "$payload" | /usr/bin/jq -r '.message // "Notification"')
+	msg=$(printf '%s' "$payload" | "$jq" -r '.message // "Notification"' 2>/dev/null || true)
+	[ -n "$msg" ] || msg="Notification"
 	;;
 Stop)
 	msg="Done: $dir"
