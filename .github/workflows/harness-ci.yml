@@ -1,0 +1,54 @@
+name: harness-ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Syntax-check workflow scripts
+        # the workflow runtime executes scripts as an async function body,
+        # so top-level await/return are legal — wrap before node --check
+        run: |
+          for f in claude/.claude/workflows/*.js; do
+            { printf 'async function wf() {\n'
+              sed 's/^export const meta/const meta/' "$f"
+              printf '}\n'
+            } | node --input-type=module --check \
+              || { echo "::error file=$f::syntax error"; exit 1; }
+          done
+
+      - name: Lint agent and skill frontmatter
+        run: |
+          fail=0
+          for f in claude/.claude/agents/*.md claude/.claude/skills/*/SKILL.md; do
+            # symlinked skills (e.g. hunk-review -> homebrew) resolve only on the host machine
+            [ -L "$f" ] && continue
+            head -1 "$f" | grep -qx -- '---' \
+              || { echo "::error file=$f::missing frontmatter"; fail=1; continue; }
+            fm=$(awk '/^---$/{n++; next} n==1{print}' "$f")
+            printf '%s\n' "$fm" | grep -q '^name:' \
+              || { echo "::error file=$f::frontmatter missing name"; fail=1; }
+            printf '%s\n' "$fm" | grep -q '^description:' \
+              || { echo "::error file=$f::frontmatter missing description"; fail=1; }
+          done
+          exit $fail
+
+      - name: Cross-check workflow agentTypes against agents
+        run: |
+          builtin_types=' Explore Plan general-purpose claude '
+          fail=0
+          for t in $(grep -hoE "agentType: '[^']+'" claude/.claude/workflows/*.js \
+                     | sed "s/agentType: '//; s/'$//" | sort -u); do
+            if [ ! -f "claude/.claude/agents/$t.md" ] \
+               && ! printf '%s' "$builtin_types" | grep -q " $t "; then
+              echo "::error::agentType '$t' resolves to no agents/$t.md and no built-in"
+              fail=1
+            fi
+          done
+          exit $fail
