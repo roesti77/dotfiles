@@ -54,14 +54,20 @@ const sweep = (
     DIMENSIONS.map((d) => () =>
       agent(
         `Audit target "${target}" ONLY through the ${d.key} lens: ${d.lens} ` +
-          `Use read-only tools (rg, kubectl get, helm get values, tofu show) where available. Report concrete findings.`,
+          `Use read-only tools (rg, kubectl get, helm get manifest, tofu show) where available. Report concrete findings.`,
         { ...(d.agentType && { agentType: d.agentType }), label: `sweep:${d.key}`, phase: 'Sweep', schema: FINDINGS_SCHEMA },
-      ),
+      ).then((res) => ({ d, res })),
     ),
   )
 )
-  .filter(Boolean)
-  .flatMap((r, i) => (r.findings || []).map((f) => ({ ...f, dimension: DIMENSIONS[i].key })))
+  .filter((x) => x && x.res)
+  .flatMap(({ d, res }) => (res.findings || []).map((f) => ({ ...f, dimension: d.key })))
+
+const verifierFor = (dim) => (dim === 'iac' ? 'terraform-architect' : 'kubernetes-expert')
+const probeFor = (dim) =>
+  dim === 'iac'
+    ? 'tofu state list / tofu show — check the actual state, not the config'
+    : 'kubectl get pods,svc -n <ns>; helm get manifest <release> — check the enabled-flag AND the running workload'
 
 phase('Verify')
 const liveClaims = sweep.filter((f) => f.claimsLiveState)
@@ -69,15 +75,20 @@ const verified = await parallel(
   liveClaims.map((f) => () =>
     agent(
       `Verify against ACTUAL live state, not config. Do NOT infer "deployed/active" from a config ` +
-        `section or a referencing URL — check the enabled-flag AND the running workload ` +
-        `(kubectl get pods,svc -n <ns>; helm get values <release>). Target: ${target}.\n\n` +
+        `section or a referencing URL. Probe: ${probeFor(f.dimension)}. Target: ${target}.\n\n` +
         `Claim to check: ${JSON.stringify(f)}`,
-      { agentType: 'kubernetes-expert', label: `verify:${f.where || f.title}`, phase: 'Verify', schema: VERDICT_SCHEMA },
-    ).then((v) => ({ ...f, verdict: v })),
+      { agentType: verifierFor(f.dimension), label: `verify:${f.where || f.title}`, phase: 'Verify', schema: VERDICT_SCHEMA },
+    )
+      .then((v) => ({ ...f, verdict: v }))
+      .catch(() => ({ ...f, verdict: null })),
   ),
 )
 
 const configOnly = sweep.filter((f) => !f.claimsLiveState)
-const liveConfirmed = verified.filter(Boolean).filter((f) => f.verdict.confirmed)
-log(`Findings: ${configOnly.length} config-level + ${liveConfirmed.length} live-confirmed (of ${liveClaims.length} live claims)`)
-return { target, configFindings: configOnly, liveFindings: liveConfirmed }
+const liveConfirmed = verified.filter((f) => f && f.verdict && f.verdict.confirmed)
+const liveUnverified = verified.filter((f) => f && !(f.verdict && f.verdict.confirmed))
+log(
+  `Findings: ${configOnly.length} config-level + ${liveConfirmed.length} live-confirmed + ` +
+    `${liveUnverified.length} live-unverified (of ${liveClaims.length} live claims)`,
+)
+return { target, configFindings: configOnly, liveFindings: liveConfirmed, unverifiedLiveClaims: liveUnverified }
