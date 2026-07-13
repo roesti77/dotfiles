@@ -61,7 +61,10 @@
       "Bash(kubectl events *)",
       "Bash(helm list *)",
       "Bash(helm status *)",
-      "Bash(helm get *)",
+      "Bash(helm get manifest *)",
+      "Bash(helm get notes *)",
+      "Bash(helm get hooks *)",
+      "Bash(helm get metadata *)",
       "Bash(helm history *)",
       "Bash(helm show *)",
       "Bash(helm search *)",
@@ -83,7 +86,11 @@
       "Bash(kubectl get secret*)",
       "Bash(kubectl get -n * secret*)",
       "Bash(kubectl get --namespace * secret*)",
-      "Bash(kubectl describe secret*)"
+      "Bash(kubectl get * secret*)",
+      "Bash(kubectl get *secrets.v1.*)",
+      "Bash(kubectl describe secret*)",
+      "Bash(helm get values *)",
+      "Bash(helm get all *)"
     ]
   },
   "skipAutoPermissionPrompt": true,
