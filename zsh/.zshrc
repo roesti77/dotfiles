@@ -79,6 +79,7 @@ compdef kubecolor=kubectl
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
+export PATH="$HOME/bin:$PATH"
 eval "$(direnv hook zsh)"
 # Skip zellij auto-start inside supacode terminals. supacode spawns a fresh
 # login shell per surface and restarts the surface when its foreground command
