@@ -4,6 +4,9 @@
     "lua-lsp@claude-plugins-official": true,
     "nono@always-further": true
   },
+  "env": {
+    "CLAUDE_CODE_DISABLE_MOUSE_CLICKS": "1"
+  },
   "hooks": {
     "Notification": [
       {
