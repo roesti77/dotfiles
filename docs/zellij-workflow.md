@@ -1,54 +1,60 @@
 # Claude Code in Zellij
 
-Arbeitsmodell: **ein Tab pro Claude-Session** in einer Zellij-Session. Supacode
-selbst (Package + Hooks) bleibt koexistent installiert; die hier beschriebenen
-Bausteine sind außerhalb von Supacode aktiv und innerhalb inaktiv.
+Working model: **one tab per Claude session** inside a Zellij session. Supacode
+itself (package + hooks) stays installed alongside; the building blocks described
+here are active outside of Supacode and inactive within it.
 
-## Tab-Status: zellaude
+## Tab status: zellaude
 
-[zellaude](https://github.com/ishefi/zellaude) (v0.5.1, vendored) ersetzt die
-Tab-Bar und zeigt pro Tab den Claude-Code-Status — thinking, running bash,
-editing, waiting for permission (⚠), waiting for prompt (▶), done (✓), idle (○).
-So sieht man auf einen Blick, welche Claude-Session in welchem Tab worauf wartet.
-Gesetzt über `default_layout "zellaude"` (Layout `layouts/zellaude.kdl`).
+[zellaude](https://github.com/ishefi/zellaude) (v0.5.1, vendored) replaces the tab
+bar and shows each tab's Claude Code status — thinking, running bash, editing,
+waiting for permission (⚠), waiting for prompt (▶), done (✓), idle (○). This makes
+it obvious at a glance which Claude session in which tab is waiting for what. Set
+via `default_layout "zellaude"` (layout `layouts/zellaude.kdl`).
 
-Beim ersten Laden schreibt das Plugin selbst `~/.config/zellij/plugins/zellaude-hook.sh`
-und registriert den Hook in der app-verwalteten `~/.claude/settings.json`. Diese
-plugin-generierten Dateien (`zellaude-hook.sh`, `zellaude.json`) sind in
-`.gitignore`, da sie durch den stow-Symlink im Repo landen würden. Laufzeit-Deps:
-`jq`; optional `terminal-notifier` für click-to-focus-Notifications.
+On first load the plugin writes `~/.config/zellij/plugins/zellaude-hook.sh` itself
+and registers the hook in the app-managed `~/.claude/settings.json`. These
+plugin-generated files (`zellaude-hook.sh`, `zellaude.json`) are in `.gitignore`,
+since they would otherwise land in the repo through the stow symlink. Runtime deps:
+`jq`; optionally `terminal-notifier` for click-to-focus notifications.
 
-**Aktivierung:** eine frische Zellij-Session starten (Plugin/Layout laden beim
-Session-Start). Voraussetzung Kompatibilität: zellaude v0.5.1 ist gegen
-`zellij-tile 0.43.1` gebaut = unsere Zellij-Version.
+**Activation:** start a fresh Zellij session (the plugin/layout load at session
+start). Compatibility requirement: zellaude v0.5.1 is built against
+`zellij-tile 0.43.1` = our Zellij version.
 
-### Review-Tab
+### Review tab
 
-`review` (Alias in `.zshrc`) öffnet per `zellij action new-tab --layout review`
-einen Tab mit nvim (Diff/Review, 55%) neben Claude Code + Shell (45%), Layout
-`layouts/review.kdl`. Nutzt dieselbe zellaude-Bar wie das Default-Layout, sodass
-mehrere Review-Tabs oben ihren jeweiligen Claude-Status zeigen.
+Open a review tab with:
+
+```sh
+zellij action new-tab --layout review
+```
+
+This opens a tab with nvim (diff/review, 55%) next to Claude Code + a shell (45%),
+layout `layouts/review.kdl`. It uses the same zellaude bar as the default layout,
+so several review tabs at the top each show their respective Claude status. (If you
+want a shortcut, alias the command as `review` in your `.zshrc`.)
 
 ## Notifications: `macos-notify.sh`
 
-Der Hook feuert bei `Stop` (Agent fertig) ein macOS-Banner mit Sound; der
-Zellij-Session-Name steht im Titel. Permission-/Waiting-Meldungen übernimmt
-**zellaude** (Bar-Symbol + eigenes Banner), daher ist der `Notification`-Zweig
-bewusst **nicht** verdrahtet — sonst doppelte Banner. Innerhalb von Supacode ist
-der Hook ein No-op (`SUPACODE_SOCKET_PATH` / Bundle-ID).
+The hook fires a macOS banner with sound on `Stop` (agent done); the Zellij session
+name is in the title. Permission/waiting messages are handled by **zellaude** (bar
+icon + its own banner), so the `Notification` branch is deliberately **not** wired
+up — otherwise you get duplicate banners. Inside Supacode the hook is a no-op
+(`SUPACODE_SOCKET_PATH` / bundle ID).
 
-Das Skript kommt über den `hooks`-Symlink mit `task setup`. Die **Verdrahtung**
-(macos-notify nur bei `Stop`) ist in `claude/.claude/settings.seed.json`
-deklariert und landet beim Bootstrap in der app-verwalteten
-`~/.claude/settings.json`. Modell + Bootstrap-Schritt (`cp seed → settings.json`,
-supacode injiziert seine Hooks live, bewusste Änderungen in die seed zurückfalten)
-stehen in `claude/README.md` — hier nicht duplizieren.
+The script ships via the `hooks` symlink with `task setup`. The **wiring**
+(macos-notify on `Stop` only) is declared in `claude/.claude/settings.seed.json`
+and lands in the app-managed `~/.claude/settings.json` at bootstrap. The model +
+bootstrap step (`cp seed → settings.json`, supacode injects its hooks live, fold
+intentional changes back into the seed) are described in `claude/README.md` — not
+duplicated here.
 
-## Erststart nach dem Merge
+## First start after the merge
 
 ```sh
 cd ~/dotfiles && task setup
 ```
 
-Dann eine frische Zellij-Session starten (zellaude/Layout laden beim Start).
-`settings.json` per seed bootstrappen, falls nötig (siehe `claude/README.md`).
+Then start a fresh Zellij session (zellaude/layout load at start). Bootstrap
+`settings.json` from the seed if needed (see `claude/README.md`).
