@@ -23,6 +23,7 @@ require('lazy').setup {
   require 'plugins.core.gitsigns',
   require 'plugins.core.git-blame',
   require 'plugins.core.fugitive',
+  require 'plugins.core.diffview',
   require 'plugins.core.auto-session',
   require 'plugins.core.autopairs',
   require 'plugins.core.harpoon',
