@@ -37,30 +37,12 @@ Zellij-Session-Name steht im Titel. Permission-/Waiting-Meldungen übernimmt
 bewusst **nicht** verdrahtet — sonst doppelte Banner. Innerhalb von Supacode ist
 der Hook ein No-op (`SUPACODE_SOCKET_PATH` / Bundle-ID).
 
-Das Skript selbst kommt über den `hooks`-Symlink automatisch mit `task setup`.
-Die **Verdrahtung** muss dagegen von Hand in die app-verwaltete
-`~/.claude/settings.json` (siehe unten) — einmal pro Maschine, idempotent:
-
-```sh
-tmp=$(mktemp)
-jq '
-  (.hooks.Stop //= []) |
-  .hooks.Stop |= (if any(.[].hooks[]?; .command | test("macos-notify")) then . else . + [{"hooks":[{"type":"command","command":"bash ~/.claude/hooks/macos-notify.sh","timeout":10}]}] end)
-' ~/.claude/settings.json > "$tmp" && cat "$tmp" > ~/.claude/settings.json && rm -f "$tmp"
-```
-
-Schreibt Claude Code / Supacode die Datei neu und entfernt dabei den Eintrag,
-das Snippet einfach erneut ausführen. (Redirect statt `mv`, weil `mv` per
-`common-aliases` als `mv -i` interaktiv nachfragt.)
-
-## settings.json ist app-verwaltet
-
-`~/.claude/settings.json` wird von Claude Code und Supacode zur Laufzeit neu
-geschrieben (Format + agent-integration Hooks). Sie ist daher bewusst **nicht**
-gestowt (`claude/.stow-local-ignore` schließt sie aus), sondern bleibt eine
-echte, app-verwaltete Datei. Eigene Hooks werden wie oben in die Live-Datei
-gemergt, nicht ins Repo committet. Der Rest des `claude`-Packages (`agents`,
-`hooks`, `skills`, `CLAUDE.md`, …) wird normal gestowt.
+Das Skript kommt über den `hooks`-Symlink mit `task setup`. Die **Verdrahtung**
+(macos-notify nur bei `Stop`) ist in `claude/.claude/settings.seed.json`
+deklariert und landet beim Bootstrap in der app-verwalteten
+`~/.claude/settings.json`. Modell + Bootstrap-Schritt (`cp seed → settings.json`,
+supacode injiziert seine Hooks live, bewusste Änderungen in die seed zurückfalten)
+stehen in `claude/README.md` — hier nicht duplizieren.
 
 ## Erststart nach dem Merge
 
@@ -68,4 +50,5 @@ gemergt, nicht ins Repo committet. Der Rest des `claude`-Packages (`agents`,
 cd ~/dotfiles && task setup
 ```
 
-Danach den Notify-Hook wie oben in die Live-`settings.json` einpflegen.
+Dann eine frische Zellij-Session starten (zellaude/Layout laden beim Start).
+`settings.json` per seed bootstrappen, falls nötig (siehe `claude/README.md`).
