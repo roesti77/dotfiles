@@ -1,0 +1,12 @@
+// Default layout: replaces the tab bar with zellaude, which shows each tab's
+// Claude Code activity status (thinking, bash, editing, waiting, done). The
+// plugin writes its hook script and registers itself in ~/.claude/settings.json
+// on first load. Set as default_layout in config.kdl.
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="file:~/.config/zellij/plugins/zellaude.wasm"
+        }
+        children
+    }
+}
