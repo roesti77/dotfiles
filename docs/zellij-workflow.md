@@ -31,11 +31,11 @@ mehrere Review-Tabs oben ihren jeweiligen Claude-Status zeigen.
 
 ## Notifications: `macos-notify.sh`
 
-Der Hook feuert bei den Claude-Code-Events `Notification` (Agent wartet auf
-Input) und `Stop` (Agent fertig) ein macOS-Banner mit Sound; der Zellij-Session-
-Name steht im Titel. Innerhalb von Supacode ist der Hook ein No-op
-(`SUPACODE_SOCKET_PATH` / Bundle-ID), damit keine doppelten Benachrichtigungen
-entstehen.
+Der Hook feuert bei `Stop` (Agent fertig) ein macOS-Banner mit Sound; der
+Zellij-Session-Name steht im Titel. Permission-/Waiting-Meldungen übernimmt
+**zellaude** (Bar-Symbol + eigenes Banner), daher ist der `Notification`-Zweig
+bewusst **nicht** verdrahtet — sonst doppelte Banner. Innerhalb von Supacode ist
+der Hook ein No-op (`SUPACODE_SOCKET_PATH` / Bundle-ID).
 
 Das Skript selbst kommt über den `hooks`-Symlink automatisch mit `task setup`.
 Die **Verdrahtung** muss dagegen von Hand in die app-verwaltete
@@ -44,8 +44,7 @@ Die **Verdrahtung** muss dagegen von Hand in die app-verwaltete
 ```sh
 tmp=$(mktemp)
 jq '
-  (.hooks.Notification //= []) | (.hooks.Stop //= []) |
-  .hooks.Notification |= (if any(.[].hooks[]?; .command | test("macos-notify")) then . else . + [{"hooks":[{"type":"command","command":"bash ~/.claude/hooks/macos-notify.sh","timeout":10}]}] end) |
+  (.hooks.Stop //= []) |
   .hooks.Stop |= (if any(.[].hooks[]?; .command | test("macos-notify")) then . else . + [{"hooks":[{"type":"command","command":"bash ~/.claude/hooks/macos-notify.sh","timeout":10}]}] end)
 ' ~/.claude/settings.json > "$tmp" && cat "$tmp" > ~/.claude/settings.json && rm -f "$tmp"
 ```
