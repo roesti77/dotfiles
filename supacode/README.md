@@ -1,47 +1,46 @@
 # supacode
 
-Stow-Package für [supacode](https://supacode.sh/) — native macOS-GUI-App auf Basis von
-*libghostty*, die mehrere Coding-Agents parallel in isolierten git-worktrees orchestriert.
-Voraussetzung: macOS 26 Tahoe.
+Stow package for [supacode](https://supacode.sh/) — a native macOS GUI app built on
+*libghostty* that orchestrates several coding agents in parallel in isolated git
+worktrees. Requires macOS 26 Tahoe.
 
-## Integrationsmodell: supacode *über* zellij, nicht statt zellij
+## Integration model: supacode *on top of* zellij, not instead of it
 
-Tabs/Panes laufen weiterhin ausschließlich über zellij. supacode übernimmt nur die Ebene
-darüber:
+Tabs/panes still run exclusively through zellij. supacode only owns the layer above:
 
-| Ebene | Tool | Verantwortung |
+| Layer | Tool | Responsibility |
 |---|---|---|
-| Orchestrierung | **supacode** | Welcher Worktree / welcher Agent? Parallele Agents, PR-Status, Notifications |
-| Multiplexing *innerhalb* eines Worktrees | **zellij** | Tabs + Panes + neovim — unverändertes Setup |
+| Orchestration | **supacode** | Which worktree / which agent? Parallel agents, PR status, notifications |
+| Multiplexing *within* a worktree | **zellij** | Tabs + panes + neovim — unchanged setup |
 
-Regel: **ein supacode-Worktree = eine zellij-Session.** supacodes eigene Splits/Tabs werden
-nicht genutzt. Konfliktfrei, weil supacode Cmd-basiert ist und zellij unter `Ctrl-g` läuft.
+Rule: **one supacode worktree = one zellij session.** supacode's own splits/tabs are
+not used. Conflict-free, because supacode is Cmd-based and zellij runs under `Ctrl-g`.
 
-Das `templates/supacode.json` setzt das um: `setupScript`/`runScript` hängen sich beim
-Worktree-Erstellen bzw. per `⌘R` in eine nach dem Worktree benannte zellij-Session, der
-`archiveScript` räumt sie beim Archivieren wieder ab.
+`templates/supacode.json` implements this: `setupScript`/`runScript` attach — on
+worktree creation or via `⌘R` — to a zellij session named after the worktree, and
+`archiveScript` tears it down again on archiving.
 
-## Terminal-Config kommt aus ghostty
+## Terminal config comes from ghostty
 
-supacode rendert über GhosttyKit und liest die **bestehende ghostty-Config** (Theme, Font,
-Keybinds) — die ist bereits über das `ghostty`-Package gestowt. Es gibt daher hier bewusst
-*keine* eigene Terminal-/Keybind-Config.
+supacode renders through GhosttyKit and reads the **existing ghostty config** (theme,
+font, keybinds) — which is already stowed via the `ghostty` package. There is
+therefore deliberately *no* separate terminal/keybind config here.
 
-## Tastatur (keyboard-only)
+## Keyboard (keyboard-only)
 
-| Aktion | Shortcut |
+| Action | Shortcut |
 |---|---|
-| Command Palette | `⌘P` |
-| Neuer Worktree (Branch + worktree) | `⌘N` |
-| Worktree direkt anspringen | `⌃1` … `⌃0` |
-| Nächster / vorheriger Worktree | `⌃⌘↓` / `⌃⌘↑` |
-| Run-/Setup-Script starten / stoppen | `⌘R` / `⌘.` |
-| Sidebar togglen | `⌘[` |
-| PRs öffnen | `⌃⌘G` |
+| Command palette | `⌘P` |
+| New worktree (branch + worktree) | `⌘N` |
+| Jump straight to a worktree | `⌃1` … `⌃0` |
+| Next / previous worktree | `⌃⌘↓` / `⌃⌘↑` |
+| Start / stop run/setup script | `⌘R` / `⌘.` |
+| Toggle sidebar | `⌘[` |
+| Open PRs | `⌃⌘G` |
 
-`⌃1`–`⌃0` greift supacode auf App-Ebene ab, *bevor* zellij sie sieht. Da zellijs
-Tab-Navigation unter dem `Ctrl-g`-Leader liegt (nicht rohes `Ctrl+Ziffer`), kollisionsfrei —
-beim ersten Test einmal verifizieren.
+`⌃1`–`⌃0` is intercepted by supacode at the app level *before* zellij sees it. Since
+zellij's tab navigation lives under the `Ctrl-g` leader (not raw `Ctrl+digit`), this
+is conflict-free — verify once on first use.
 
 ## Installation / stow
 
@@ -50,36 +49,37 @@ cd ~/dotfiles
 stow -t ~ supacode
 ```
 
-Das verlinkt `~/.supacode/templates/supacode.json` (per-repo-Vorlage, s.u.).
+This links `~/.supacode/templates/supacode.json` (per-repo template, see below).
 
-### settings.json — app-verwaltet, per --adopt einbinden
+### settings.json — app-managed, adopt via --adopt
 
-`~/.supacode/settings.json` ist **kein handgepflegtes File**: die App schreibt dort laufend
-State rein (`global`-Preferences, aber auch maschinenlokales wie `repositories`,
-`repositoryRoots`, `pinnedWorktreeIDs`, Reihenfolgen, lastFocused). Daher nicht vorab von
-Hand schreiben, sondern nach dem ersten Start adoptieren:
+`~/.supacode/settings.json` is **not a hand-maintained file**: the app continuously
+writes state into it (`global` preferences, but also machine-local things like
+`repositories`, `repositoryRoots`, `pinnedWorktreeIDs`, orderings, lastFocused). So
+don't write it by hand up front — adopt it after the first start:
 
 ```sh
-# 1. supacode einmal starten, im GUI Preferences setzen
-#    (Notifications an, Default-Editor = nvim, Update-Channel …), dann beenden.
-# 2. Die von der App erzeugte settings.json ins Package ziehen + zurückverlinken:
+# 1. Start supacode once, set preferences in the GUI
+#    (notifications on, default editor = nvim, update channel …), then quit.
+# 2. Pull the settings.json the app created into the package + relink it:
 cd ~/dotfiles
 stow -t ~ --adopt supacode
-# 3. git diff prüfen: nur portable Keys behalten, maschinenlokalen State ggf. zurücksetzen.
+# 3. Check git diff: keep only portable keys, reset machine-local state if needed.
 git -C ~/dotfiles add -p supacode
 ```
 
-Hinweis: Da die App durch den Symlink hindurch schreibt, dirtyt sie das Repo bei Nutzung.
-Vor dem Commit gezielt `git add -p` nutzen und maschinenlokale Keys auslassen.
+Note: because the app writes through the symlink, it dirties the repo during use.
+Use `git add -p` before committing and leave out machine-local keys.
 
-## Per-repo Setup (zellij-Integration)
+## Per-repo setup (zellij integration)
 
-Die zellij-Anbindung gehört pro Projekt in eine `supacode.json` im jeweiligen Repo-Root
-(nicht ins dotfiles-Repo). Vorlage liegt unter `~/.supacode/templates/supacode.json`:
+The zellij binding belongs per project in a `supacode.json` at the respective repo
+root (not in the dotfiles repo). The template lives at
+`~/.supacode/templates/supacode.json`:
 
 ```sh
-cp ~/.supacode/templates/supacode.json /pfad/zum/projekt/supacode.json
+cp ~/.supacode/templates/supacode.json /path/to/project/supacode.json
 ```
 
-Anschließend `setupScript`/`runScript`/`openActionID` pro Projekt anpassen (z. B. zusätzlich
-`pnpm install` im setupScript).
+Then adjust `setupScript`/`runScript`/`openActionID` per project (e.g. add
+`pnpm install` in the setupScript).
