@@ -8,17 +8,6 @@
     "CLAUDE_CODE_DISABLE_MOUSE_CLICKS": "1"
   },
   "hooks": {
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ~/.claude/hooks/macos-notify.sh",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
     "PreToolUse": [
       {
         "hooks": [

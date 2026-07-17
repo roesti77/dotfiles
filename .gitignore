@@ -11,3 +11,7 @@ node_modules/
 
 # Neovim session state
 .session.vim
+
+# zellaude plugin-generated files (written into the stowed plugins dir at runtime)
+zellij/.config/zellij/plugins/zellaude-hook.sh
+zellij/.config/zellij/plugins/zellaude.json
