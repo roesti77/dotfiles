@@ -16,7 +16,7 @@ tasks:
   check:
     desc: validate claude config (JSON + shell syntax)
     cmds:
-      - jq -e . claude/.claude/settings.json >/dev/null
+      - jq -e . claude/.claude/settings.seed.json >/dev/null
       - for f in claude/.claude/hooks/*.sh claude/.claude/statusline-command.sh zsh/bin/*; do if [ -f "$f" ]; then bash -n "$f"; fi; done
       - if command -v shellcheck >/dev/null; then for f in claude/.claude/hooks/*.sh claude/.claude/statusline-command.sh zsh/bin/*; do if [ -f "$f" ]; then shellcheck "$f"; fi; done; fi
 

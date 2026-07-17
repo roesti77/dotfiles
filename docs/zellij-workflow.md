@@ -1,37 +1,8 @@
-# Zellij-Worktree-Workflow (Supacode-Ersatz)
+# Claude Code in Zellij
 
-Dieser Workflow bildet die Supacode-Orchestrierungsebene in Ghostty + Zellij nach.
-Grundmodell bleibt **ein git-Worktree = eine Zellij-Session**. Supacode selbst
-(Package + Hooks) bleibt koexistent installiert; die hier beschriebenen Bausteine
-sind außerhalb von Supacode aktiv und innerhalb inaktiv.
-
-| Supacode-Feature | Ersatz |
-|---|---|
-| ⌘N neuer Worktree, Archive | `wt new` / `wt done` |
-| ⌘P / ⌃1-⌃0 Worktree-Switching | `zj-sessionizer` auf `Ctrl f` |
-| Agent-Badges/Sounds | Claude-Code-Hook `macos-notify.sh` |
-| Session-Persistenz (zmx) | Zellijs `session_serialization` (bereits aktiv) |
-
-## Worktrees: `wt`
-
-```sh
-wt new <branch> [repo-pfad]   # Worktree von origin/main + Session öffnen
-wt done                       # Worktree, Branch und Session aufräumen
-wt list                       # Worktrees + Session-Status
-```
-
-- Worktree-Pfad: `~/worktrees/<repo>/<branch>`, Session-Name: `<repo>-<branch>`
-  (Sonderzeichen im Branch werden zu `-`).
-- Ohne `repo-pfad` wird das Repo des aktuellen Verzeichnisses genommen.
-- `wt done` bricht bei uncommitteten Änderungen ab und löscht die eigene Session
-  zuletzt (kappt dabei die laufende Shell — gewollt, wie Supacodes Archive).
-
-## Switching: `Ctrl f`
-
-`Ctrl f` öffnet den Sessionizer (fzf) in einer Floating Pane: Auswahl aus
-laufenden Sessions, `~/repos/*/*` und `~/worktrees/*/*`. Innerhalb von Zellij
-wird über das `zellij-switch`-Plugin gewechselt (nested `attach` ist unmöglich),
-außerhalb via `attach --create`.
+Arbeitsmodell: **ein Tab pro Claude-Session** in einer Zellij-Session. Supacode
+selbst (Package + Hooks) bleibt koexistent installiert; die hier beschriebenen
+Bausteine sind außerhalb von Supacode aktiv und innerhalb inaktiv.
 
 ## Notifications: `macos-notify.sh`
 
@@ -51,11 +22,12 @@ jq '
   (.hooks.Notification //= []) | (.hooks.Stop //= []) |
   .hooks.Notification |= (if any(.[].hooks[]?; .command | test("macos-notify")) then . else . + [{"hooks":[{"type":"command","command":"bash ~/.claude/hooks/macos-notify.sh","timeout":10}]}] end) |
   .hooks.Stop |= (if any(.[].hooks[]?; .command | test("macos-notify")) then . else . + [{"hooks":[{"type":"command","command":"bash ~/.claude/hooks/macos-notify.sh","timeout":10}]}] end)
-' ~/.claude/settings.json > "$tmp" && mv "$tmp" ~/.claude/settings.json
+' ~/.claude/settings.json > "$tmp" && cat "$tmp" > ~/.claude/settings.json && rm -f "$tmp"
 ```
 
 Schreibt Claude Code / Supacode die Datei neu und entfernt dabei den Eintrag,
-das Snippet einfach erneut ausführen.
+das Snippet einfach erneut ausführen. (Redirect statt `mv`, weil `mv` per
+`common-aliases` als `mv -i` interaktiv nachfragt.)
 
 ## settings.json ist app-verwaltet
 
@@ -69,7 +41,7 @@ gemergt, nicht ins Repo committet. Der Rest des `claude`-Packages (`agents`,
 ## Erststart nach dem Merge
 
 ```sh
-cd ~/dotfiles && task setup   # foldet ~/bin
+cd ~/dotfiles && task setup
 ```
 
 Danach den Notify-Hook wie oben in die Live-`settings.json` einpflegen.
