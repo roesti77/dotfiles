@@ -32,6 +32,22 @@
             "type": "command",
             "command": "bash ~/.claude/hooks/macos-notify.sh",
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "[ -n \"$ZELLIJ_PANE_ID\" ] && zellij pipe --name \"zellij-attention::completed::$ZELLIJ_PANE_ID\" || true",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"$ZELLIJ_PANE_ID\" ] && zellij pipe --name \"zellij-attention::waiting::$ZELLIJ_PANE_ID\" || true",
+            "timeout": 5
           }
         ]
       }
