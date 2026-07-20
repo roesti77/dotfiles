@@ -73,6 +73,9 @@ setopt hist_ignore_space
 alias repos="cd ~/repos"
 alias vim="nvim"
 
+# Open a review tab: nvim (diff/review) | Claude Code | shell, with the compact bar.
+alias review="zellij action new-tab --layout review --name review"
+
 # Open Second Brain vault in nvim (cwd = vault root, args are relative paths)
 sb() {
   (cd "$HOME/Library/Mobile Documents/com~apple~CloudDocs/Second Brain" && nvim "$@")
