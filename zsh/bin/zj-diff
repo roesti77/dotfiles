@@ -1,38 +1,43 @@
 #!/usr/bin/env bash
-# zj-diff — pick a git repo (with uncommitted changes) at or under the cwd and
-# open it in nvim's diffview (working tree). Bound to Ctrl-e in zellij; handles a
-# single-repo cwd as well as an "überordner" that holds several dependent repos.
-set -euo pipefail
+# zj-diff — open nvim's diffview for a repo at/under the cwd. Bound to Ctrl-e.
+# ALWAYS ends by exec'ing nvim, so the pane is never left empty: when repos under
+# the cwd have uncommitted changes it offers an fzf picker, otherwise it just
+# opens nvim in the cwd. No `set -e` — a single failing git call must not abort.
 
-# zellij `Run` panes inherit the server env, which may miss the interactive PATH.
+# zellij `Run` panes may miss the interactive PATH; harden it (fzf/nvim/git).
 export PATH="/opt/homebrew/bin:$HOME/bin:$PATH"
 
-# Emit one line "<abs-repo-path>\t<name> (<n> changed)" per repo that has
-# uncommitted changes: the cwd itself (if a repo) plus its immediate subdirs.
-collect() {
-	local d n
-	if git -C . rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-		n=$(git -C . status --porcelain 2>/dev/null | grep -c . || true)
-		[ "$n" -gt 0 ] && printf '%s\t%s (%s changed)\n' "$PWD" "$(basename "$PWD")" "$n"
-	fi
-	for d in */; do
-		d=${d%/}
-		[ -d "$d/.git" ] || continue
-		n=$(git -C "$d" status --porcelain 2>/dev/null | grep -c . || true)
-		[ "$n" -gt 0 ] && printf '%s\t%s (%s changed)\n' "$PWD/$d" "$d" "$n"
-	done
+# Print "<abs-path>\t<name> (<n> changed)" if repo $1 has uncommitted changes.
+emit() {
+	local r="$1" name="$2" n
+	n=$(git -C "$r" status --porcelain 2>/dev/null | grep -c . 2>/dev/null)
+	[ "${n:-0}" -gt 0 ] 2>/dev/null && printf '%s\t%s (%s changed)\n' "$r" "$name" "$n"
 }
 
-rows=$(collect)
-if [ -z "$rows" ]; then
-	printf 'zj-diff: no repos with uncommitted changes at or under %s\n' "$PWD" >&2
-	sleep 1.5
-	exit 0
+rows=""
+# cwd itself (if it is a repo)
+if git -C . rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+	rows="${rows}$(emit "$PWD" "$(basename "$PWD")")"$'\n'
 fi
+# immediate subdirectories that are repos (the multi-repo "überordner" case)
+for d in */; do
+	d=${d%/}
+	[ -d "$d/.git" ] || continue
+	rows="${rows}$(emit "$PWD/$d" "$d")"$'\n'
+done
+rows=$(printf '%s' "$rows" | sed '/^[[:space:]]*$/d')
 
-sel=$(printf '%s\n' "$rows" |
-	fzf --prompt="diff repo> " --height=40% --reverse --delimiter=$'\t' --with-nth=2 |
-	cut -f1)
-[ -n "$sel" ] || exit 0
-[ -d "$sel" ] || exit 0
-cd "$sel" && exec nvim -c "DiffviewOpen"
+# Nothing changed → still open nvim in the cwd (never leave an empty pane).
+[ -z "$rows" ] && exec nvim
+
+# Repos with changes → pick one (fzf); a selected repo opens its diff.
+sel=""
+if command -v fzf >/dev/null 2>&1; then
+	sel=$(printf '%s\n' "$rows" | fzf --prompt="diff repo> " --height=40% --reverse \
+		--delimiter=$'\t' --with-nth=2 | cut -f1)
+fi
+if [ -n "$sel" ] && [ -d "$sel" ]; then
+	cd "$sel" && exec nvim -c "DiffviewOpen"
+fi
+# Cancelled / no selection → plain nvim in the cwd.
+exec nvim
