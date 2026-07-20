@@ -1,10 +1,10 @@
 // Review layout: nvim as the reading/review surface, Claude Code writing beside
-// it, a shell for gates below. One tab per Claude session; open this as a tab
-// with:  zellij action new-tab --layout review  (aliased to `review` in .zshrc).
-// Uses the zellaude bar to match default_layout (Claude status per tab).
+// it, a shell for gates below. Open with:  review  (alias in .zshrc) or
+// `zellij action new-tab --layout review`. Uses the built-in compact bar to match
+// default_layout; the zellij-attention plugin badges this tab too (⏳/✅).
 layout {
     pane size=1 borderless=true {
-        plugin location="file:~/.config/zellij/plugins/zellaude.wasm"
+        plugin location="compact-bar"
     }
     pane split_direction="vertical" {
         // Left: read the diff. In nvim use <leader>gdm to review the whole
