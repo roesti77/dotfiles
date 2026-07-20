@@ -281,13 +281,13 @@ default_mode "normal"
 
 default_shell "zsh"
 
-default_layout "zellaude"
+default_layout "compact"
 
 pane_frames false
 
 show_startup_tips false
 
-support_kitty_keyboard_protocol true
+support_kitty_keyboard_protocol false
 
 session_serialization true
 serialize_pane_viewport true
