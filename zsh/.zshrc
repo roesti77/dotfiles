@@ -3,6 +3,15 @@ eval "$(devbox global shellenv)"
 if [ -n "${GHOSTTY_RESOURCES_DIR}" ]; then
     builtin source "${GHOSTTY_RESOURCES_DIR}/shell-integration/zsh/ghostty-integration"
 fi
+
+# zellij auto-start MUST run above the p10k instant-prompt block: zellij takes
+# over the terminal (console input), which deadlocks with instant prompt's input
+# buffer and froze new terminals on zellij 0.44. Needs zellij on PATH here.
+if [[ -z "$SUPACODE_SOCKET_PATH" && "$__CFBundleIdentifier" != "app.supabit.supacode" ]]; then
+  export PATH="/opt/homebrew/bin:$PATH"
+  eval "$(zellij setup --generate-auto-start zsh)"
+fi
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -80,15 +89,6 @@ compdef kubecolor=kubectl
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 eval "$(direnv hook zsh)"
-# Skip zellij auto-start inside supacode terminals. supacode spawns a fresh
-# login shell per surface and restarts the surface when its foreground command
-# exits, so an auto-started zellij keeps respawning into runaway, client-less
-# servers. Detect supacode via __CFBundleIdentifier (set by macOS at process
-# start, unlike SUPACODE_SOCKET_PATH which its shell integration injects later).
-# Start zellij manually when needed inside supacode instead.
-if [[ -z "$SUPACODE_SOCKET_PATH" && "$__CFBundleIdentifier" != "app.supabit.supacode" ]]; then
-  eval "$(zellij setup --generate-auto-start zsh)"
-fi
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export CC=/usr/bin/clang
 unset ARCHFLAGS
