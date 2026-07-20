@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# zj-diff — pick a git repo (with uncommitted changes) at or under the cwd and
+# open it in nvim's diffview (working tree). Bound to Ctrl-e in zellij; handles a
+# single-repo cwd as well as an "überordner" that holds several dependent repos.
+set -euo pipefail
+
+# zellij `Run` panes inherit the server env, which may miss the interactive PATH.
+export PATH="/opt/homebrew/bin:$HOME/bin:$PATH"
+
+# Emit one line "<abs-repo-path>\t<name> (<n> changed)" per repo that has
+# uncommitted changes: the cwd itself (if a repo) plus its immediate subdirs.
+collect() {
+	local d n
+	if git -C . rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+		n=$(git -C . status --porcelain 2>/dev/null | grep -c . || true)
+		[ "$n" -gt 0 ] && printf '%s\t%s (%s changed)\n' "$PWD" "$(basename "$PWD")" "$n"
+	fi
+	for d in */; do
+		d=${d%/}
+		[ -d "$d/.git" ] || continue
+		n=$(git -C "$d" status --porcelain 2>/dev/null | grep -c . || true)
+		[ "$n" -gt 0 ] && printf '%s\t%s (%s changed)\n' "$PWD/$d" "$d" "$n"
+	done
+}
+
+rows=$(collect)
+if [ -z "$rows" ]; then
+	printf 'zj-diff: no repos with uncommitted changes at or under %s\n' "$PWD" >&2
+	sleep 1.5
+	exit 0
+fi
+
+sel=$(printf '%s\n' "$rows" |
+	fzf --prompt="diff repo> " --height=40% --reverse --delimiter=$'\t' --with-nth=2 |
+	cut -f1)
+[ -n "$sel" ] || exit 0
+[ -d "$sel" ] || exit 0
+cd "$sel" && exec nvim -c "DiffviewOpen"

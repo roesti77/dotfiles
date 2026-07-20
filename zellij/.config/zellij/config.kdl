@@ -146,12 +146,12 @@ keybinds clear-defaults=true {
         bind "Alt o" { MoveTab "right"; }
         bind "Ctrl q" { Quit; }
 
-        // Ctrl-e: open nvim beside the current pane showing the session's diff
-        // (working tree). In nvim, <leader>gdm reviews the branch vs origin/main.
+        // Ctrl-e: pick a changed repo at/under the cwd (fzf) and open its diff in
+        // nvim (working tree). Handles single-repo cwd and multi-repo überordner.
+        // In nvim, <leader>gdm reviews the branch vs origin/main.
         bind "Ctrl e" {
-            NewPane "right" {
-                command "nvim"
-                args "-c" "DiffviewOpen"
+            Run "zsh" "-c" "$HOME/bin/zj-diff" {
+                direction "Right"
             }
         }
 
