@@ -152,6 +152,7 @@ keybinds clear-defaults=true {
         bind "Ctrl e" {
             Run "zsh" "-c" "$HOME/bin/zj-diff" {
                 direction "Right"
+                size "67%"
             }
         }
 
