@@ -146,6 +146,15 @@ keybinds clear-defaults=true {
         bind "Alt o" { MoveTab "right"; }
         bind "Ctrl q" { Quit; }
 
+        // Ctrl-e: open nvim beside the current pane showing the session's diff
+        // (working tree). In nvim, <leader>gdm reviews the branch vs origin/main.
+        bind "Ctrl e" {
+            NewPane "right" {
+                command "nvim"
+                args "-c" "DiffviewOpen"
+            }
+        }
+
         // Plugin shortcuts
         bind "Ctrl y" {
             LaunchOrFocusPlugin "file:~/.config/zellij/plugins/zellij-forgot.wasm" {
