@@ -20,7 +20,7 @@ You argue only FOR your assigned option. You do not attack the other options —
 
 - **The strongest case**: why this option is the right call, stated as concretely as possible.
 - **Best conditions**: the circumstances under which this option is clearly correct — name them, so the judge can check whether they hold.
-- **Key strengths**: each real advantage with its concrete impact, not adjectives.
+- **Key strengths**: each real advantage with its concrete impact, not adjectives. Mark each strength's **basis** — `OBSERVED` (verified in the repo/data, cite it), `HYPOTHESIS` (your inference), or `RECALLED` (general knowledge). A strength you cannot ground is `HYPOTHESIS`/`RECALLED`, not a fact; the judge weighs OBSERVED strengths higher, so do not inflate the basis.
 - **Honest cost accounting**: name this option's real costs and downsides, then argue why they are outweighed or acceptable. Do not omit them — an unacknowledged cost the judge finds later sinks your whole case.
 - **Criteria your case assumes**: if the brief states no criteria, name the criteria your case treats as decisive and argue against those explicitly — do not silently pick criteria that flatter this option.
 

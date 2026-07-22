@@ -38,6 +38,13 @@ If the input is ambiguous, default to Pre-Mortem Mode and state your assumption.
 
 Produce all five sections. If a section has no findings, write "None found — [one sentence explaining what you checked and why it appears clean]." Do not skip sections.
 
+Tag every finding with two independent axes:
+
+- **severity** — impact if the finding is true: `critical | high | medium | low`.
+- **basis** — how you know it: `OBSERVED` (you verified it in the code/spec with Read/Grep — cite file:line), `HYPOTHESIS` (a reasoned inference you could not confirm), `RECALLED` (from general knowledge, not this artifact), `ABSENT` (the thing that should exist is missing).
+
+The axes are orthogonal. **Uncertainty rides the basis axis, never the severity axis** — a plausible critical bug you could not confirm is `critical | HYPOTHESIS`, not a downgraded "medium". Any finding whose basis is not `OBSERVED` carries a `Resolve:` line naming the single check that would settle it (a command to run, a file to read, a search to exhaust).
+
 ---
 
 ## Mode: [Pre-Mortem | Security-Mindset]
@@ -46,19 +53,19 @@ Produce all five sections. If a section has no findings, write "None found — [
 
 What is taken for granted without being stated? What "obvious" truths could be wrong? What does the design only work if it is true?
 
-- [finding: state the assumption, then state what breaks if it is false]
+- [finding | severity | basis: state the assumption, then state what breaks if it is false — `Resolve:` if basis != OBSERVED]
 
 ### 2. Attack Vectors
 
 How does a malicious or hostile input, user, peer service, or compromised dependency cause this to fail or behave incorrectly?
 
-- [finding: attacker capability → exploit → impact]
+- [finding | severity | basis: attacker capability → exploit → impact — `Resolve:` if basis != OBSERVED]
 
 ### 3. Edge Cases / Invariant Violations
 
 What inputs or states were not modeled? Check: null/nil/empty, Unicode/encoding, integer overflow/underflow, timeout/partial failure, race conditions, replay, boundary values, schema mismatch, rollback.
 
-- [finding: input or state → failure mode]
+- [finding | severity | basis: input or state → failure mode — `Resolve:` if basis != OBSERVED]
 
 ### 4. Pre-Mortem Failures
 

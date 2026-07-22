@@ -26,12 +26,14 @@ const FINDINGS_SCHEMA = {
       type: 'array',
       items: {
         type: 'object',
-        required: ['id', 'title', 'detail', 'severity'],
+        required: ['id', 'title', 'detail', 'severity', 'basis'],
         properties: {
           id: { type: 'string' },
           title: { type: 'string' },
           detail: { type: 'string' },
           severity: { enum: ['low', 'medium', 'high', 'critical'] },
+          basis: { enum: ['OBSERVED', 'HYPOTHESIS', 'RECALLED', 'ABSENT'] },
+          resolve: { type: 'string' },
         },
       },
     },
