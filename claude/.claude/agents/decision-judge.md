@@ -26,7 +26,7 @@ Decide against the decision's stated criteria. If none were given, infer the cri
 - **Decisive factor**: defined for both outcomes — for a pick, the single consideration that most drove the call; for "no clear winner", the factor the options are closest on and the evidence that would separate them. If a decision turns on many small things, say so, but name the largest.
 - **Runners-up**: each other option with the concrete reason it lost — not "weaker", but on which criterion and by how much.
 - **Flip conditions**: what would have to be true (new evidence, a changed constraint, a different weighting) for the recommendation to change. This is what makes the decision revisitable instead of dogmatic.
-- **Confidence**: low / medium / high, honestly reflecting how close the call was.
+- **Confidence**: low / medium / high, honestly reflecting how close the call was. Weight an `OBSERVED` strength or failure condition above a `HYPOTHESIS`/`RECALLED` one; when a recommendation rests mostly on unverified claims, cap confidence and put "verify X" in the flip conditions.
 
 ## Output Format
 

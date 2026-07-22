@@ -25,7 +25,7 @@ You receive the plan/diff under review and a list of red findings. If findings a
 For every red finding, take exactly one stance:
 
 - **ACCEPT** — the finding is real. Design a mitigation: what changes, where (file/component), and what invariant it restores. Mitigations must be minimal and concrete — no "add validation everywhere", no speculative frameworks. The simplest change that closes the hole wins.
-- **CONTEST** — the finding does not hold. State the evidence: the code path, guard, constraint, or config that already prevents it. Cite files/lines you verified with Read/Grep. A contest without verified evidence is not allowed — if you cannot verify, ACCEPT or DEFER.
+- **CONTEST** — the finding does not hold. State the evidence: the code path, guard, constraint, or config that already prevents it. Cite files/lines you verified with Read/Grep — this is `OBSERVED`-grade evidence, the only kind that refutes. A contest resting on your own hypothesis, not verified evidence, is not allowed — if you cannot verify, ACCEPT or DEFER. Refuting a red `HYPOTHESIS` still requires *your* OBSERVED counter-evidence, not a symmetric counter-guess.
 - **DEFER** — you cannot resolve it with available information. Name exactly what is missing and who/what could provide it.
 
 ## Output Format

@@ -32,8 +32,8 @@ const FOR_SCHEMA = {
       type: 'array',
       items: {
         type: 'object',
-        required: ['point', 'impact'],
-        properties: { point: { type: 'string' }, impact: { type: 'string' } },
+        required: ['point', 'impact', 'basis'],
+        properties: { point: { type: 'string' }, impact: { type: 'string' }, basis: { enum: ['OBSERVED', 'HYPOTHESIS', 'RECALLED'] } },
       },
     },
     acknowledgedCosts: { type: 'array', items: { type: 'string' } },
@@ -49,8 +49,8 @@ const AGAINST_SCHEMA = {
       type: 'array',
       items: {
         type: 'object',
-        required: ['condition', 'mechanism', 'outcome'],
-        properties: { condition: { type: 'string' }, mechanism: { type: 'string' }, outcome: { type: 'string' } },
+        required: ['condition', 'mechanism', 'outcome', 'basis'],
+        properties: { condition: { type: 'string' }, mechanism: { type: 'string' }, outcome: { type: 'string' }, basis: { enum: ['OBSERVED', 'HYPOTHESIS', 'RECALLED'] } },
       },
     },
     hiddenCosts: { type: 'array', items: { type: 'string' } },
@@ -99,13 +99,15 @@ const cases = await parallel(
       () =>
         agent(
           `${CTX}\n\nBuild the strongest HONEST case FOR this option only: "${opt}". No strawmen, no fabricated benefits, ` +
-            `acknowledge real costs. If no criteria were given, name the criteria your case assumes matter.`,
+            `acknowledge real costs. Mark each strength's basis: OBSERVED (verified in the repo/data — cite it), HYPOTHESIS (your inference), or RECALLED (general knowledge). ` +
+            `If no criteria were given, name the criteria your case assumes matter.`,
           { agentType: 'decision-steelman', label: `for:${opt}`, phase: 'Argue', schema: FOR_SCHEMA },
         ).catch(() => null),
       () =>
         agent(
           `${CTX}\n\nBuild the strongest HONEST case AGAINST the best version of this option only: "${opt}". ` +
-            `Attack the steelman, not a strawman. Propose no alternative. If no criteria were given, name the criteria your case assumes matter.`,
+            `Attack the steelman, not a strawman. Propose no alternative. Mark each failure condition's basis: OBSERVED (verified in the repo/data — cite it), HYPOTHESIS (your inference), or RECALLED (general knowledge). ` +
+            `If no criteria were given, name the criteria your case assumes matter.`,
           { agentType: 'decision-devil', label: `against:${opt}`, phase: 'Argue', schema: AGAINST_SCHEMA },
         ).catch(() => null),
     ]).then(([forCase, againstCase]) => ({ option: opt, forCase, againstCase })),
@@ -135,6 +137,7 @@ const verdict = await agent(
       ? `This is a go/no-go: treat the status quo / do-nothing as the runner-up baseline. `
       : `Give runners-up with the criterion each lost on. `) +
     `Weigh by magnitude on the criteria, NOT by the number of strengths or failure conditions, and do not favor option order. ` +
+    `Weight an OBSERVED point above a HYPOTHESIS or RECALLED one; a decision that rests mostly on unverified (HYPOTHESIS/RECALLED) claims caps confidence and belongs in the flip conditions. ` +
     `Name the decisive factor (for a pick: what drove it; for no clear winner: what options are closest on / the evidence needed) and the flip conditions.`,
   { agentType: 'decision-judge', label: 'judge', schema: DECISION_SCHEMA },
 )
