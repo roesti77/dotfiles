@@ -52,3 +52,30 @@ jobs:
             fi
           done
           exit $fail
+
+      - name: Check harness-internal file references resolve
+        # backtick-cited paths into the harness's own tree must exist. reviewee-context
+        # paths (spec/, plan.md, AGENTS.md) are the reviewed project's, not ours — excluded.
+        run: |
+          cd claude/.claude
+          fail=0
+          for ref in $(grep -rhoE '`(references|rules|hooks|agents|skills|workflows)/[A-Za-z0-9_./-]+`' \
+                       agents skills workflows references 2>/dev/null | tr -d '`' | sort -u); do
+            if [ ! -e "$ref" ]; then
+              echo "::error::dangling harness reference '$ref' — file does not exist"
+              fail=1
+            fi
+          done
+          exit $fail
+
+      - name: Check agent citations in skills resolve
+        run: |
+          cd claude/.claude
+          fail=0
+          for a in $(grep -rhoE '`(team|decision)-[a-z]+`' skills 2>/dev/null | tr -d '`' | sort -u); do
+            if [ ! -f "agents/$a.md" ]; then
+              echo "::error::skill cites agent '$a' with no agents/$a.md"
+              fail=1
+            fi
+          done
+          exit $fail
