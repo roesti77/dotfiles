@@ -2,6 +2,9 @@
 # macos-notify.sh — surface Claude Code Notification/Stop events as macOS
 # banners, replacing supacode's agent presence badges. No-op inside supacode
 # (its own hooks own presence there) so notifications never fire twice.
+#
+# no-jq: fail-open — without jq the hook exits 0 (silent no-op); a notification is
+# cosmetic, never worth aborting a Stop/Notification event.
 set -euo pipefail
 
 # Skip inside supacode. SUPACODE_SOCKET_PATH is injected by its shell

@@ -67,3 +67,11 @@ defeat them — every guard is bypassable by a shell trick (see Shared non-goals
 - The guards cover four cluster CLIs and git; every other tool (`rm`, `curl | sh`,
   arbitrary Bash) runs unguarded. See the README settings section for the blast
   radius of the skip-prompt flags.
+- **No jq → guards go inert (fail-open).** `context-guard` and `worktree-guard` parse
+  the tool payload with `jq`; without it the command can't be read, so both do
+  nothing and the command proceeds — including a mutating cluster command that
+  `context-guard` would otherwise block. The "Fail-closed" posture is therefore
+  conditional on jq being present (it is, on the target machines: macOS ships
+  `/usr/bin/jq`). Each hook declares this with a `# no-jq: fail-open` header, and
+  `harness-ci` runs every hook under a jq-less PATH to prove it degrades to its
+  declared class rather than crashing.

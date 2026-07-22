@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 # PreToolUse(Bash) guard: block mutating cluster commands against non-allowed contexts.
 # Convention: local playground contexts are always allowed; every remote context must
-# be listed (glob per line, # = comment) in ~/.claude/allowed-contexts. Fail-closed:
-# a mutating command whose target context cannot be resolved or is not allowed is blocked.
+# be listed (glob per line, # = comment) in ~/.claude/allowed-contexts. Fail-closed
+# once the command parses: a mutating command whose target context cannot be resolved
+# or is not allowed is blocked.
+#
+# no-jq: fail-open — without jq the command cannot be parsed, so the guard is inert
+# and the mutating command runs. The Fail-closed guarantee holds only when jq is
+# present (it is, on the target machines). See hooks/THREAT-MODEL.md.
 #
 # Covered: kubectl, helm, talosctl, argocd. Target context comes from explicit
 # --context/--kube-context flags, else the current context of the matching tool.

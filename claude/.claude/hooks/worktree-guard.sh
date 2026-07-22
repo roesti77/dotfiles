@@ -8,6 +8,9 @@
 # checked against the repo at each -C path and (for a flagless commit|push) the
 # session cwd. Every commit|push target in a compound command must clear the guard.
 # Shell tricks (cd first, aliases, wrappers) are not caught — safety net, not a wall.
+#
+# no-jq: fail-open — without jq the command cannot be parsed, so the guard is inert
+# and the commit/push proceeds. Consistent with the best-effort posture above.
 set -euo pipefail
 
 payload=$(cat)

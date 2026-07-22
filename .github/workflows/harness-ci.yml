@@ -79,3 +79,33 @@ jobs:
             fi
           done
           exit $fail
+
+      - name: Hook jq-absence contract
+        # run each jq-using hook under a PATH with no jq, assert it degrades to its
+        # declared `# no-jq:` class (fail-open → exit 0) instead of crashing
+        run: |
+          cd claude/.claude/hooks
+          stub=$(mktemp -d)
+          for b in bash sh env printf echo grep sed cat tr sort cut git basename dirname head tail awk mktemp rm ln timeout ps; do
+            p=$(command -v "$b" 2>/dev/null) || continue
+            case "$p" in /*) ln -s "$p" "$stub/$b" ;; esac  # real binaries only; builtins need no PATH entry
+          done
+          # jq deliberately not linked into $stub
+          fail=0
+          probe() { printf '{"hook_event_name":"Stop","cwd":"/tmp","tool_input":{"command":"%s"}}' "$1"; }
+          check() {
+            hook=$1; input=$2; want=$3
+            PATH="$stub" bash "$hook" >/dev/null 2>&1 <<<"$input"; rc=$?
+            decl=$(sed -nE 's/^# no-jq: (fail-open|fail-closed).*/\1/p' "$hook" | head -1)
+            if [ "$decl" = fail-open ] && [ "$rc" -ne 0 ]; then
+              echo "::error file=$hook::declared no-jq: fail-open but exited $rc without jq"; fail=1
+            elif [ "$decl" = fail-closed ] && [ "$rc" -eq 0 ]; then
+              echo "::error file=$hook::declared no-jq: fail-closed but exited 0 without jq"; fail=1
+            elif [ -z "$decl" ]; then
+              echo "::error file=$hook::uses jq but has no '# no-jq:' declaration"; fail=1
+            fi
+          }
+          check context-guard.sh "$(probe 'kubectl delete pod x --context=prod')"
+          check worktree-guard.sh "$(probe 'git commit -m x')"
+          check macos-notify.sh "$(probe '')"
+          exit $fail
