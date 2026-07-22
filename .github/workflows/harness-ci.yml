@@ -109,3 +109,6 @@ jobs:
           check worktree-guard.sh "$(probe 'git commit -m x')"
           check macos-notify.sh "$(probe '')"
           exit $fail
+
+      - name: Validate conformance suite
+        run: node claude/.claude/eval/validate.mjs

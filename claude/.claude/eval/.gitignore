@@ -1,0 +1,3 @@
+# operator run outputs — commit one deliberately with `git add -f` for a record
+baseline-*.json
+.baseline.*
