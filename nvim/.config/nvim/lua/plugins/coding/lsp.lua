@@ -1,8 +1,8 @@
 return { -- LSP Configuration & Plugins
   'neovim/nvim-lspconfig',
   dependencies = {
-    'williamboman/mason.nvim',
-    'williamboman/mason-lspconfig.nvim',
+    'mason-org/mason.nvim',
+    'mason-org/mason-lspconfig.nvim',
     'WhoIsSethDaniel/mason-tool-installer.nvim',
     'b0o/schemastore.nvim',
     {
@@ -23,17 +23,6 @@ return { -- LSP Configuration & Plugins
     },
   },
   config = function()
-    local original_show_message = vim.lsp.handlers['window/showMessage']
-    vim.lsp.handlers['window/showMessage'] = function(err, result, ctx, config)
-      if ctx and ctx.client_id then
-        local client = vim.lsp.get_client_by_id(ctx.client_id)
-        if client and client.name == 'terraformls' and result and result.message and result.message:match 'single file' then
-          return
-        end
-      end
-      original_show_message(err, result, ctx, config)
-    end
-
     vim.api.nvim_create_autocmd('LspAttach', {
       group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
       callback = function(event)
@@ -146,8 +135,10 @@ return { -- LSP Configuration & Plugins
       end,
     })
 
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+    -- Applied on top of every server config below
+    vim.lsp.config('*', {
+      capabilities = require('cmp_nvim_lsp').default_capabilities(),
+    })
 
     local servers = {
       lua_ls = {
@@ -210,6 +201,15 @@ return { -- LSP Configuration & Plugins
             terraformExecPath = vim.fn.exepath 'tofu',
           },
         },
+        handlers = {
+          -- ignoreSingleFileWarning above does not cover every code path
+          ['window/showMessage'] = function(err, result, ctx, config)
+            if result and result.message and result.message:match 'single file' then
+              return
+            end
+            return vim.lsp.handlers['window/showMessage'](err, result, ctx, config)
+          end,
+        },
       },
       ansiblels = {},
       yamlls = {
@@ -234,15 +234,13 @@ return { -- LSP Configuration & Plugins
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
+    for server_name, server_config in pairs(servers) do
+      vim.lsp.config(server_name, server_config)
+    end
+
     require('mason-lspconfig').setup {
-      handlers = {
-        function(server_name)
-          local server = servers[server_name] or {}
-          server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-          require('lspconfig')[server_name].setup(server)
-        end,
-        kotlin_lsp = function() end,
-      },
+      -- kotlin.nvim starts and owns the kotlin_lsp client itself
+      automatic_enable = { exclude = { 'kotlin_lsp' } },
     }
   end,
 }

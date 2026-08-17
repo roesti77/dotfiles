@@ -42,7 +42,8 @@ return {
     -- Define a table of themes
     local themes = {
       onedark = onedark_theme,
-      catppuccin = 'catppuccin',
+      -- catppuccin ships its lualine theme as catppuccin-nvim; it follows the active flavour
+      catppuccin = 'catppuccin-nvim',
     }
 
     local mode = {
