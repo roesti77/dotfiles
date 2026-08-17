@@ -97,12 +97,13 @@ return {
           ['[]'] = '@class.outer',
         },
       },
+      -- p wie parameter; <leader>a gehoert der Claude-Code-Namespace
       swap = {
         swap_next = {
-          ['<leader>a'] = '@parameter.inner',
+          ['<leader>p'] = '@parameter.inner',
         },
         swap_previous = {
-          ['<leader>A'] = '@parameter.inner',
+          ['<leader>P'] = '@parameter.inner',
         },
       },
     }
