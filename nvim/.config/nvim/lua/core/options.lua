@@ -57,6 +57,18 @@ vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter' }, {
     end,
 })
 
+-- Claude Code editiert Dateien auf Platte; ohne das bleiben offene Buffer veraltet
+vim.opt.autoread = true
+vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'TermClose', 'TermLeave' }, {
+    group = vim.api.nvim_create_augroup('reload_on_external_change', { clear = true }),
+    callback = function()
+        -- nicht im Command-Line-Fenster, dort ist checktime verboten
+        if vim.fn.getcmdwintype() == '' then
+            vim.cmd.checktime()
+        end
+    end,
+})
+
 vim.api.nvim_create_autocmd({ 'FocusLost', 'VimLeavePre' }, {
     group = vim.api.nvim_create_augroup('zellij_normal', { clear = true }),
     callback = function()

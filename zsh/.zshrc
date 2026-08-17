@@ -73,6 +73,10 @@ setopt hist_ignore_space
 alias repos="cd ~/repos"
 alias vim="nvim"
 
+# git, zellijs EditScrollback und alles andere, was einen Editor aufruft
+export EDITOR=nvim
+export VISUAL=nvim
+
 # Open a review tab: nvim (diff/review) | Claude Code | shell, with the compact bar.
 alias review="zellij action new-tab --layout review --name review"
 

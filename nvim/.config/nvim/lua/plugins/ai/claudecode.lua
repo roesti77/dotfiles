@@ -1,28 +1,49 @@
 return {
   'coder/claudecode.nvim',
   dependencies = { 'folke/snacks.nvim' }, -- optional, aber empfohlen
+  -- mit nur `keys` laedt das Plugin erst beim Tastendruck: der <C-.>-Pfad geht dann,
+  -- aber bis dahin gibt es kein ~/.claude/ide/*.lock -- eine unabhaengig gestartete
+  -- claude-CLI (zellij-Pane, Shell) findet nvim also nicht. lazy=false macht nvim
+  -- ab dem Start auffindbar.
+  lazy = false,
+  init = function()
+    local wk_ok, wk = pcall(require, 'which-key')
+    if wk_ok then
+      wk.add { { '<leader>a', group = 'AI / Claude Code' } }
+    end
+  end,
   opts = {
-    -- Server
+    -- Server: muss beim Start laufen, sonst kein ~/.claude/ide/<port>.lock
     auto_start = true,
     log_level = 'warn',
 
-    -- Terminal: snacks (wie dein bisheriges opencode-Setup)
+    -- nach dem Senden einer Selektion direkt im Claude-Fenster weiterschreiben
+    focus_after_send = true,
+
     diff_opts = {
       layout = 'vertical',
     },
 
-terminal = {
+    terminal = {
       provider = 'snacks',
-      snacks = {
-        auto_insert = true,
-        win = {
-          -- position = 'right', -- 'left', 'right', 'bottom', 'float'
-        },
+      -- Worktree-Workflow: Claude soll im Repo-Root arbeiten, nicht im Buffer-Verzeichnis
+      git_repo_cwd = true,
+      -- Sidebar rechts wie im review-Layout; per <C-.> / <leader>ai umschaltbar,
+      -- also nicht permanent (auto_insert ist Top-Level und schon default true)
+      snacks_win_opts = {
+        position = 'right',
+        width = 0.42,
       },
     },
   },
   keys = {
     { '<C-.>', '<cmd>ClaudeCode<cr>', desc = 'Toggle Claude Code', mode = { 'n', 't' } },
+    -- zweiter Weg zum Toggle, auch aus dem <leader>a-Namespace erreichbar
+    { '<leader>ai', '<cmd>ClaudeCode<cr>', desc = 'Claude: Toggle sidebar' },
+    -- ins Claude-Fenster springen, ohne es zuzuklappen
+    { '<leader>af', '<cmd>ClaudeCodeFocus<cr>', desc = 'Claude: Focus window' },
+    -- steht die Bruecke? zeigt Server + Verbindung
+    { '<leader>a?', '<cmd>ClaudeCodeStatus<cr>', desc = 'Claude: Status' },
 
     { '<C-h>', '<cmd>wincmd h<cr>', desc = 'Window left', mode = 't' },
     { '<C-j>', '<cmd>wincmd j<cr>', desc = 'Window down', mode = 't' },
