@@ -28,16 +28,17 @@ return {
       provider = 'snacks',
       -- Worktree-Workflow: Claude soll im Repo-Root arbeiten, nicht im Buffer-Verzeichnis
       git_repo_cwd = true,
-      -- Sidebar rechts wie im review-Layout; per <C-.> / <leader>ai umschaltbar,
-      -- also nicht permanent (auto_insert ist Top-Level und schon default true)
-      snacks_win_opts = {
-        position = 'right',
-        width = 0.42,
-      },
+      -- kein snacks_win_opts: der snacks-Default (Float) gibt der Claude-TUI genug
+      -- Spalten. Als rechter Split (42%) in einem schon geteilten zellij-Pane blieben
+      -- zu wenige uebrig und die TUI rendert zerrissen.
     },
   },
   keys = {
     { '<C-.>', '<cmd>ClaudeCode<cr>', desc = 'Toggle Claude Code', mode = { 'n', 't' } },
+    -- robuster Toggle auch AUS dem Claude-Terminal heraus: <C-Space> wird von jedem
+    -- Terminal uebertragen (im Gegensatz zu <C-.>, das das kitty-Protokoll braucht)
+    -- und braucht kein <Esc><Esc>, das sonst in Claudes TUI landet
+    { '<C-Space>', '<cmd>ClaudeCode<cr>', desc = 'Toggle Claude Code', mode = { 'n', 't' } },
     -- zweiter Weg zum Toggle, auch aus dem <leader>a-Namespace erreichbar
     { '<leader>ai', '<cmd>ClaudeCode<cr>', desc = 'Claude: Toggle sidebar' },
     -- ins Claude-Fenster springen, ohne es zuzuklappen
