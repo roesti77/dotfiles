@@ -40,6 +40,10 @@ return {
     { '<C-.>', '<cmd>ClaudeCode<cr>', desc = 'Toggle Claude Code', mode = { 'n', 't' } },
     -- zweiter Weg zum Toggle, auch aus dem <leader>a-Namespace erreichbar
     { '<leader>ai', '<cmd>ClaudeCode<cr>', desc = 'Claude: Toggle sidebar' },
+    -- ins Claude-Fenster springen, ohne es zuzuklappen
+    { '<leader>af', '<cmd>ClaudeCodeFocus<cr>', desc = 'Claude: Focus window' },
+    -- steht die Bruecke? zeigt Server + Verbindung
+    { '<leader>a?', '<cmd>ClaudeCodeStatus<cr>', desc = 'Claude: Status' },
 
     { '<C-h>', '<cmd>wincmd h<cr>', desc = 'Window left', mode = 't' },
     { '<C-j>', '<cmd>wincmd j<cr>', desc = 'Window down', mode = 't' },
