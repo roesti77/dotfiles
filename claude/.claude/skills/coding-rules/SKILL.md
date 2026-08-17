@@ -59,6 +59,22 @@ Prüffrage vor Abgabe: *„Welche Zeilen kann ich löschen, ohne dass eine geste
 Anforderung bricht?"* — genau die löschen. Review-Werkzeuge: Agent
 `code-quality-pragmatist`, `/simplify`.
 
+**Nie Ziel einer Vereinfachung** — hier ist „minimal" das falsche Kriterium:
+
+- **Input-Validierung + Error-Handling an Trust-Boundaries**: alles, was von außen
+  kommt (User-Input, API-Antwort, Datei, Env, Tool-Output) wird geprüft.
+- **Security** und alles, was **Datenverlust** verhindert (Backup vor destruktiver
+  Aktion, Idempotenz, Transaktionsgrenze).
+- **Accessibility** in UI-Code.
+- **Was ausdrücklich gefordert wurde** — eine gestellte Anforderung wegzukürzen ist
+  kein YAGNI, sondern Nicht-Liefern. Zu groß erscheinende Anforderung → nachfragen,
+  nicht stillschweigend beschneiden.
+- **Das Problem verstehen**, bevor Code entsteht: den betroffenen Pfad wirklich lesen.
+  Abkürzen beim Verstehen erzeugt die Umbauten, die YAGNI vermeiden soll.
+
+Bewusst in Kauf genommene Grenzen als Kommentar markieren — was die Lösung *nicht*
+kann und ab wann sie erweitert werden muss (ein Warum-Kommentar, kein Was).
+
 ## Stil
 
 - Keinen Code generieren der "zu sauber" ist. Perfekte Strukturierung, lückenlose Dokumentation und null TODOs wirken künstlich.
