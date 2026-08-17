@@ -10,9 +10,9 @@ gepinnte Version ist fast immer zu alt — oft einen ganzen Major daneben. **Nie
 Version aus Modell-Wissen pinnen.** Vor jedem Einbinden/Bumpen einer externen Komponente
 die echte aktuelle Upstream-Version abfragen und bewusst wählen.
 
-Auslöser: PR `devobagmbh/talos-platform-apps#471` — lokales ArgoCD lief auf Chart `7.7.0`
-(v2.13.0, aus Modell-Wissen), Basis/Prod auf `9.4.5` (v3.3.2). Ein ganzer Major daneben,
-das E2E-Setup gegen die falsche ArgoCD-Version validiert.
+Auslöser: ein realer Vorfall — eine lokal eingebundene Komponente wurde aus
+Modell-Wissen gepinnt und lag damit eine ganze Major hinter dem base-/Prod-Stand.
+Das E2E-Setup validierte dadurch gegen die falsche Version.
 
 ## Regel (projektübergreifend)
 
@@ -21,8 +21,8 @@ Operator, CRD-Bundle, CLI-Tool):
 
 1. **Echte aktuelle Version abfragen** — Lookup je Quelle (unten). Nicht raten.
 2. **Parität schlägt Neuheit:** Gibt es eine Referenz-Wahrheit (base-Substrat, Prod-Cluster,
-   anderer Consumer), auf **die** pinnen — nicht blind aufs Neueste. (#471: der lokale Pfad
-   muss die base-Version spiegeln, sonst wird gegen eine andere Major getestet.) Ohne
+   anderer Consumer), auf **die** pinnen — nicht blind aufs Neueste. Der lokale Pfad
+   muss die base-Version spiegeln, sonst wird gegen eine andere Major getestet. Ohne
    Referenz → aktuelle Stable-Version.
 3. **Delta zum Modell-Wissen benennen** + Quelle & Datum im PR/Commit dokumentieren
    („geprüft gegen `helm search repo` am <Datum> → X.Y.Z").
