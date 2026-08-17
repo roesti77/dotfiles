@@ -71,6 +71,8 @@ require('lazy').setup {
   --- Tools
   require 'plugins.tools.codesnap',
   require 'plugins.tools.obsidian',
+  require 'plugins.tools.dooing',
+  require 'plugins.tools.bloocky',
   require 'plugins.tools.gitlab-review',
   require 'plugins.tools.k9s',
   require 'plugins.tools.octo',
