@@ -22,10 +22,26 @@ target=$(cd "$target" && pwd -P) || exit 2
 common=$(git -C "$target" rev-parse --path-format=absolute --git-common-dir 2>/dev/null) || exit 0
 root=$(cd "$common/.." && pwd -P) || exit 0
 
-name=${root#/}
-name=${name//\//%}
-sock="${XDG_CACHE_HOME:-$HOME/.cache}/nvim/servers/${name}.sock"
-[ -S "$sock" ] || exit 0
+servers="${XDG_CACHE_HOME:-$HOME/.cache}/nvim/servers"
+
+# Walk upward from the main checkout: nvim may have been started in the repo, or
+# in a parent folder holding several repos (that folder is not a repo itself, so
+# it registers under its own path). First socket found wins.
+sock=""
+dir="$root"
+while :; do
+	name=${dir#/}
+	name=${name//\//%}
+	if [ -S "$servers/${name}.sock" ]; then
+		sock="$servers/${name}.sock"
+		break
+	fi
+	case "$dir" in
+	/ | "$HOME") break ;;
+	esac
+	dir=$(dirname "$dir")
+done
+[ -n "$sock" ] || exit 0
 
 # Reuse a tab that already sits in this worktree, else open one. Everything in a
 # single expression so it is one round trip.
