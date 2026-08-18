@@ -1,21 +1,34 @@
--- Vergroessert das aktuelle Float (z. B. das Claude-Terminal) auf fast-Vollbild und
--- zurueck. Ausschliesslich Floats: auf einem normalen Fenster tut die Taste nichts.
--- Kein Fallback auf Snacks.zen.zoom() -- das maximiert nicht, sondern OEFFNET ein
--- neues Zen-Float, was hier als ungewolltes schwebendes Fenster auffiel.
--- Fuer normale Fenster ist <leader>Z zustaendig.
+-- Macht das aktuelle Fenster gross und wieder klein -- Float (z. B. das
+-- Claude-Terminal) wie Split. Es wird dabei NIE ein Fenster geoeffnet:
+-- Snacks.zen.zoom() taugt hier nicht, das maximiert nicht, sondern legt ein neues
+-- Zen-Float an (fiel als ungewolltes schwebendes Fenster auf). <leader>Z bleibt
+-- fuer genau dieses Zen-Verhalten zustaendig.
 --
--- Richtung kommt aus der GEOMETRIE, nicht aus gemerktem Zustand: claudecode patcht
--- hide/show/toggle der snacks-Instanz, dabei kann die Fenster-ID wechseln -- ein
--- window-local gemerkter Wert waere dann weg und der Toggle wuerde nur noch
--- hochzoomen (mit math.max unsichtbar) statt zu verkleinern. Die vorige Groesse ist
--- Komfort, keine Voraussetzung.
+-- Richtung kommt aus der GEOMETRIE bzw. aus winrestcmd, nicht aus gemerktem
+-- Fensterzustand: claudecode patcht hide/show/toggle der snacks-Instanz, dabei kann
+-- die Fenster-ID wechseln -- ein window-local gemerkter Wert waere dann weg und der
+-- Toggle wuerde nur noch hochzoomen statt zu verkleinern.
 local prev = {}
+local restore = {}
 
 local function toggle_zoom()
   local win = vim.api.nvim_get_current_win()
   local cfg = vim.api.nvim_win_get_config(win)
 
+  -- normales Fenster: per winrestcmd maximieren/zurueck, ohne neues Fenster
   if cfg.relative == '' then
+    local tab = vim.api.nvim_get_current_tabpage()
+    if #vim.api.nvim_tabpage_list_wins(tab) == 1 then
+      return
+    end
+    if restore[tab] then
+      vim.cmd(restore[tab])
+      restore[tab] = nil
+    else
+      restore[tab] = vim.fn.winrestcmd()
+      vim.cmd 'wincmd _'
+      vim.cmd 'wincmd |'
+    end
     return
   end
 
@@ -100,7 +113,7 @@ return {
       -- auch aus dem Terminal-Mode heraus, ohne <Esc><Esc> (das sonst in Claudes TUI landet)
       '<C-]>',
       toggle_zoom,
-      desc = 'Toggle Zoom (float only)',
+      desc = 'Toggle Zoom (float or split)',
       mode = { 'n', 't' },
     },
     {
