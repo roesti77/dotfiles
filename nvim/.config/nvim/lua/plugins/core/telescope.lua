@@ -1,7 +1,10 @@
 -- Fuzzy Finder (files, lsp, etc)
 return {
   'nvim-telescope/telescope.nvim',
-  branch = '0.1.x',
+  -- kein branch = '0.1.x': der Branch ist seit 2024-05 eingefroren und ruft
+  -- ts_parsers.ft_to_lang, das nvim 0.12 entfernt hat. Ab v0.2.x nutzt telescope
+  -- die Core-Treesitter-API (get_lang). version = '*' folgt dem letzten Release.
+  version = '*',
   dependencies = {
     'nvim-lua/plenary.nvim',
     -- Fuzzy Finder Algorithm which requires local dependencies to be built.
