@@ -126,8 +126,19 @@ return {
           return
         end
       end
+      -- VOR dem tabnew pruefen, sonst bleibt bei fehlendem Verzeichnis ein leerer Tab
+      -- stehen und :tcd wirft einen Lua-Fehler (E344).
+      if vim.fn.isdirectory(path) == 0 then
+        vim.notify('wt: Verzeichnis fehlt: ' .. path .. '  (git worktree prune?)', vim.log.levels.WARN)
+        return
+      end
       vim.cmd 'tabnew'
-      vim.cmd('tcd ' .. vim.fn.fnameescape(path))
+      local ok, err = pcall(vim.cmd, 'tcd ' .. vim.fn.fnameescape(path))
+      if not ok then
+        vim.cmd 'tabclose'
+        vim.notify('wt: tcd fehlgeschlagen: ' .. tostring(err), vim.log.levels.ERROR)
+        return
+      end
       vim.cmd 'edit .'
     end
 
@@ -138,20 +149,40 @@ return {
         return
       end
 
-      local items, cur = {}, nil
+      local all, cur = {}, nil
       for _, line in ipairs(out) do
         local p = line:match '^worktree (.+)$'
         if p then
           cur = { path = p }
-          table.insert(items, cur)
+          table.insert(all, cur)
         elseif cur then
           local b = line:match '^branch refs/heads/(.+)$'
           if b then
             cur.branch = b
           elseif line == 'detached' then
             cur.branch = '(detached)'
+          elseif line:match '^prunable' then
+            cur.prunable = true
           end
         end
+      end
+
+      -- git listet Worktrees weiter, deren Verzeichnis weg ist (bis `git worktree prune`).
+      -- Solche anzubieten hiess: Auswahl -> :tcd -> E344. Also raus, und einmal sagen warum.
+      local items, skipped = {}, 0
+      for _, it in ipairs(all) do
+        if it.prunable or vim.fn.isdirectory(it.path) == 0 then
+          skipped = skipped + 1
+        else
+          table.insert(items, it)
+        end
+      end
+      if skipped > 0 then
+        vim.notify(string.format('wt: %d verwaiste Worktree(s) uebersprungen -- git worktree prune', skipped), vim.log.levels.WARN)
+      end
+      if #items == 0 then
+        vim.notify('wt: keine nutzbaren Worktrees', vim.log.levels.WARN)
+        return
       end
 
       for _, it in ipairs(items) do
