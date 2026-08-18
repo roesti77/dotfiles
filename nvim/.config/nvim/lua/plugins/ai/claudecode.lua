@@ -22,6 +22,11 @@ return {
 
     diff_opts = {
       layout = 'vertical',
+      -- Claudes Ink-TUI zeichnet relativ zum Cursor und clearst bei Resize nicht voll,
+      -- da bleiben Reste der alten Breite stehen. Der Plugin-Default verstellt die
+      -- Terminal-Breite rund um Diffs von selbst -- das abschalten. Absichtliches
+      -- Resizen per <C-]> bleibt.
+      auto_resize_terminal = false,
     },
 
     terminal = {
