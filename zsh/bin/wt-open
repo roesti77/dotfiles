@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# wt-open — tell the running nvim of a repo to show a worktree in its own tab.
+# Called after `git worktree add` (see the pr-flow skill) so nvim does not stay
+# behind in the main checkout, where the edited files simply do not change.
+#
+# Silent no-op when no nvim listens for that repo: this must never break a
+# worktree workflow. No `set -e` for the same reason.
+#
+# Usage: wt-open <worktree-path>
+
+export PATH="/opt/homebrew/bin:$HOME/bin:$PATH"
+
+target="${1:-}"
+[ -n "$target" ] || { echo "usage: wt-open <worktree-path>" >&2; exit 2; }
+[ -d "$target" ] || { echo "wt-open: no such directory: $target" >&2; exit 2; }
+
+target=$(cd "$target" && pwd -P) || exit 2
+
+# The socket is keyed by the MAIN checkout, not the worktree: that is where the
+# nvim we want to talk to was started. `--git-common-dir` points at the main
+# repo's .git for every worktree.
+common=$(git -C "$target" rev-parse --path-format=absolute --git-common-dir 2>/dev/null) || exit 0
+root=$(cd "$common/.." && pwd -P) || exit 0
+
+name=${root#/}
+name=${name//\//%}
+sock="${XDG_CACHE_HOME:-$HOME/.cache}/nvim/servers/${name}.sock"
+[ -S "$sock" ] || exit 0
+
+# Reuse a tab that already sits in this worktree, else open one. Everything in a
+# single expression so it is one round trip.
+expr=$(cat <<LUA
+luaeval('(function(p) for _, t in ipairs(vim.api.nvim_list_tabpages()) do if vim.fn.getcwd(-1, vim.api.nvim_tabpage_get_number(t)) == p then vim.api.nvim_set_current_tabpage(t) return "switched" end end vim.cmd("tabnew") vim.cmd("tcd " .. vim.fn.fnameescape(p)) vim.cmd("edit .") return "opened" end)(_A)', '$target')
+LUA
+)
+
+result=$(nvim --server "$sock" --remote-expr "$expr" 2>/dev/null)
+[ -n "$result" ] && printf 'wt-open: %s tab for %s\n' "$result" "$target"
+exit 0

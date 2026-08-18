@@ -40,13 +40,21 @@ Robert hat oft mehrere Sessions parallel → der Hauptcheckout hängt meist auf 
 fremden Feature-Branch mit uncommitteter WIP. Niemals den Hauptcheckout-Branch
 annehmen, wechseln, stashen oder resetten.
 
+Worktrees als **Geschwister-Verzeichnis** anlegen, nicht im Scratchpad: `<repo>.wt/<branch>`
+(Slashes im Branch zu `-`). Ein Scratchpad-Worktree ist beim Session-Ende weg und Robert
+kann dort keinen Editor öffnen — beides ist real passiert.
+
 ```bash
 # Erst die fremde WIP im Hauptcheckout erkennen
 git -C <repo> status -sb
 
 # Dann sauberen Worktree von origin/<ziel> (meist main)
 git -C <repo> fetch origin <ziel>
-git -C <repo> worktree add <tmp-pfad> origin/<ziel> -b <branch>
+git -C <repo> worktree add <repo>.wt/<branch> origin/<ziel> -b <branch>
+
+# Und nvim davon in Kenntnis setzen — sonst haengt es im Hauptcheckout,
+# wo sich die editierten Dateien gar nicht aendern (stiller No-Op ohne nvim)
+wt-open <repo>.wt/<branch>
 ```
 
 Live-Cluster-Aktionen (`sops -d`, `kubectl apply`, …) laufen branch-unabhängig und
