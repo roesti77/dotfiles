@@ -1,10 +1,14 @@
 -- Deterministischer RPC-Socket, damit externe Tools (z. B. Claude nach einem
 -- `git worktree add`) diesem nvim etwas sagen koennen -- siehe zsh/bin/wt-open.
--- Der Socket ist repo-bezogen: bei mehreren nvims ist so eindeutig, welches
--- fuer welches Repo zustaendig ist. Ist der Name belegt (zweites nvim im selben
--- Repo), gewinnt das erste und wir bleiben still.
+-- Der Socket ist ortsbezogen: bei mehreren nvims ist so eindeutig, welches
+-- wofuer zustaendig ist. Ist der Name belegt (zweites nvim am selben Ort),
+-- gewinnt das erste und wir bleiben still.
+--
+-- Ohne Repo (der Ueberordner mit mehreren Repos darin ist selbst keins) wird auf
+-- das Startverzeichnis gekeyed -- sonst gaebe es fuer genau diesen Fall gar
+-- keinen Kanal. wt-open sucht von einem Repo aus aufwaerts und findet beides.
 
-local root = vim.fs.root(0, '.git')
+local root = vim.fs.root(0, '.git') or vim.uv.cwd()
 if not root then
     return
 end
@@ -12,7 +16,7 @@ end
 local dir = vim.fn.stdpath 'cache' .. '/servers'
 vim.fn.mkdir(dir, 'p')
 
--- Repo-Pfad -> flacher Dateiname
+-- Pfad -> flacher Dateiname
 local name = root:gsub('^/', ''):gsub('/', '%%')
 local sock = string.format('%s/%s.sock', dir, name)
 
