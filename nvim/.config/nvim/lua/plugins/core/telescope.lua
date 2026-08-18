@@ -115,6 +115,76 @@ return {
     pcall(require('telescope').load_extension, 'fzf')
     pcall(require('telescope').load_extension, 'ui-select')
 
+    -- Worktrees des Repos auswaehlen. Jeder Worktree lebt in einem eigenen Tab mit
+    -- tab-lokalem cwd (:tcd) -- dieselbe Regel wie zsh/bin/wt-open, damit beide
+    -- Einstiege denselben Tab treffen und nicht zwei fuer denselben Pfad entstehen.
+    -- telescope.entry_display gibt es in v0.2.x nicht mehr, darum eigene Formatierung.
+    local function goto_worktree(path)
+      for _, handle in ipairs(vim.api.nvim_list_tabpages()) do
+        if vim.fn.getcwd(-1, vim.api.nvim_tabpage_get_number(handle)) == path then
+          vim.api.nvim_set_current_tabpage(handle)
+          return
+        end
+      end
+      vim.cmd 'tabnew'
+      vim.cmd('tcd ' .. vim.fn.fnameescape(path))
+      vim.cmd 'edit .'
+    end
+
+    local function worktree_picker()
+      local out = vim.fn.systemlist { 'git', 'worktree', 'list', '--porcelain' }
+      if vim.v.shell_error ~= 0 then
+        vim.notify('wt: kein git-Repo', vim.log.levels.WARN)
+        return
+      end
+
+      local items, cur = {}, nil
+      for _, line in ipairs(out) do
+        local p = line:match '^worktree (.+)$'
+        if p then
+          cur = { path = p }
+          table.insert(items, cur)
+        elseif cur then
+          local b = line:match '^branch refs/heads/(.+)$'
+          if b then
+            cur.branch = b
+          elseif line == 'detached' then
+            cur.branch = '(detached)'
+          end
+        end
+      end
+
+      for _, it in ipairs(items) do
+        local n = #vim.fn.systemlist { 'git', '-C', it.path, 'status', '--porcelain' }
+        it.display = string.format('%-30s %-5s %s', it.branch or '?', n > 0 and ('~' .. n) or '', vim.fn.fnamemodify(it.path, ':~'))
+      end
+
+      require('telescope.pickers')
+        .new({}, {
+          prompt_title = 'Worktrees',
+          finder = require('telescope.finders').new_table {
+            results = items,
+            entry_maker = function(e)
+              return { value = e, display = e.display, ordinal = (e.branch or '') .. ' ' .. e.path }
+            end,
+          },
+          sorter = require('telescope.config').values.generic_sorter {},
+          attach_mappings = function(bufnr)
+            actions.select_default:replace(function()
+              actions.close(bufnr)
+              local entry = require('telescope.actions.state').get_selected_entry()
+              if entry then
+                goto_worktree(entry.value.path)
+              end
+            end)
+            return true
+          end,
+        })
+        :find()
+    end
+
+    vim.keymap.set('n', '<leader>gw', worktree_picker, { desc = 'Search [G]it [W]orktrees' })
+
     vim.keymap.set('n', '<C-p>', builtin.find_files, {})
     vim.keymap.set('n', '<space>fb', ':Telescope file_browser<CR>')
     vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
