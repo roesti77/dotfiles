@@ -2,6 +2,13 @@
 -- zurueck. Snacks.zen.zoom() taugt dafuer nicht: es legt ein NEUES Zen-Float um den
 -- Buffer und schliesst sich, sobald der Fokus in ein nicht-schwebendes Fenster geht.
 -- Auf einem normalen Fenster fallen wir deshalb auf zoom() zurueck.
+-- Richtung kommt aus der GEOMETRIE, nicht aus gemerktem Zustand: claudecode patcht
+-- hide/show/toggle der snacks-Instanz, dabei kann die Fenster-ID wechseln -- ein
+-- window-local gemerkter Wert waere dann weg und der Toggle wuerde nur noch
+-- hochzoomen (mit math.max unsichtbar) statt zu verkleinern. Die vorige Groesse ist
+-- Komfort, keine Voraussetzung.
+local prev = {}
+
 local function toggle_zoom()
   local win = vim.api.nvim_get_current_win()
   local cfg = vim.api.nvim_win_get_config(win)
@@ -11,16 +18,26 @@ local function toggle_zoom()
     return
   end
 
-  local saved = vim.w.float_zoom_saved
-  if saved then
-    cfg.width, cfg.height, cfg.row, cfg.col = saved.width, saved.height, saved.row, saved.col
-    vim.w.float_zoom_saved = nil
+  local function center(c)
+    c.row = math.max(0, math.floor((vim.o.lines - c.height) / 2) - 1)
+    c.col = math.max(0, math.floor((vim.o.columns - c.width) / 2))
+  end
+
+  if cfg.width >= math.floor(vim.o.columns * 0.9) and cfg.height >= math.floor(vim.o.lines * 0.85) then
+    local p = prev[win]
+    cfg.width = p and p.width or math.floor(vim.o.columns * 0.6)
+    cfg.height = p and p.height or math.floor(vim.o.lines * 0.6)
+    if p then
+      cfg.row, cfg.col = p.row, p.col
+    else
+      center(cfg)
+    end
+    prev[win] = nil
   else
-    vim.w.float_zoom_saved = { width = cfg.width, height = cfg.height, row = cfg.row, col = cfg.col }
-    cfg.width = math.max(cfg.width, math.floor(vim.o.columns * 0.95))
-    cfg.height = math.max(cfg.height, math.floor(vim.o.lines * 0.9))
-    cfg.row = math.max(0, math.floor((vim.o.lines - cfg.height) / 2) - 1)
-    cfg.col = math.max(0, math.floor((vim.o.columns - cfg.width) / 2))
+    prev[win] = { width = cfg.width, height = cfg.height, row = cfg.row, col = cfg.col }
+    cfg.width = math.floor(vim.o.columns * 0.95)
+    cfg.height = math.floor(vim.o.lines * 0.9)
+    center(cfg)
   end
 
   pcall(vim.api.nvim_win_set_config, win, cfg)
