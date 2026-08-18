@@ -1,7 +1,9 @@
 -- Vergroessert das aktuelle Float (z. B. das Claude-Terminal) auf fast-Vollbild und
--- zurueck. Snacks.zen.zoom() taugt dafuer nicht: es legt ein NEUES Zen-Float um den
--- Buffer und schliesst sich, sobald der Fokus in ein nicht-schwebendes Fenster geht.
--- Auf einem normalen Fenster fallen wir deshalb auf zoom() zurueck.
+-- zurueck. Ausschliesslich Floats: auf einem normalen Fenster tut die Taste nichts.
+-- Kein Fallback auf Snacks.zen.zoom() -- das maximiert nicht, sondern OEFFNET ein
+-- neues Zen-Float, was hier als ungewolltes schwebendes Fenster auffiel.
+-- Fuer normale Fenster ist <leader>Z zustaendig.
+--
 -- Richtung kommt aus der GEOMETRIE, nicht aus gemerktem Zustand: claudecode patcht
 -- hide/show/toggle der snacks-Instanz, dabei kann die Fenster-ID wechseln -- ein
 -- window-local gemerkter Wert waere dann weg und der Toggle wuerde nur noch
@@ -14,7 +16,6 @@ local function toggle_zoom()
   local cfg = vim.api.nvim_win_get_config(win)
 
   if cfg.relative == '' then
-    Snacks.zen.zoom()
     return
   end
 
@@ -99,7 +100,7 @@ return {
       -- auch aus dem Terminal-Mode heraus, ohne <Esc><Esc> (das sonst in Claudes TUI landet)
       '<C-]>',
       toggle_zoom,
-      desc = 'Toggle Zoom (float or window)',
+      desc = 'Toggle Zoom (float only)',
       mode = { 'n', 't' },
     },
     {
