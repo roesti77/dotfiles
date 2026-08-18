@@ -1,3 +1,31 @@
+-- Vergroessert das aktuelle Float (z. B. das Claude-Terminal) auf fast-Vollbild und
+-- zurueck. Snacks.zen.zoom() taugt dafuer nicht: es legt ein NEUES Zen-Float um den
+-- Buffer und schliesst sich, sobald der Fokus in ein nicht-schwebendes Fenster geht.
+-- Auf einem normalen Fenster fallen wir deshalb auf zoom() zurueck.
+local function toggle_zoom()
+  local win = vim.api.nvim_get_current_win()
+  local cfg = vim.api.nvim_win_get_config(win)
+
+  if cfg.relative == '' then
+    Snacks.zen.zoom()
+    return
+  end
+
+  local saved = vim.w.float_zoom_saved
+  if saved then
+    cfg.width, cfg.height, cfg.row, cfg.col = saved.width, saved.height, saved.row, saved.col
+    vim.w.float_zoom_saved = nil
+  else
+    vim.w.float_zoom_saved = { width = cfg.width, height = cfg.height, row = cfg.row, col = cfg.col }
+    cfg.width = math.max(cfg.width, math.floor(vim.o.columns * 0.95))
+    cfg.height = math.max(cfg.height, math.floor(vim.o.lines * 0.9))
+    cfg.row = math.max(0, math.floor((vim.o.lines - cfg.height) / 2) - 1)
+    cfg.col = math.max(0, math.floor((vim.o.columns - cfg.width) / 2))
+  end
+
+  pcall(vim.api.nvim_win_set_config, win, cfg)
+end
+
 return {
   'folke/snacks.nvim',
   priority = 1000,
@@ -49,6 +77,13 @@ return {
         Snacks.zen.zoom()
       end,
       desc = 'Toggle Zoom',
+    },
+    {
+      -- auch aus dem Terminal-Mode heraus, ohne <Esc><Esc> (das sonst in Claudes TUI landet)
+      '<C-]>',
+      toggle_zoom,
+      desc = 'Toggle Zoom (float or window)',
+      mode = { 'n', 't' },
     },
     {
       '<leader>.',
