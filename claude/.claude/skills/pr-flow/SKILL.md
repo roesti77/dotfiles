@@ -54,7 +54,7 @@ git -C <repo> worktree add <repo>.wt/<branch> origin/<ziel> -b <branch>
 
 # Und nvim davon in Kenntnis setzen — sonst haengt es im Hauptcheckout,
 # wo sich die editierten Dateien gar nicht aendern (stiller No-Op ohne nvim)
-wt-open <repo>.wt/<branch>
+"$HOME"/bin/wt-open <repo>.wt/<branch>
 ```
 
 Live-Cluster-Aktionen (`sops -d`, `kubectl apply`, …) laufen branch-unabhängig und
