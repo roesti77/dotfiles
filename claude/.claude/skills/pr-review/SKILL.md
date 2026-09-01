@@ -13,11 +13,17 @@ Workflow `pr-review-deep` nutzen: `Workflow(name: "pr-review-deep", args: "<PR-N
 
 Das Verdikt muss aufs Merge-Gate (CODEOWNERS / required review) zählen.
 
-| Verdikt | Aktion |
-|---|---|
-| APPROVE | `gh pr review <N> --approve` (NICHT nur `--comment`) |
-| COMMENT | `gh pr review <N> --comment` |
-| REQUEST_CHANGES | `gh pr review <N> --request-changes` |
+| Verdikt | GitHub | GitLab |
+|---|---|---|
+| APPROVE | `gh pr review <N> --approve` (NICHT nur `--comment`) | `glab mr approve <N>` |
+| COMMENT | `gh pr review <N> --comment` | `glab mr note create <N> -m "..."` |
+| REQUEST_CHANGES | `gh pr review <N> --request-changes` | **gibt es nicht** — Kommentar, und ein frueheres Approve mit `glab mr revoke <N>` zuruecknehmen |
+
+**GitLab kennt kein request-changes.** `glab mr` bietet nur `approve`/`revoke`. Das
+Verdikt „Aenderungen noetig" ist dort also eine Notiz plus ggf. ein Revoke — beim
+Berichten nicht so tun, als waere es dasselbe formale Gate wie bei GitHub.
+Kommandos gegen `glab --help` (1.115.x) geprueft; `glab mr note -m` ist deprecated,
+korrekt ist `glab mr note create`.
 
 **Ausnahme eigene PRs:** GitHub blockt Self-Approve mit HTTP 422 → dort `--comment`
 verwenden (der formale Approve kommt von einem anderen Reviewer).
@@ -41,7 +47,7 @@ und sich nichts geändert hat — das ist nur Notification-Rauschen.
 Fehler ist das *Vergessen*, nicht das Zuviel: ein Push, der ein `CHANGES_REQUESTED`
 adressiert, hebt das Verdikt NICHT auf — GitHub lässt das alte `CHANGES_REQUESTED` **stale**
 stehen, der PR sieht blockiert aus, obwohl er fertig ist. Also: Findings gefixt + gepusht →
-sofort `gh pr edit <N> --add-reviewer <login>` + kurzer Kommentar, was adressiert wurde. Gilt
+sofort `gh pr edit <N> --add-reviewer <login>` / `glab mr update <N> --reviewer <user>` + kurzer Kommentar, was adressiert wurde. Gilt
 auch, wenn jemand anderes (z. B. eine Parallel-Session) den Fix gepusht hat: wer den Stale-
 Zustand bemerkt, re-requestet. (Beobachtet 2026-07: mehrere PRs — dennisboege-Seed, beide
 docs-ADRs — sahen blockiert aus, weil der Fix längst gepusht, aber nie re-requestet war.)
@@ -50,6 +56,8 @@ Vorm Taggen prüfen:
 
 ```bash
 gh pr view <N> --json reviewRequests,reviews
+# GitLab:
+glab mr view <N> -F json --jq '.reviewers'
 ```
 
 ## Review-Inhalt

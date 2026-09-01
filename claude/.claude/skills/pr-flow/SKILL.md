@@ -8,6 +8,27 @@ description: "The issue-to-PR workflow. Use when opening a pull request, startin
 Der verbindliche Ablauf von „Idee" bis „PR offen". Gilt projektübergreifend, nicht
 nur bei Repos mit explizitem Issue-Workflow.
 
+## 0. Erst die Forge bestimmen
+
+Nicht `gh` annehmen — am Remote ablesen:
+
+```bash
+git -C <repo> remote get-url origin   # github.com -> gh, sonst GitLab -> glab
+```
+
+Die Schritte unten sind identisch, nur das CLI wechselt. Kommandos gegen
+`glab --help` geprueft (1.115.x):
+
+| Zweck | GitHub | GitLab |
+|---|---|---|
+| Issue anlegen | `gh issue create --title T --body-file -` | `glab issue create -t T --description-file -` |
+| Label setzen | `gh issue edit N --add-label L` | `glab issue update N --label L` |
+| PR/MR anlegen | `gh pr create --base Z --title T` | `glab mr create --target-branch Z -t T --description-file -` |
+| ansehen | `gh pr view N` | `glab mr view N -F json` |
+
+`glab` braucht bei einer Firmen-Instanz `--repo <gruppe>/<projekt>` oder ein
+konfiguriertes Remote; die Instanz kommt aus `glab auth login --hostname <host>`.
+
 ## 1. Immer ein Issue vor dem PR
 
 Vor jedem PR ein GitHub-Issue aufmachen — auch für kleine Changes.
