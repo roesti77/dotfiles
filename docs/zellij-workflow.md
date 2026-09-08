@@ -1,54 +1,49 @@
-# Claude Code in Zellij
+# Agents in Zellij
 
-Working model: **one tab per Claude session** inside a Zellij session. Supacode
-itself (package + hooks) stays installed alongside; the building blocks described
-here are active outside of Supacode and inactive within it.
+Working model: the agent runs **inside nvim** (CodeCompanion, chat buffer +
+inline diffs), not as its own process in a pane. Zellij therefore only provides
+tabs, panes and attention badges — it knows nothing about the agent any more.
+Supacode stays installed alongside; the building blocks described here are
+active outside of Supacode and inactive within it.
 
-## Tab status: zellaude
+Which agent answers depends on the machine: `claude_code` by default,
+`cursor_cli` where Cursor is the tool of the engagement. Both are ACP presets in
+`nvim/.config/nvim/lua/plugins/ai/codecompanion.lua`.
 
-[zellaude](https://github.com/ishefi/zellaude) (v0.5.1, vendored) replaces the tab
-bar and shows each tab's Claude Code status — thinking, running bash, editing,
-waiting for permission (⚠), waiting for prompt (▶), done (✓), idle (○). This makes
-it obvious at a glance which Claude session in which tab is waiting for what. Set
-via `default_layout "zellaude"` (layout `layouts/zellaude.kdl`).
-
-On first load the plugin writes `~/.config/zellij/plugins/zellaude-hook.sh` itself
-and registers the hook in the app-managed `~/.claude/settings.json`. These
-plugin-generated files (`zellaude-hook.sh`, `zellaude.json`) are in `.gitignore`,
-since they would otherwise land in the repo through the stow symlink. Runtime deps:
-`jq`; optionally `terminal-notifier` for click-to-focus notifications.
-
-**Activation:** start a fresh Zellij session (the plugin/layout load at session
-start). Compatibility requirement: zellaude v0.5.1 is built against
-`zellij-tile 0.43.1` = our Zellij version.
-
-### Review tab
-
-Open a review tab with:
+## Review tab
 
 ```sh
-zellij action new-tab --layout review
+review    # alias in .zshrc
+# or: zellij action new-tab --layout review
 ```
 
-This opens a tab with nvim (diff/review, 55%) next to Claude Code + a shell (45%),
-layout `layouts/review.kdl`. It uses the same zellaude bar as the default layout,
-so several review tabs at the top each show their respective Claude status. (If you
-want a shortcut, alias the command as `review` in your `.zshrc`.)
+Layout `layouts/review.kdl`: nvim on top (70%), a shell below it (30%) for gates
+and git. There is deliberately no agent pane — `<C-.>` toggles the chat inside
+nvim, `<leader>gdm` reviews the session diff (branch vs `origin/main`),
+`<leader>gdd` the working tree.
 
-## Notifications: `macos-notify.sh`
+## Attention badges: `zellij-attention`
 
-The hook fires a macOS banner with sound on `Stop` (agent done); the Zellij session
-name is in the title. Permission/waiting messages are handled by **zellaude** (bar
-icon + its own banner), so the `Notification` branch is deliberately **not** wired
-up — otherwise you get duplicate banners. Inside Supacode the hook is a no-op
-(`SUPACODE_SOCKET_PATH` / bundle ID).
+Configured in `config.kdl`, badges a tab with ⏳ (waiting) and ✅ (done). It is
+fed by `zellij pipe` from the `Stop`/`Notification` hooks declared in
+`claude/.claude/settings.seed.json`.
 
-The script ships via the `hooks` symlink with `task setup`. The **wiring**
-(macos-notify on `Stop` only) is declared in `claude/.claude/settings.seed.json`
-and lands in the app-managed `~/.claude/settings.json` at bootstrap. The model +
-bootstrap step (`cp seed → settings.json`, supacode injects its hooks live, fold
-intentional changes back into the seed) are described in `claude/README.md` — not
-duplicated here.
+**Unverified since the move into nvim:** whether Claude Code fires those hooks
+while running in ACP mode as a child process of nvim. If it does, the badge now
+lands on the nvim pane — which is the right place, since that is where the agent
+lives. If it does not, the badges stay silent and the hook wiring is dead weight.
+One real prompt answers it; nothing here depends on the outcome.
+
+The same applies to `macos-notify.sh`, which fires a macOS banner on `Stop` (and
+is a no-op inside Supacode via `SUPACODE_SOCKET_PATH` / bundle ID).
+
+## Tab bar
+
+`default_layout "compact"` — the built-in compact bar. The vendored `zellaude`
+plugin (a bar showing per-tab Claude Code status) was removed: it was never
+switched on (no `default_layout`, no hook in `~/.claude/settings.json`, no
+runtime files), and with the agent inside nvim a per-tab agent status has no
+subject left. It is in the git history if the model ever changes back.
 
 ## First start after the merge
 
@@ -56,5 +51,5 @@ duplicated here.
 cd ~/dotfiles && task setup
 ```
 
-Then start a fresh Zellij session (zellaude/layout load at start). Bootstrap
+Then start a fresh Zellij session (layouts load at session start). Bootstrap
 `settings.json` from the seed if needed (see `claude/README.md`).
