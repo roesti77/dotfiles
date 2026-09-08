@@ -77,7 +77,7 @@ alias vim="nvim"
 export EDITOR=nvim
 export VISUAL=nvim
 
-# Open a review tab: nvim (diff/review) | Claude Code | shell, with the compact bar.
+# Open a review tab: nvim (diff/review + agent chat) over a shell, compact bar.
 alias review="zellij action new-tab --layout review --name review"
 
 # Open Second Brain vault in nvim (cwd = vault root, args are relative paths)
