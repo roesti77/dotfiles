@@ -19,28 +19,22 @@ codebase alive at full CC speed.
 
 ## The daily flow
 
-1. Start a zellij session. The tab bar is **zellaude** — each tab shows its Claude
-   status at a glance (see below).
-2. Work with Claude Code in a tab. One tab = one Claude session.
-3. When CC has produced changes, open a **review tab**:
+1. Start a zellij session with the built-in compact bar.
+2. Work with the agent inside nvim: `<C-.>` toggles the CodeCompanion chat, which
+   drives Claude Code or the Cursor CLI depending on the machine.
+3. To read changes on a bigger surface, open a **review tab**:
    ```sh
    zellij action new-tab --layout review
    ```
-   You get nvim (left, 55%) next to Claude Code + a shell (right, 45%).
+   You get nvim on top (70%) over a shell (30%) for gates and git.
 4. In nvim, read the change:
    - `<leader>gdm` — diff of the whole session (branch vs `origin/main`). This is
      the main review key.
    - `<leader>gdd` — just the uncommitted working tree.
    Go through it hunk by hunk. Ask: *would I have written it this way? If not, why
    did CC?*
-5. The zellaude bar tells you which other tabs need attention (waiting for
-   permission / prompt / done) so you can juggle parallel sessions.
-
-## zellaude tab status
-
-The tab bar shows, per tab: thinking · running bash · editing · ⚠ waiting for
-permission · ▶ waiting for prompt · ✓ done · ○ idle. See
-[zellij-workflow.md](./zellij-workflow.md) for details.
+5. Agent edits arrive as diffs in the buffer: `gv` view, `g2` accept, `g3` reject,
+   `g1` accept everything in this buffer.
 
 ## nvim review keymaps
 
@@ -93,6 +87,6 @@ stay untouched). Kitty keyboard protocol is enabled so MEH chords reach zellij.
 cd ~/dotfiles && task setup
 ```
 
-Then start a fresh zellij session (the zellaude bar and layouts load at session
-start). For plugin/notification/`settings.json` details see
+Then start a fresh zellij session (layouts load at session start). For
+plugin/notification/`settings.json` details see
 [zellij-workflow.md](./zellij-workflow.md).

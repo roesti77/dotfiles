@@ -12,10 +12,6 @@ node_modules/
 # Neovim session state
 .session.vim
 
-# zellaude plugin-generated files (written into the stowed plugins dir at runtime)
-zellij/.config/zellij/plugins/zellaude-hook.sh
-zellij/.config/zellij/plugins/zellaude.json
-
 # Cursor runtime state — ~/.cursor must be a real dir with individual symlinks
 # (mkdir before stow), but if it ever gets folded into a directory symlink the
 # app would write its live state straight into this public repo.
