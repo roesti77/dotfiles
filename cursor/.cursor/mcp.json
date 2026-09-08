@@ -1,0 +1,39 @@
+{
+  "mcpServers": {
+    "notion-davitec": {
+      "command": "sh",
+      "args": [
+        "-c",
+        "export $(cat \"$HOME/.local/share/opencode/notion-davitec.env\" | xargs) && npx -y @notionhq/notion-mcp-server"
+      ]
+    },
+    "notion-vtrs": {
+      "command": "sh",
+      "args": [
+        "-c",
+        "export $(cat \"$HOME/.local/share/opencode/notion-vtrs.env\" | xargs) && npx -y @notionhq/notion-mcp-server"
+      ]
+    },
+    "notion-secondbrain": {
+      "command": "sh",
+      "args": [
+        "-c",
+        "export $(cat \"$HOME/.local/share/opencode/notion-secondbrain.env\" | xargs) && npx -y @notionhq/notion-mcp-server"
+      ]
+    },
+    "notion-privat": {
+      "command": "sh",
+      "args": [
+        "-c",
+        "export $(cat \"$HOME/.local/share/opencode/notion-privat.env\" | xargs) && npx -y @notionhq/notion-mcp-server"
+      ]
+    },
+    "notion-warhammer": {
+      "command": "sh",
+      "args": [
+        "-c",
+        "export $(cat \"$HOME/.local/share/opencode/notion-warhammer.env\" | xargs) && npx -y @notionhq/notion-mcp-server"
+      ]
+    }
+  }
+}
