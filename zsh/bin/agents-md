@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# agents-md — render the global Claude Code conventions into a project AGENTS.md.
+#
+# Cursor reads CLAUDE.md/AGENTS.md per project but has no global equivalent of
+# ~/.claude/CLAUDE.md (cross-project instructions live in account-synced User
+# Rules there). This renders the one source of truth into the project instead,
+# so Cursor and Claude Code stay driven by the same conventions.
+#
+# Idempotent: only the marked block is rewritten, hand-written content around it
+# survives. Never touches the file unless the render succeeded.
+#
+# Usage: agents-md [project-dir]   (default: current directory)
+
+set -euo pipefail
+
+BEGIN_MARK='<!-- BEGIN agents-md: global conventions, generated -->'
+END_MARK='<!-- END agents-md -->'
+
+source="${CLAUDE_MEMORY:-$HOME/.claude/CLAUDE.md}"
+target_dir="${1:-$PWD}"
+
+[ -f "$source" ] || { echo "agents-md: no source at $source" >&2; exit 1; }
+[ -d "$target_dir" ] || { echo "agents-md: no such directory: $target_dir" >&2; exit 2; }
+
+target="$target_dir/AGENTS.md"
+tmp=$(mktemp "${TMPDIR:-/tmp}/agents-md.XXXXXX")
+trap 'rm -f "$tmp"' EXIT
+
+{
+  printf '%s\n' "$BEGIN_MARK"
+  printf '<!-- Regenerate with `agents-md`. Edits inside this block are lost. -->\n\n'
+  cat "$source"
+  printf '\n%s\n' "$END_MARK"
+} > "$tmp"
+
+if [ -f "$target" ] && grep -qF "$BEGIN_MARK" "$target"; then
+  # Replace the existing block in place, keep everything around it.
+  merged=$(mktemp "${TMPDIR:-/tmp}/agents-md.XXXXXX")
+  awk -v begin="$BEGIN_MARK" -v end="$END_MARK" -v block="$tmp" '
+    index($0, begin) == 1 { while ((getline line < block) > 0) print line; skip = 1; next }
+    index($0, end) == 1   { skip = 0; next }
+    !skip
+  ' "$target" > "$merged"
+  mv "$merged" "$target"
+  echo "agents-md: refreshed block in $target"
+elif [ -f "$target" ]; then
+  # Hand-written AGENTS.md without our block: append, never overwrite.
+  printf '\n' >> "$target"
+  cat "$tmp" >> "$target"
+  echo "agents-md: appended block to existing $target"
+else
+  cp "$tmp" "$target"
+  echo "agents-md: created $target"
+fi
+
+if ! git -C "$target_dir" check-ignore -q AGENTS.md 2>/dev/null; then
+  echo "agents-md: note — AGENTS.md is not git-ignored here; these are personal conventions, decide before committing them" >&2
+fi
