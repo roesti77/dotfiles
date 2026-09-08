@@ -5,8 +5,8 @@
 -- fuer genau dieses Zen-Verhalten zustaendig.
 --
 -- Richtung kommt aus der GEOMETRIE bzw. aus winrestcmd, nicht aus gemerktem
--- Fensterzustand: claudecode patcht hide/show/toggle der snacks-Instanz, dabei kann
--- die Fenster-ID wechseln -- ein window-local gemerkter Wert waere dann weg und der
+-- Fensterzustand: ein Plugin kann hide/show/toggle einer snacks-Instanz patchen,
+-- dabei kann die Fenster-ID wechseln -- ein window-local gemerkter Wert waere dann weg und der
 -- Toggle wuerde nur noch hochzoomen statt zu verkleinern.
 local prev = {}
 local restore = {}

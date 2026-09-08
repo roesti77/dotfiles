@@ -97,7 +97,7 @@ return {
           ['[]'] = '@class.outer',
         },
       },
-      -- p wie parameter; <leader>a gehoert der Claude-Code-Namespace
+      -- p wie parameter; <leader>a gehoert dem AI-Namespace
       swap = {
         swap_next = {
           ['<leader>p'] = '@parameter.inner',
