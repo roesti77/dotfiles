@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "editor": {
+    "vimMode": true
+  },
+  "permissions": {
+    "allow": [
+      "Shell(kubectl:get*)",
+      "Shell(kubectl:describe*)",
+      "Shell(kubectl:logs*)",
+      "Shell(kubectl:top*)",
+      "Shell(kubectl:explain*)",
+      "Shell(kubectl:api-resources*)",
+      "Shell(kubectl:version*)",
+      "Shell(kubectl:diff*)",
+      "Shell(kubectl:events*)",
+      "Shell(kubectl:config get-contexts*)",
+      "Shell(kubectl:config current-context)",
+      "Shell(helm:list*)",
+      "Shell(helm:status*)",
+      "Shell(helm:get manifest*)",
+      "Shell(helm:get notes*)",
+      "Shell(helm:get hooks*)",
+      "Shell(helm:get metadata*)",
+      "Shell(helm:history*)",
+      "Shell(helm:show*)",
+      "Shell(helm:search*)",
+      "Shell(helm:template*)",
+      "Shell(helm:lint*)",
+      "Shell(argocd:app get*)",
+      "Shell(argocd:app list*)",
+      "Shell(argocd:app diff*)",
+      "Shell(argocd:app history*)",
+      "Shell(argocd:app resources*)",
+      "Shell(talosctl:get*)",
+      "Shell(talosctl:version*)",
+      "Shell(talosctl:health*)",
+      "Shell(talosctl:config info*)",
+      "Shell(kustomize:build*)",
+      "Shell(kubeconform:*)"
+    ],
+    "deny": [
+      "Shell(kubectl:get secret*)",
+      "Shell(kubectl:get * secret*)",
+      "Shell(kubectl:get -n * secret*)",
+      "Shell(kubectl:get --namespace * secret*)",
+      "Shell(kubectl:get *secrets.v1.*)",
+      "Shell(kubectl:describe secret*)",
+      "Shell(helm:get values*)",
+      "Shell(helm:get all*)",
+      "Read(.env*)",
+      "Read(**/*.key)",
+      "Read(**/*.pem)"
+    ]
+  }
+}
