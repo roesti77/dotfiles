@@ -18,6 +18,20 @@ return {
     end
   end,
   opts = {
+    adapters = {
+      http = {
+        extend = {
+          ollama = {
+            -- Muss gepinnt werden: auf der Linux-Kiste liegt fuers FIM ein
+            -- -base-Modell, und das wuerde im Chat Unsinn produzieren. Chat
+            -- braucht die instruct-Variante. Auf CPU ist 7b zaeh, aber beim
+            -- Chat wartet man auf eine Antwort -- anders als beim Ghost-Text.
+            -- Zu langsam? Dann qwen2.5-coder:3b. Vorher `ollama pull`.
+            schema = { model = { default = 'qwen2.5-coder:7b' } },
+          },
+        },
+      },
+    },
     interactions = {
       chat = {
         -- claude_code und cursor_cli sind mitgelieferte ACP-Presets: der Agent
@@ -26,9 +40,15 @@ return {
         -- Tabelle wuerde die Preset-Aufloesung ersetzen und den Chat brechen;
         -- Abweichungen gehoeren nach adapters.acp.extend.
         --
-        -- Default ist der Agent dieses Rechners. Auf einem Cursor-Rechner per
-        -- <leader>ac oder `ga` im Chat-Buffer auf cursor_cli wechseln.
-        adapter = 'claude_code',
+        -- Default ist, was der jeweilige Rechner hat: auf dem Mac Claude Code
+        -- ueber ACP, auf der Linux-Workstation vorerst Ollama ueber HTTP --
+        -- dort gibt es weder Claude Code noch (bis auf Weiteres) Cursor.
+        --
+        -- Uebergangsloesung mit Ansage: ein kleines lokales Modell auf CPU
+        -- taugt fuer Fragen und Erklaerungen, agentisches Arbeiten mit Tools
+        -- kann es kaum. Sobald Cursor da ist, wird aus dem 'ollama' hier ein
+        -- 'cursor_cli' -- der Rest der Konfiguration bleibt.
+        adapter = vim.fn.has 'mac' == 1 and 'claude_code' or 'ollama',
       },
       opts = {
         -- Der Agent schreibt Dateien selbst; ohne Watcher zeigt nvim weiter den
