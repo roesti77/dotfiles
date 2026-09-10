@@ -27,13 +27,31 @@ return {
             -- braucht die instruct-Variante. Auf CPU ist 7b zaeh, aber beim
             -- Chat wartet man auf eine Antwort -- anders als beim Ghost-Text.
             -- Zu langsam? Dann qwen2.5-coder:3b. Vorher `ollama pull`.
-            schema = { model = { default = 'qwen2.5-coder:7b' } },
+            schema = {
+              model = { default = 'qwen2.5-coder:7b' },
+              -- Ollamas num_ctx ist per Default nil, das Fenster damit
+              -- unbekannt -- ohne Zahl gibt es auch keine Auslastung. Explizit
+              -- gesetzt dient es beidem: der Anzeige unten und der CPU, der ein
+              -- grosses Fenster teuer zu stehen kommt.
+              num_ctx = { default = 8192 },
+            },
           },
         },
       },
     },
     interactions = {
       chat = {
+        -- Sprechende Header statt 'Me' und 'CodeCompanion (Ollama)': auf einen
+        -- Blick sichtbar, wer antwortet -- und mit welchem Modell. Den
+        -- Modellnamen gibt es nur bei HTTP-Adaptern; ueber ACP ist
+        -- adapter.model nil, dann bleibt es beim Adapternamen.
+        roles = {
+          user = 'Robert',
+          llm = function(adapter)
+            local model = adapter.model and (adapter.model.formatted_name or adapter.model.name)
+            return adapter.formatted_name .. (model and (' · ' .. model) or '')
+          end,
+        },
         -- claude_code und cursor_cli sind mitgelieferte ACP-Presets: der Agent
         -- laeuft als CLI mit eigenem Tool-Zugriff aufs Repo, kein API-Key -- es
         -- zaehlt das Abo des jeweiligen Rechners. Eine eigene adapters.acp-
@@ -58,6 +76,18 @@ return {
     },
     display = {
       action_palette = { provider = 'telescope' },
+      chat = {
+        -- Kontextauslastung statt blanker Tokenzahl -- wie im Claude CLI.
+        -- Nur HTTP-Adapter (hier Ollama) liefern Zaehlwerte; ueber ACP kommt
+        -- keine Usage, dort bleibt die Anzeige leer.
+        token_count = function(tokens, adapter)
+          local window = adapter and adapter.schema and adapter.schema.num_ctx and adapter.schema.num_ctx.default
+          if type(window) ~= 'number' or window <= 0 then
+            return string.format(' (%d tokens)', tokens)
+          end
+          return string.format(' (%.1fk/%.0fk · %d%%)', tokens / 1000, window / 1000, math.floor(tokens / window * 100))
+        end,
+      },
       -- Aenderungen des Agenten landen als Diff im Buffer: ansehen mit gv,
       -- annehmen mit g2, verwerfen mit g3, alles im Buffer akzeptieren mit g1.
       -- threshold_for_chat bleibt beim Default (6) -- kleine Diffs stehen im
