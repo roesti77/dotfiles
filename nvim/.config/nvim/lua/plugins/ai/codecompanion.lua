@@ -41,6 +41,17 @@ return {
     },
     interactions = {
       chat = {
+        -- Sprechende Header statt 'Me' und 'CodeCompanion (Ollama)': auf einen
+        -- Blick sichtbar, wer antwortet -- und mit welchem Modell. Den
+        -- Modellnamen gibt es nur bei HTTP-Adaptern; ueber ACP ist
+        -- adapter.model nil, dann bleibt es beim Adapternamen.
+        roles = {
+          user = 'Robert',
+          llm = function(adapter)
+            local model = adapter.model and (adapter.model.formatted_name or adapter.model.name)
+            return adapter.formatted_name .. (model and (' · ' .. model) or '')
+          end,
+        },
         -- claude_code und cursor_cli sind mitgelieferte ACP-Presets: der Agent
         -- laeuft als CLI mit eigenem Tool-Zugriff aufs Repo, kein API-Key -- es
         -- zaehlt das Abo des jeweiligen Rechners. Eine eigene adapters.acp-
