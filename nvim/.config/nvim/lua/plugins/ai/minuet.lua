@@ -19,19 +19,31 @@ return {
     --
     -- FIM braucht die -base-Modelle: die -instruct-Varianten sind auf Chat
     -- getrimmt, und qwen3-coder hat gar keine base-Variante und faengt bei 30B an.
-    -- 7b-base (4.7 GB) passt in 8 GB VRAM; bei mehr auf 14b-base (9.0 GB), ohne
-    -- dedizierte GPU auf 3b-base (1.9 GB) -- Ghost-Text lebt von Latenz, nicht
-    -- von Parametern. Vorher `ollama pull qwen2.5-coder:7b-base`.
+    --
+    -- Ollama laeuft dort auf der CPU, und da limitiert die Speicherbandbreite,
+    -- nicht der RAM: ein 4.7-GB-Modell (7b) deckelt auf dual-channel DDR5 rein
+    -- arithmetisch bei ~19 tok/s, real darunter -- die 64 Tokens einer Completion
+    -- braeuchten Sekunden. 1.5b-base (~1 GB) bleibt im nutzbaren Bereich. Laeuft
+    -- es fluessig, ist 3b-base der naechste Schritt; ein groesseres Modell lohnt
+    -- erst mit GPU. Vorher `ollama pull qwen2.5-coder:1.5b-base`.
     local backend = vim.fn.has 'mac' == 1
         and {
           name = 'LM Studio Local',
           end_point = 'http://localhost:1234/v1/completions',
           model = 'jolovicdev/qwen2.5-coder-1.5b-lf-fim-heavy',
+          context_window = backend.context_window,
+          -- Metal rechnet den RAG-Prompt nebenbei mit
+          rag = true,
         }
       or {
-        name = 'Ollama Local',
+        name = 'Ollama Local (CPU)',
         end_point = 'http://localhost:11434/v1/completions',
-        model = 'qwen2.5-coder:7b-base',
+        model = 'qwen2.5-coder:1.5b-base',
+        -- kleineres Fenster: auf CPU kostet schon das Prompt-Processing spuerbar
+        context_window = 512,
+        -- und genau deshalb kein RAG: bis zu 8000 Zeichen extra vor jeder
+        -- Anfrage dominieren auf der CPU die Antwortzeit
+        rag = false,
       }
 
     local rag_ignore_ft = { 'yaml', 'json', 'toml', 'terraform', 'hcl', 'helm' }
@@ -43,7 +55,7 @@ return {
       throttle = 1000,
       debounce = 500,
       n_completions = 1,
-      context_window = 1024,
+      context_window = backend.context_window,
       provider_options = {
         openai_fim_compatible = {
           model = backend.model,
@@ -54,7 +66,7 @@ return {
           template = {
             prompt = function(pref, suff, _)
               local prompt_message = ''
-              local use_rag = has_vc and vectorcode_cacher and not vim.tbl_contains(rag_ignore_ft, vim.bo.filetype)
+              local use_rag = backend.rag and has_vc and vectorcode_cacher and not vim.tbl_contains(rag_ignore_ft, vim.bo.filetype)
               if use_rag then
                 for _, file in ipairs(vectorcode_cacher.query_from_cache(0)) do
                   prompt_message = prompt_message .. '<|file_sep|>' .. file.path .. '\n' .. file.document
