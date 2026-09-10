@@ -12,6 +12,28 @@ return {
     end
     local RAG_Context_Window_Size = 8000
 
+    -- Zwei Rechner, zwei lokale Backends: LM Studio auf dem Mac, Ollama auf der
+    -- Linux-Workstation. Vorher stand hier fest der LM-Studio-Endpoint, auf Linux
+    -- lief die Completion damit still ins Leere -- ohne Fehler, einfach ohne
+    -- Vorschlaege.
+    --
+    -- FIM braucht die -base-Modelle: die -instruct-Varianten sind auf Chat
+    -- getrimmt, und qwen3-coder hat gar keine base-Variante und faengt bei 30B an.
+    -- 7b-base (4.7 GB) passt in 8 GB VRAM; bei mehr auf 14b-base (9.0 GB), ohne
+    -- dedizierte GPU auf 3b-base (1.9 GB) -- Ghost-Text lebt von Latenz, nicht
+    -- von Parametern. Vorher `ollama pull qwen2.5-coder:7b-base`.
+    local backend = vim.fn.has 'mac' == 1
+        and {
+          name = 'LM Studio Local',
+          end_point = 'http://localhost:1234/v1/completions',
+          model = 'jolovicdev/qwen2.5-coder-1.5b-lf-fim-heavy',
+        }
+      or {
+        name = 'Ollama Local',
+        end_point = 'http://localhost:11434/v1/completions',
+        model = 'qwen2.5-coder:7b-base',
+      }
+
     local rag_ignore_ft = { 'yaml', 'json', 'toml', 'terraform', 'hcl', 'helm' }
 
     require('minuet').setup {
@@ -24,11 +46,11 @@ return {
       context_window = 1024,
       provider_options = {
         openai_fim_compatible = {
-          model = 'jolovicdev/qwen2.5-coder-1.5b-lf-fim-heavy',
-          end_point = 'http://localhost:1234/v1/completions',
+          model = backend.model,
+          end_point = backend.end_point,
           stream = false,
           api_key = 'TERM',
-          name = 'LM Studio Local',
+          name = backend.name,
           template = {
             prompt = function(pref, suff, _)
               local prompt_message = ''
