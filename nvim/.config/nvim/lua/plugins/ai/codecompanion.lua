@@ -18,6 +18,32 @@ local continue_config = {
 -- Ergebnis bleibt im Speicher und wird nie irgendwo hingeschrieben.
 local continue_entry, continue_failed
 
+-- `yq` ist der Name zweier unabhaengiger Programme: die Go-Variante (mikefarah,
+-- via Homebrew) braucht -o=json, die Python-Variante (kislyuk, in vielen
+-- Distributionen) kennt das Flag nicht und gibt ohnehin JSON aus. Welche auf
+-- einem Rechner liegt, ist von hier aus nicht feststellbar -- also beide
+-- Aufrufe probieren und den ersten nehmen, der verwertbares JSON liefert.
+local continue_last_error = ''
+
+local function continue_json()
+  for _, argv in ipairs {
+    { 'yq', '-o=json', '.', continue_config.path },
+    { 'yq', '.', continue_config.path },
+  } do
+    local out = vim.fn.system(argv)
+    if vim.v.shell_error == 0 then
+      local ok, parsed = pcall(vim.json.decode, out)
+      if ok and type(parsed) == 'table' then
+        return parsed
+      end
+      continue_last_error = 'Ausgabe von `' .. table.concat(argv, ' ') .. '` ist kein JSON-Objekt'
+    else
+      continue_last_error = vim.trim(out)
+    end
+  end
+  return nil
+end
+
 local function continue_fail(msg)
   continue_failed = true
   vim.notify('CodeCompanion/Continue: ' .. msg, vim.log.levels.ERROR)
@@ -36,12 +62,11 @@ local function continue_model()
   if vim.fn.filereadable(continue_config.path) == 0 then
     return continue_fail(continue_config.path .. ' ist nicht lesbar')
   end
-  local out = vim.fn.system { 'yq', '-o=json', '.', continue_config.path }
-  if vim.v.shell_error ~= 0 then
-    return continue_fail('yq konnte ' .. continue_config.path .. ' nicht lesen: ' .. vim.trim(out))
+  local parsed = continue_json()
+  if not parsed then
+    return continue_fail('kein yq-Aufruf lieferte JSON aus ' .. continue_config.path .. ' (zuletzt: ' .. continue_last_error .. ')')
   end
-  local ok, parsed = pcall(vim.json.decode, out)
-  if not ok or type(parsed) ~= 'table' or type(parsed.models) ~= 'table' then
+  if type(parsed.models) ~= 'table' then
     return continue_fail(continue_config.path .. ' enthaelt keine models-Liste')
   end
   local seen = {}
