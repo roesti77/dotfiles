@@ -1,3 +1,37 @@
+-- Continue (hub.continue.dev) als dritter Chat-Adapter. Anders als claude_code
+-- und cursor_cli kein ACP-Preset: Continues CLI (`cn`) kennt keinen ACP-Modus.
+-- Der Hub bietet stattdessen einen OpenAI-kompatiblen Model-Proxy -- denselben,
+-- den Continues eigenes SDK anspricht.
+--
+-- Ohne die beiden ersten Werte laeuft der Adapter nicht:
+local continue_config = {
+  -- Vierteiliger Name owner/package/provider/model, z.B.
+  -- 'continuedev/default/anthropic/claude-3-haiku-20240307'. Eine blosse
+  -- Modell-ID loest nicht auf -- der Proxy liest den Upstream-Provider daraus.
+  model = 'FILL-IN-owner/package/provider/model',
+
+  -- Name der Umgebungsvariable mit dem Hub-API-Key (hub.continue.dev ->
+  -- Settings -> API Keys). CodeCompanion nimmt hier auch 'cmd:op read op://...'
+  -- oder eine Funktion, die den Key liefert -- nie den Key selbst, das Repo ist
+  -- oeffentlich.
+  api_key = 'CONTINUE_API_KEY',
+
+  -- Beide optional, nil ist der Normalfall: org_scope_id nur bei einem
+  -- Org-Assistant, api_key_location nur, wenn der Upstream-Key selbst
+  -- hinterlegt ist (etwa 'env.ANTHROPIC_API_KEY'). Continue wertet eine
+  -- Konfiguration ohne beides ausdruecklich als gueltig.
+  org_scope_id = nil,
+  api_key_location = nil,
+}
+
+-- Spiegelt extraBodyProperties() von Continues continue-proxy-Provider: der
+-- Proxy erwartet das Objekt in jedem Request-Body. vim.NIL haelt orgScopeId als
+-- explizites JSON-null drin, statt den Schluessel wegfallen zu lassen.
+local continue_properties = {
+  orgScopeId = continue_config.org_scope_id or vim.NIL,
+  apiKeyLocation = continue_config.api_key_location,
+}
+
 return {
   'olimorris/codecompanion.nvim',
   dependencies = {
@@ -20,6 +54,29 @@ return {
   opts = {
     adapters = {
       http = {
+        -- Eigener Adapter statt eines extend-Eintrags: openai_compatible ist
+        -- eine Vorlage zum Ableiten, kein Preset, das hier ueberschrieben wuerde.
+        continue = function()
+          return require('codecompanion.adapters').extend('openai_compatible', {
+            name = 'continue',
+            formatted_name = 'Continue',
+            env = {
+              api_key = continue_config.api_key,
+              url = 'https://api.continue.dev',
+              chat_url = '/model-proxy/v1/chat/completions',
+              models_endpoint = '/model-proxy/v1/models',
+            },
+            -- Wird in jeden Request-Body gemergt.
+            body = {
+              continueProperties = continue_properties,
+            },
+            schema = {
+              -- Gepinnt, damit CodeCompanion fuer den Default nicht erst
+              -- models_endpoint abfragen muss.
+              model = { default = continue_config.model },
+            },
+          })
+        end,
         extend = {
           ollama = {
             -- Muss gepinnt werden: auf der Linux-Kiste liegt fuers FIM ein
@@ -101,6 +158,7 @@ return {
     { '<C-.>', '<cmd>CodeCompanionChat Toggle<cr>', desc = 'CodeCompanion: Toggle chat', mode = { 'n', 'v' } },
     { '<leader>aa', '<cmd>CodeCompanionChat Toggle<cr>', desc = 'AI: Toggle chat' },
     { '<leader>ac', '<cmd>CodeCompanionChat adapter=cursor_cli<cr>', desc = 'AI: Chat with Cursor CLI' },
+    { '<leader>ai', '<cmd>CodeCompanionChat adapter=continue<cr>', desc = 'AI: Chat with Continue' },
     { '<leader>ap', '<cmd>CodeCompanionActions<cr>', desc = 'AI: Action palette', mode = { 'n', 'v' } },
     { '<leader>as', '<cmd>CodeCompanionChat Add<cr>', desc = 'AI: Send selection to chat', mode = 'v' },
   },
