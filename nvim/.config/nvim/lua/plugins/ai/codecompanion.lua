@@ -1,37 +1,76 @@
--- Continue (hub.continue.dev) als dritter Chat-Adapter. Anders als claude_code
--- und cursor_cli kein ACP-Preset: Continues CLI (`cn`) kennt keinen ACP-Modus.
--- Der Hub bietet stattdessen einen OpenAI-kompatiblen Model-Proxy -- denselben,
--- den Continues eigenes SDK anspricht.
+-- Continue als dritter Chat-Adapter. Anders als claude_code und cursor_cli kein
+-- ACP-Preset: Continues CLI (`cn`) kennt keinen ACP-Modus. Angesprochen wird der
+-- OpenAI-kompatible Endpoint, auf den die apiBase des Modells zeigt -- hier ein
+-- LLM-Gateway.
 --
--- Ohne die beiden ersten Werte laeuft der Adapter nicht:
+-- Endpoint, Key und Modell-ID stehen bewusst NICHT in dieser Datei: sie kommen
+-- aus Continues eigener config.yaml ausserhalb des Repos. Das Repo ist
+-- oeffentlich und die Konfiguration dahinter gehoert dem Kunden -- getrackt sind
+-- darum nur Pfad und Eintragsname.
 local continue_config = {
-  -- Vierteiliger Name owner/package/provider/model, z.B.
-  -- 'continuedev/default/anthropic/claude-3-haiku-20240307'. Eine blosse
-  -- Modell-ID loest nicht auf -- der Proxy liest den Upstream-Provider daraus.
-  model = 'FILL-IN-owner/package/provider/model',
-
-  -- Name der Umgebungsvariable mit dem Hub-API-Key (hub.continue.dev ->
-  -- Settings -> API Keys). CodeCompanion nimmt hier auch 'cmd:op read op://...'
-  -- oder eine Funktion, die den Key liefert -- nie den Key selbst, das Repo ist
-  -- oeffentlich.
-  api_key = 'CONTINUE_API_KEY',
-
-  -- Beide optional, nil ist der Normalfall: org_scope_id nur bei einem
-  -- Org-Assistant, api_key_location nur, wenn der Upstream-Key selbst
-  -- hinterlegt ist (etwa 'env.ANTHROPIC_API_KEY'). Continue wertet eine
-  -- Konfiguration ohne beides ausdruecklich als gueltig.
-  org_scope_id = nil,
-  api_key_location = nil,
+  path = vim.fn.expand '~/.continue/config.yaml',
+  -- Welcher models-Eintrag gilt. Verglichen wird gegen `name` und `model`, damit
+  -- beide Schreibweisen der Datei treffen.
+  entry = 'continue-code',
 }
 
--- Spiegelt extraBodyProperties() von Continues continue-proxy-Provider: der
--- Proxy erwartet das Objekt in jedem Request-Body. vim.NIL haelt orgScopeId als
--- explizites JSON-null drin, statt den Schluessel wegfallen zu lassen.
-local continue_properties = {
-  orgScopeId = continue_config.org_scope_id or vim.NIL,
-  apiKeyLocation = continue_config.api_key_location,
-}
+-- Gelesen wird per yq, statt eine YAML-Bibliothek nach nvim zu holen. Das
+-- Ergebnis bleibt im Speicher und wird nie irgendwo hingeschrieben.
+local continue_entry, continue_failed
 
+local function continue_fail(msg)
+  continue_failed = true
+  vim.notify('CodeCompanion/Continue: ' .. msg, vim.log.levels.ERROR)
+  return nil
+end
+
+-- Liest den Modell-Eintrag aus der config.yaml. Ein Fehler wird einmal gemeldet
+-- und dann gemerkt -- sonst kaeme die Meldung bei jedem Feldzugriff erneut.
+local function continue_model()
+  if continue_entry or continue_failed then
+    return continue_entry
+  end
+  if vim.fn.executable 'yq' == 0 then
+    return continue_fail 'yq liegt nicht im PATH, ohne das laesst sich die config.yaml nicht lesen'
+  end
+  if vim.fn.filereadable(continue_config.path) == 0 then
+    return continue_fail(continue_config.path .. ' ist nicht lesbar')
+  end
+  local out = vim.fn.system { 'yq', '-o=json', '.', continue_config.path }
+  if vim.v.shell_error ~= 0 then
+    return continue_fail('yq konnte ' .. continue_config.path .. ' nicht lesen: ' .. vim.trim(out))
+  end
+  local ok, parsed = pcall(vim.json.decode, out)
+  if not ok or type(parsed) ~= 'table' or type(parsed.models) ~= 'table' then
+    return continue_fail(continue_config.path .. ' enthaelt keine models-Liste')
+  end
+  local seen = {}
+  for _, model in ipairs(parsed.models) do
+    if model.name == continue_config.entry or model.model == continue_config.entry then
+      continue_entry = model
+      return model
+    end
+    table.insert(seen, model.name or model.model or '?')
+  end
+  return continue_fail(("kein models-Eintrag '%s' in %s -- vorhanden: %s"):format(continue_config.entry, continue_config.path, table.concat(seen, ', ')))
+end
+
+-- apiBase ohne Schraegstrich am Ende; leer, solange der Eintrag fehlt.
+local function continue_base()
+  local model = continue_model()
+  if not model or type(model.apiBase) ~= 'string' then
+    return ''
+  end
+  return (model.apiBase:gsub('/+$', ''))
+end
+
+-- Continues Konvention ist eine apiBase samt /v1. Fehlt es, ergaenzen wir es,
+-- damit auch eine Gateway-URL ohne Versionssegment funktioniert.
+local function continue_path(suffix)
+  return function()
+    return (continue_base():match '/v1$' and '' or '/v1') .. suffix
+  end
+end
 return {
   'olimorris/codecompanion.nvim',
   dependencies = {
@@ -61,19 +100,23 @@ return {
             name = 'continue',
             formatted_name = 'Continue',
             env = {
-              api_key = continue_config.api_key,
-              url = 'https://api.continue.dev',
-              chat_url = '/model-proxy/v1/chat/completions',
-              models_endpoint = '/model-proxy/v1/models',
-            },
-            -- Wird in jeden Request-Body gemergt.
-            body = {
-              continueProperties = continue_properties,
+              api_key = function()
+                local model = continue_model()
+                return model and model.apiKey or ''
+              end,
+              url = continue_base,
+              chat_url = continue_path '/chat/completions',
+              models_endpoint = continue_path '/models',
             },
             schema = {
               -- Gepinnt, damit CodeCompanion fuer den Default nicht erst
               -- models_endpoint abfragen muss.
-              model = { default = continue_config.model },
+              model = {
+                default = function()
+                  local model = continue_model()
+                  return model and (model.model or model.name) or ''
+                end,
+              },
             },
           })
         end,
