@@ -31,7 +31,7 @@ return {
           name = 'LM Studio Local',
           end_point = 'http://localhost:1234/v1/completions',
           model = 'jolovicdev/qwen2.5-coder-1.5b-lf-fim-heavy',
-          context_window = backend.context_window,
+          context_window = 1024,
           -- Metal rechnet den RAG-Prompt nebenbei mit
           rag = true,
         }
