@@ -1,0 +1,8 @@
+#!/bin/sh
+# Bails out on an empty pick: piping nothing into wl-copy would wipe the clipboard.
+set -eu
+
+entry=$(cliphist list | fuzzel --dmenu --prompt 'clip> ') || exit 0
+[ -n "$entry" ] || exit 0
+
+printf '%s' "$entry" | cliphist decode | wl-copy

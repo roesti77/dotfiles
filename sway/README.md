@@ -21,8 +21,12 @@ symlinks.
 sudo apt install sway swayidle swaylock swaybg waybar fuzzel mako-notifier \
   grim slurp wl-clipboard jq brightnessctl playerctl wireplumber pavucontrol \
   network-manager-gnome xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
-  fonts-hack qt6ct adwaita-icon-theme
+  fonts-hack qt6ct adwaita-icon-theme qalc
 ```
+
+`cliphist` (clipboard history) is not in the apt repos on every release — check with
+`apt-cache policy cliphist` and fall back to the upstream release if it comes back
+empty.
 
 Ghostty is not in the apt repos — install it from the upstream Linux builds.
 `sway --validate` checks the config without starting a session.
@@ -94,6 +98,9 @@ modifier had on the mac.
 | `Super+Tab` / `Super+n` / `Super+p` | last / next / previous workspace |
 | `Super+f` / `Super+e` / `Super+w` | fullscreen / toggle split / tabbed |
 | `Super+Shift+space` | float toggle |
+| `Super+Shift+v` | clipboard history |
+| `Super+Shift+w` | jump to any window |
+| `Super+c` | calculator |
 | `Super+Shift+s` / `Print` | region / full screenshot to clipboard |
 | `Super+Shift+c` / `Super+Shift+e` | reload config / exit sway |
 
@@ -102,6 +109,22 @@ to place ghostty next to the browser.
 
 `Super+Shift+1..9` has no keypad twin — `Shift` flips the numlock keysyms
 (`KP_1` becomes `KP_End`), so moving windows stays on the number row.
+
+## The raycast pieces
+
+Raycast has no linux counterpart, so its parts are split across fuzzel and two
+scripts:
+
+- `Super+space` — app launcher.
+- `Super+Shift+v` — clipboard history through `cliphist`. The daemon that fills it
+  is the `wl-paste --watch` line in the config.
+- `Super+Shift+w` — fuzzy-jump to a window, the same move `room` makes inside
+  zellij, one level up.
+
+The calculator is the exception: it opens `qalc` in a floating ghostty rather than
+in fuzzel. Fuzzel's dmenu mode only returns entries that exist in its list, so a
+calculator prompt would need a live-eval hook it does not have — and an interactive
+qalc keeps its history and unit conversions on top.
 
 ## Laptop specifics
 
