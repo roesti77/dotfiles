@@ -60,6 +60,23 @@ To give the built-in keyboard `de` as its default while the Corne stays on `us`,
 fill in the commented `input` block with the identifier from
 `swaymsg -t get_inputs`.
 
+## Umlauts
+
+The mac's `alt+u` dead key is a macOS feature of the US layout — it has no linux
+equivalent, which is why KDE could not reproduce it. Three ways out, all wired up:
+
+- **AltGr** — the `altgr-intl` variant puts `ä ö ü ß` on `AltGr+q/p/y/s`. Two keys,
+  no layout switch, and the base layer keeps its dead-key-free `'` and `"` for
+  writing code. On the Corne AltGr is the `i` home-row mod.
+- **Compose** — `Menu`, then `"`, then the vowel. Slower, but it covers every
+  accent, dash and `€` in any layout.
+- **`Caps`** — switches the whole keyboard to `de`, where the umlauts sit on their
+  own keys.
+
+The Corne's `TD(10)` hold still sends `LALT(KC_U)`, which does nothing on linux.
+Remapping it to `KC_RALT` in Vial puts AltGr under the same key the umlaut
+modifier had on the mac.
+
 ## Bindings
 
 | Key | Action |
