@@ -28,7 +28,7 @@ gaps inner 6
 smart_borders on
 focus_follows_mouse no
 output * background $base solid_color
-seat seat0 xcursor_theme Adwaita 24
+seat seat0 xcursor_theme breeze_cursors 24
 
 # us first so the Corne types correctly without touching anything; caps toggles to
 # de because Alt+Shift would fire on every Hyper/MEH chord the Corne sends.
@@ -164,14 +164,13 @@ bindsym --locked XF86AudioPrev exec playerctl previous
 # screen sharing in meeting apps picks the wrong backend.
 exec dbus-update-activation-environment --systemd XDG_CURRENT_DESKTOP=sway WAYLAND_DISPLAY SWAYSOCK DISPLAY
 
-# Sway launches nothing but what this config lists, so without an explicit start
-# there is no secret service on the bus and nothing can persist a credential.
-# The daemon registers over dbus, so it hands no environment back to sway.
-exec gnome-keyring-daemon --start --components=secrets
+# No keyring exec: kwalletd is dbus-activated through the service file that
+# scripts/bootstrap writes, and pam_kwallet already unlocked it at the display
+# manager — whichever session started afterwards.
 
 exec_always gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-exec_always gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
-exec_always gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
+exec_always gsettings set org.gnome.desktop.interface gtk-theme 'Breeze-Dark'
+exec_always gsettings set org.gnome.desktop.interface icon-theme 'breeze-dark'
 # The trailing colon puts every button on the left, the way macOS has them.
 exec_always gsettings set org.gnome.desktop.wm.preferences button-layout 'close,minimize,maximize:'
 
