@@ -163,8 +163,16 @@ bindsym --locked XF86AudioPrev exec playerctl previous
 # screen sharing in meeting apps picks the wrong backend.
 exec dbus-update-activation-environment --systemd XDG_CURRENT_DESKTOP=sway WAYLAND_DISPLAY SWAYSOCK DISPLAY
 
+# Sway launches nothing but what this config lists, so without an explicit start
+# there is no secret service on the bus and nothing can persist a credential.
+# The daemon registers over dbus, so it hands no environment back to sway.
+exec gnome-keyring-daemon --start --components=secrets
+
 exec_always gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 exec_always gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+exec_always gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
+# The trailing colon puts every button on the left, the way macOS has them.
+exec_always gsettings set org.gnome.desktop.wm.preferences button-layout 'close,minimize,maximize:'
 
 exec wl-paste --watch cliphist store
 exec waybar

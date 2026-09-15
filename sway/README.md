@@ -21,7 +21,7 @@ symlinks.
 sudo apt install sway swayidle swaylock swaybg waybar fuzzel mako-notifier \
   grim slurp wl-clipboard jq brightnessctl playerctl wireplumber pavucontrol \
   network-manager-gnome xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
-  fonts-hack qt6ct adwaita-icon-theme qalc
+  fonts-hack qt6ct adwaita-icon-theme qalc gnome-keyring papirus-icon-theme
 ```
 
 `cliphist` (clipboard history) is not in the apt repos on every release — check with
@@ -125,6 +125,37 @@ The calculator is the exception: it opens `qalc` in a floating ghostty rather th
 in fuzzel. Fuzzel's dmenu mode only returns entries that exist in its list, so a
 calculator prompt would need a live-eval hook it does not have — and an interactive
 qalc keeps its history and unit conversions on top.
+
+## Session services
+
+KDE and GNOME start a pile of services behind your back; sway starts nothing that
+is not in its config. The one that actually matters is **gnome-keyring**: without
+a secret service on the bus, browsers, chat clients and SSO flows fail to store
+credentials — silently, which makes it an annoying thing to debug.
+
+The config starts the daemon, but the keyring stays locked until something unlocks
+it. For that PAM has to do it at login:
+
+```
+session optional pam_gnome_keyring.so auto_start
+```
+
+in `/etc/pam.d/sddm` (or whichever display manager is in use), plus
+`auth optional pam_gnome_keyring.so` in the same file.
+
+## Corporate tooling
+
+- **Kerberos** is unaffected by the window manager. It hangs off PAM, SSSD and
+  `krb5.conf`, so a session started from the same display manager gets the same
+  ticket. `klist` after login is the whole test.
+- **Tray-based VPN and proxy clients** are the part to verify before relying on
+  this session. Waybar's tray implements StatusNotifierItem; clients that still use
+  the legacy XEmbed tray show no icon — under any wayland session, GNOME included.
+  If the icon is missing, the daemon is usually still running and reachable from
+  the CLI.
+
+Keep the old desktop installed and pick sway as a second session in the display
+manager until both have been checked on the machine.
 
 ## Laptop specifics
 
