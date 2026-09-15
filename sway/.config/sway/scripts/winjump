@@ -1,0 +1,11 @@
+#!/bin/sh
+# Fuzzy-jump to any window, the same move room makes one level down inside zellij.
+set -eu
+
+entry=$(swaymsg -t get_tree \
+    | jq -r '.. | objects | select(.pid? and .name?)
+        | "\(.id)\t\(.app_id // .window_properties.class // "?")  \(.name)"' \
+    | fuzzel --dmenu --prompt 'win> ') || exit 0
+[ -n "$entry" ] || exit 0
+
+swaymsg "[con_id=$(printf '%s' "$entry" | cut -f1)] focus"

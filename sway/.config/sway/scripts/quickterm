@@ -1,0 +1,15 @@
+#!/bin/sh
+# Ghostty's quick terminal is macOS-only, so the sway scratchpad stands in for the
+# cmd+F12 drop-down window of the mac setup.
+set -eu
+
+app_id="com.mitchellh.ghostty.quickterm"
+
+if swaymsg -t get_tree \
+    | jq -e --arg id "$app_id" \
+        '[recurse(.nodes[]?, .floating_nodes[]?) | select(.app_id == $id)] | length > 0' \
+        >/dev/null; then
+    swaymsg "[app_id=\"$app_id\"] scratchpad show"
+else
+    ghostty --class="$app_id"
+fi
