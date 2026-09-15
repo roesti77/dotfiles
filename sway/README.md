@@ -8,40 +8,48 @@ One stow package holds sway, waybar, mako, fuzzel and swaylock. They only work a
 one session — splitting them into five packages would mean five `stow` calls for a
 single desktop.
 
-```sh
-stow sway          # or: task setup-linux
-```
-
-`task setup` deliberately leaves this out — on the mac it would only create dead
-symlinks.
-
 ## Install
 
 ```sh
-sudo apt install sway swayidle swaylock swaybg waybar fuzzel mako-notifier \
-  grim slurp wl-clipboard jq brightnessctl playerctl wireplumber pavucontrol \
-  network-manager-gnome xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
-  fonts-hack qt6ct adwaita-icon-theme qalc gnome-keyring papirus-icon-theme
+task setup-linux
 ```
 
-`cliphist` (clipboard history) is not in the apt repos on every release — check with
-`apt-cache policy cliphist` and fall back to the upstream release if it comes back
-empty.
+That stows the package and runs `scripts/bootstrap`, which installs the apt
+packages, wires KWallet up as the secret service and validates the config. It is
+idempotent — re-run it whenever something changed.
 
-Ghostty is not in the apt repos — install it from the upstream Linux builds.
-`sway --validate` checks the config without starting a session.
+`task setup` deliberately leaves this out; on the mac it would only create dead
+symlinks.
 
-Sway cannot export variables into the session, so the theming and wayland hints go
-into `~/.profile`:
+Two things bootstrap cannot install, and warns about instead: **ghostty** has no
+apt package (upstream linux builds), and **cliphist** is missing from the repos on
+some releases (`apt-cache policy cliphist`, otherwise the upstream release).
+
+Sway cannot export variables into its own session, so these go into `~/.profile`:
 
 ```sh
 export XDG_CURRENT_DESKTOP=sway
-export QT_QPA_PLATFORMTHEME=qt6ct   # qt/kde apps follow a dark theme
+export QT_QPA_PLATFORMTHEME=kde     # qt apps read kdeglobals, so breeze applies
 export MOZ_ENABLE_WAYLAND=1
 export _JAVA_AWT_WM_NONREPARENTING=1
 ```
 
-GTK apps are switched to dark by the two `gsettings` lines in the config itself.
+If qt apps come up unstyled, `qt6ct` is the fallback — install it and point
+`QT_QPA_PLATFORMTHEME` at it instead.
+
+## What comes from KDE, and what cannot
+
+This runs on a machine that already has KDE, so the rule is: standalone KDE
+services are reused, anything living inside plasmashell or KWin is replaced.
+
+| Piece | Used | Why |
+|---|---|---|
+| Secret service | KWallet | credentials are already in it |
+| Icons, GTK theme | Breeze | already installed, matches the KDE apps |
+| Portal, dialogs | `xdg-desktop-portal-kde` | already installed |
+| Portal, screencast | `xdg-desktop-portal-wlr` | the KDE portal screencasts over KWin protocols sway does not speak |
+| Network tray | `nm-applet` | plasma-nm is a plasmashell widget, not a tray program |
+| Notifications | `mako` | plasma notifications come out of plasmashell |
 
 ## Keyboard
 
@@ -127,22 +135,21 @@ in fuzzel. Fuzzel's dmenu mode only returns entries that exist in its list, so a
 calculator prompt would need a live-eval hook it does not have — and an interactive
 qalc keeps its history and unit conversions on top.
 
-## Session services
+## Secret service
 
-KDE and GNOME start a pile of services behind your back; sway starts nothing that
-is not in its config. The one that actually matters is **gnome-keyring**: without
-a secret service on the bus, browsers, chat clients and SSO flows fail to store
-credentials — silently, which makes it an annoying thing to debug.
+Sway starts nothing that is not in its config, and without a secret service on the
+bus browsers, chat clients and SSO flows fail to store credentials — silently,
+which makes it an annoying thing to debug.
 
-The config starts the daemon, but the keyring stays locked until something unlocks
-it. For that PAM has to do it at login:
+KWallet covers this. It serves `org.freedesktop.secrets` since KDE Frameworks 5.97
+and runs fine without plasma, but it ships no dbus service file for that interface,
+so nothing finds it until one exists. `scripts/bootstrap` writes it to
+`~/.local/share/dbus-1/services/`. The checkbox under
+*System Settings > KDE Wallet > Use KWallet for the Secret Service interface* does
+the same thing.
 
-```
-session optional pam_gnome_keyring.so auto_start
-```
-
-in `/etc/pam.d/sddm` (or whichever display manager is in use), plus
-`auth optional pam_gnome_keyring.so` in the same file.
+No unlock handling is needed here: `pam_kwallet` already runs at the display
+manager, so the wallet is open before sway starts.
 
 ## Corporate tooling
 

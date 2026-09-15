@@ -1,0 +1,39 @@
+#!/bin/sh
+# Idempotent: re-run it after a config change or on a second machine.
+set -eu
+
+sudo apt install -y \
+    sway swayidle swaylock swaybg waybar fuzzel mako-notifier \
+    grim slurp wl-clipboard jq brightnessctl playerctl wireplumber pavucontrol \
+    network-manager-gnome xdg-desktop-portal-wlr xdg-desktop-portal-kde \
+    breeze-gtk-theme fonts-hack qalc
+
+kwalletd=""
+for candidate in /usr/bin/kwalletd6 /usr/bin/kwalletd5; do
+    if [ -x "$candidate" ]; then
+        kwalletd="$candidate"
+        break
+    fi
+done
+
+# KWallet ships no service file for the secret service interface, so libsecret
+# clients find no provider until this exists. The alternative is the checkbox in
+# System Settings > KDE Wallet, which does the same thing.
+if [ -n "$kwalletd" ]; then
+    services="$HOME/.local/share/dbus-1/services"
+    mkdir -p "$services"
+    cat > "$services/org.freedesktop.secrets.service" <<SERVICE
+[D-BUS Service]
+Name=org.freedesktop.secrets
+Exec=$kwalletd
+SERVICE
+    echo "secret service -> $kwalletd"
+else
+    echo "WARNING: no kwalletd found, nothing will store credentials"
+fi
+
+command -v ghostty >/dev/null || echo "WARNING: ghostty missing, it has no apt package"
+command -v cliphist >/dev/null || echo "WARNING: cliphist missing, no clipboard history"
+
+sway --validate "$HOME/.config/sway/config"
+echo "Done. Log out and pick sway in the session menu."

@@ -15,9 +15,10 @@ tasks:
       - stow cursor
 
   setup-linux:
-    desc: stow the sway wayland session (linux only)
+    desc: install and stow the sway wayland session (linux only)
     cmds:
       - stow sway
+      - ./sway/.config/sway/scripts/bootstrap
 
   check:
     desc: validate claude + cursor config (JSON + shell syntax)
