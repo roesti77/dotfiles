@@ -77,7 +77,6 @@ bindsym $mod+Return exec $term
 bindsym $mod+F12 exec ~/.config/sway/scripts/quickterm
 bindsym $mod+space exec $menu
 bindsym $mod+Shift+v exec ~/.config/sway/scripts/clip
-bindsym $mod+Shift+w exec ~/.config/sway/scripts/winjump
 bindsym $mod+c exec $term --class=$calc -e qalc
 bindsym $mod+q kill
 bindsym $mod+Escape exec $lock
@@ -110,7 +109,9 @@ bindsym $mod+e layout toggle split
 bindsym $mod+w layout tabbed
 bindsym $mod+Shift+space floating toggle
 
-bindsym $mod+Tab workspace back_and_forth
+# Tab switches windows, not workspaces: that is where the cmd+tab reflex lands.
+bindsym $mod+Tab exec ~/.config/sway/scripts/winjump
+bindsym $mod+grave workspace back_and_forth
 bindsym $mod+n workspace next_on_output
 bindsym $mod+p workspace prev_on_output
 

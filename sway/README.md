@@ -95,11 +95,11 @@ modifier had on the mac.
 | `Super+Control+h/j/k/l` | resize window |
 | `Super+1..9` | workspace (also on the keypad codes of the Corne) |
 | `Super+Shift+1..9` | move window to workspace |
-| `Super+Tab` / `Super+n` / `Super+p` | last / next / previous workspace |
+| `Super+Tab` | jump to any window |
+| `Super+grave` / `Super+n` / `Super+p` | last / next / previous workspace |
 | `Super+f` / `Super+e` / `Super+w` | fullscreen / toggle split / tabbed |
 | `Super+Shift+space` | float toggle |
 | `Super+Shift+v` | clipboard history |
-| `Super+Shift+w` | jump to any window |
 | `Super+c` | calculator |
 | `Super+Shift+s` / `Print` | region / full screenshot to clipboard |
 | `Super+Shift+c` / `Super+Shift+e` | reload config / exit sway |
@@ -118,8 +118,9 @@ scripts:
 - `Super+space` — app launcher.
 - `Super+Shift+v` — clipboard history through `cliphist`. The daemon that fills it
   is the `wl-paste --watch` line in the config.
-- `Super+Shift+w` — fuzzy-jump to a window, the same move `room` makes inside
-  zellij, one level up.
+- `Super+Tab` — fuzzy-jump to a window, the same move `room` makes inside zellij,
+  one level up. It sits on Tab because that is where the mac's cmd+tab reflex
+  lands; `back_and_forth` moved to `Super+grave`.
 
 The calculator is the exception: it opens `qalc` in a floating ghostty rather than
 in fuzzel. Fuzzel's dmenu mode only returns entries that exist in its list, so a
