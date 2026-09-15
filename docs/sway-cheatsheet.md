@@ -10,10 +10,11 @@ out of each other's way — except at the four keys listed at the bottom.
 | sway | `Super` | `s` / `e` home-row mod | windows, workspaces, launching |
 | zellij | `Ctrl` | `a` / `o` home-row mod | modes, panes, tabs |
 | nvim | `Space` | left thumb | everything inside the editor |
-| — | MEH, Hyper | Esc-hold, Tab-hold | unused, see below |
+| — | Hyper | Tab-hold | lock screen, nothing else |
+| — | MEH | Esc-hold | unused, reserved for zellij |
 
 On the mac MEH exists because the terminal swallows `Cmd`. Under sway nothing
-competes for `Super`, so MEH stayed with zellij and Hyper was left free.
+competes for `Super`, so MEH stayed reserved for zellij.
 
 `Super` is the same key and the same HID code macOS calls Command.
 
@@ -68,7 +69,7 @@ ghostty next to the browser.
 
 | Key | Action |
 |---|---|
-| `Super+Escape` | lock |
+| `Hyper+l` | lock — Tab-hold then `l` on the Corne |
 | `Super+d` / `Super+Shift+d` | dismiss one / all notifications |
 | `Super+Shift+s` | screenshot a region to the clipboard |
 | `Print` | whole screen to the clipboard |
