@@ -5,9 +5,11 @@ set $lock swaylock -f
 set $quickterm com.mitchellh.ghostty.quickterm
 set $calc com.mitchellh.ghostty.calc
 
-# MEH (Control+Shift+Mod1) and Hyper stay unbound on purpose: MEH is zellij's
-# modifier, and Super is already collision-free under sway — unlike Cmd on the mac,
-# no terminal swallows it.
+set $hyper Mod4+Control+Mod1+Shift
+
+# MEH (Control+Shift+Mod1) stays unbound on purpose: that one is zellij's modifier.
+# Super carries the window manager because nothing under sway competes for it —
+# unlike Cmd on the mac, no terminal swallows it. Hyper is the Corne's Tab-hold.
 
 set $base    #1e1e2e
 set $surface #313244
@@ -79,7 +81,7 @@ bindsym $mod+space exec $menu
 bindsym $mod+Shift+v exec ~/.config/sway/scripts/clip
 bindsym $mod+c exec $term --class=$calc -e qalc
 bindsym $mod+q kill
-bindsym $mod+Escape exec $lock
+bindsym $hyper+l exec $lock
 bindsym $mod+d exec makoctl dismiss
 bindsym $mod+Shift+d exec makoctl dismiss --all
 bindsym $mod+Shift+c reload
