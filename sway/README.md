@@ -21,7 +21,7 @@ symlinks.
 sudo apt install sway swayidle swaylock swaybg waybar fuzzel mako-notifier \
   grim slurp wl-clipboard jq brightnessctl playerctl wireplumber pavucontrol \
   network-manager-gnome xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
-  fonts-hack qt6ct adwaita-icon-theme qalc
+  fonts-hack qt6ct adwaita-icon-theme qalc gnome-keyring papirus-icon-theme
 ```
 
 `cliphist` (clipboard history) is not in the apt repos on every release — check with
@@ -95,11 +95,11 @@ modifier had on the mac.
 | `Super+Control+h/j/k/l` | resize window |
 | `Super+1..9` | workspace (also on the keypad codes of the Corne) |
 | `Super+Shift+1..9` | move window to workspace |
-| `Super+Tab` / `Super+n` / `Super+p` | last / next / previous workspace |
+| `Super+Tab` | jump to any window |
+| `Super+grave` / `Super+n` / `Super+p` | last / next / previous workspace |
 | `Super+f` / `Super+e` / `Super+w` | fullscreen / toggle split / tabbed |
 | `Super+Shift+space` | float toggle |
 | `Super+Shift+v` | clipboard history |
-| `Super+Shift+w` | jump to any window |
 | `Super+c` | calculator |
 | `Super+Shift+s` / `Print` | region / full screenshot to clipboard |
 | `Super+Shift+c` / `Super+Shift+e` | reload config / exit sway |
@@ -118,13 +118,45 @@ scripts:
 - `Super+space` — app launcher.
 - `Super+Shift+v` — clipboard history through `cliphist`. The daemon that fills it
   is the `wl-paste --watch` line in the config.
-- `Super+Shift+w` — fuzzy-jump to a window, the same move `room` makes inside
-  zellij, one level up.
+- `Super+Tab` — fuzzy-jump to a window, the same move `room` makes inside zellij,
+  one level up. It sits on Tab because that is where the mac's cmd+tab reflex
+  lands; `back_and_forth` moved to `Super+grave`.
 
 The calculator is the exception: it opens `qalc` in a floating ghostty rather than
 in fuzzel. Fuzzel's dmenu mode only returns entries that exist in its list, so a
 calculator prompt would need a live-eval hook it does not have — and an interactive
 qalc keeps its history and unit conversions on top.
+
+## Session services
+
+KDE and GNOME start a pile of services behind your back; sway starts nothing that
+is not in its config. The one that actually matters is **gnome-keyring**: without
+a secret service on the bus, browsers, chat clients and SSO flows fail to store
+credentials — silently, which makes it an annoying thing to debug.
+
+The config starts the daemon, but the keyring stays locked until something unlocks
+it. For that PAM has to do it at login:
+
+```
+session optional pam_gnome_keyring.so auto_start
+```
+
+in `/etc/pam.d/sddm` (or whichever display manager is in use), plus
+`auth optional pam_gnome_keyring.so` in the same file.
+
+## Corporate tooling
+
+- **Kerberos** is unaffected by the window manager. It hangs off PAM, SSSD and
+  `krb5.conf`, so a session started from the same display manager gets the same
+  ticket. `klist` after login is the whole test.
+- **Tray-based VPN and proxy clients** are the part to verify before relying on
+  this session. Waybar's tray implements StatusNotifierItem; clients that still use
+  the legacy XEmbed tray show no icon — under any wayland session, GNOME included.
+  If the icon is missing, the daemon is usually still running and reachable from
+  the CLI.
+
+Keep the old desktop installed and pick sway as a second session in the display
+manager until both have been checked on the machine.
 
 ## Laptop specifics
 

@@ -77,7 +77,6 @@ bindsym $mod+Return exec $term
 bindsym $mod+F12 exec ~/.config/sway/scripts/quickterm
 bindsym $mod+space exec $menu
 bindsym $mod+Shift+v exec ~/.config/sway/scripts/clip
-bindsym $mod+Shift+w exec ~/.config/sway/scripts/winjump
 bindsym $mod+c exec $term --class=$calc -e qalc
 bindsym $mod+q kill
 bindsym $mod+Escape exec $lock
@@ -110,7 +109,9 @@ bindsym $mod+e layout toggle split
 bindsym $mod+w layout tabbed
 bindsym $mod+Shift+space floating toggle
 
-bindsym $mod+Tab workspace back_and_forth
+# Tab switches windows, not workspaces: that is where the cmd+tab reflex lands.
+bindsym $mod+Tab exec ~/.config/sway/scripts/winjump
+bindsym $mod+grave workspace back_and_forth
 bindsym $mod+n workspace next_on_output
 bindsym $mod+p workspace prev_on_output
 
@@ -163,8 +164,16 @@ bindsym --locked XF86AudioPrev exec playerctl previous
 # screen sharing in meeting apps picks the wrong backend.
 exec dbus-update-activation-environment --systemd XDG_CURRENT_DESKTOP=sway WAYLAND_DISPLAY SWAYSOCK DISPLAY
 
+# Sway launches nothing but what this config lists, so without an explicit start
+# there is no secret service on the bus and nothing can persist a credential.
+# The daemon registers over dbus, so it hands no environment back to sway.
+exec gnome-keyring-daemon --start --components=secrets
+
 exec_always gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 exec_always gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+exec_always gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
+# The trailing colon puts every button on the left, the way macOS has them.
+exec_always gsettings set org.gnome.desktop.wm.preferences button-layout 'close,minimize,maximize:'
 
 exec wl-paste --watch cliphist store
 exec waybar
