@@ -35,5 +35,6 @@ fi
 command -v ghostty >/dev/null || echo "WARNING: ghostty missing, it has no apt package"
 command -v cliphist >/dev/null || echo "WARNING: cliphist missing, no clipboard history"
 
-sway --validate "$HOME/.config/sway/config"
+# -c is required: a positional path is parsed as an IPC command, not a config.
+sway --validate -c "$HOME/.config/sway/config"
 echo "Done. Log out and pick sway in the session menu."
