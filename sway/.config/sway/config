@@ -80,6 +80,8 @@ bindsym $mod+Shift+v exec ~/.config/sway/scripts/clip
 bindsym $mod+c exec $term --class=$calc -e qalc
 bindsym $mod+q kill
 bindsym $mod+Escape exec $lock
+bindsym $mod+d exec makoctl dismiss
+bindsym $mod+Shift+d exec makoctl dismiss --all
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+e exec swaynag -t warning -m 'Exit sway?' -B 'Yes' 'swaymsg exit'
 
