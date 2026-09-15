@@ -74,6 +74,12 @@ The essentials:
 Within a mode: pane mode `n/d/r` new panes, `f` fullscreen, `w` float, `x` close;
 tab mode `n` new, `x` close, `r` rename, `b` break pane.
 
+## Keybindings
+
+The full set across all three layers — sway, zellij and nvim — is in
+[sway-cheatsheet.md](./sway-cheatsheet.md), including the four keys zellij binds
+globally that therefore never reach nvim.
+
 ## Keyboard: Hyper / MEH (Corne)
 
 The Corne exposes a **Hyper** (Ctrl+Shift+Alt+Cmd) and a **MEH** (Ctrl+Shift+Alt)
