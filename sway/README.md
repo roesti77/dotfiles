@@ -91,26 +91,9 @@ modifier had on the mac.
 
 ## Bindings
 
-| Key | Action |
-|---|---|
-| `Super+Return` | ghostty (auto-starts zellij) |
-| `Super+F12` | drop-down terminal — same key as the mac quick terminal |
-| `Super+space` | fuzzel launcher |
-| `Super+q` | close window |
-| `Super+Escape` | lock screen |
-| `Super+h/j/k/l` | focus window |
-| `Super+Shift+h/j/k/l` | move window |
-| `Super+Control+h/j/k/l` | resize window |
-| `Super+1..9` | workspace (also on the keypad codes of the Corne) |
-| `Super+Shift+1..9` | move window to workspace |
-| `Super+Tab` | jump to any window |
-| `Super+grave` / `Super+n` / `Super+p` | last / next / previous workspace |
-| `Super+f` / `Super+e` / `Super+w` | fullscreen / toggle split / tabbed |
-| `Super+Shift+space` | float toggle |
-| `Super+Shift+v` | clipboard history |
-| `Super+c` | calculator |
-| `Super+Shift+s` / `Print` | region / full screenshot to clipboard |
-| `Super+Shift+c` / `Super+Shift+e` | reload config / exit sway |
+Every binding across sway, zellij and nvim lives in
+[docs/sway-cheatsheet.md](../docs/sway-cheatsheet.md) — one table per layer, so a
+rebind only has to be written down once. The rules worth knowing here:
 
 Splits and layouts stay shallow on purpose: panes are zellij's job, sway only has
 to place ghostty next to the browser.
