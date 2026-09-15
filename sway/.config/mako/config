@@ -1,0 +1,15 @@
+font=Hack 11
+background-color=#1e1e2eee
+text-color=#cdd6f4
+border-color=#89b4fa
+border-size=2
+border-radius=4
+padding=10
+margin=8
+default-timeout=5000
+anchor=top-right
+layer=overlay
+
+[urgency=critical]
+border-color=#f38ba8
+default-timeout=0
