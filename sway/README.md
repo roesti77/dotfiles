@@ -32,7 +32,15 @@ export XDG_CURRENT_DESKTOP=sway
 export QT_QPA_PLATFORMTHEME=kde     # qt apps read kdeglobals, so breeze applies
 export MOZ_ENABLE_WAYLAND=1
 export _JAVA_AWT_WM_NONREPARENTING=1
+export GTK_IM_MODULE=simple         # without it ghostty swallows dead keys
 ```
+
+That last one is not optional if you want umlauts in the terminal. Since GTK 4.20,
+GTK no longer composes dead keys itself under wayland when no input method is
+present — and none is here. Ghostty is a GTK application and is affected;
+applications that bring their own input method are not, which is why umlauts work
+in the launcher and nowhere in the terminal. Harmless unless you actually run ibus
+or fcitx.
 
 If qt apps come up unstyled, `qt6ct` is the fallback — install it and point
 `QT_QPA_PLATFORMTHEME` at it instead.
@@ -98,7 +106,13 @@ Same gesture as on the mac, with the right Alt instead of the left. The left one
 part of MEH and Hyper and cannot be spent on this.
 
 xkbcommon reads `~/.config/xkb/symbols/` without root, so the variant ships through
-this package like everything else. After a reload the keyboard should report it:
+this package like everything else.
+
+The dead key only becomes a character once the application composes it. That takes
+a UTF-8 locale, the sequence in `/usr/share/X11/locale/<locale>/Compose` — that path
+is libxkbcommon's, nothing to do with X11 — and, for ghostty, `GTK_IM_MODULE=simple`
+above. `wev` shows what the keyboard actually sends and separates a layout problem
+from a composing one. After a reload the keyboard should report it:
 
 ```sh
 swaymsg -t get_inputs | jq -r '.[] | select(.type=="keyboard") | .xkb_active_layout_name'

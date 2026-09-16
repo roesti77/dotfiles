@@ -206,6 +206,9 @@ sway collides with neither layer. That is the reason the window manager sits on
 | Key | Action |
 |---|---|
 | `AltGr+u`, then the vowel | ä ö ü — same gesture as the mac's `alt+u` |
+
+In the terminal this needs `GTK_IM_MODULE=simple` in `~/.profile` — GTK stopped
+composing dead keys by itself in 4.20.
 | home row `a r s t` | hold for Ctrl Alt Super Shift |
 | home row `n e i o` | hold for Shift Super Alt Ctrl |
 
