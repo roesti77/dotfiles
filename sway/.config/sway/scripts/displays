@@ -5,15 +5,7 @@ set -eu
 
 outputs=$(swaymsg -t get_outputs)
 externals=$(printf '%s' "$outputs" | jq -r '.[] | select(.name != "eDP-1") | .name' | sort)
-
-if [ -z "$externals" ]; then
-    swaymsg output eDP-1 enable position 0 0
-    exit 0
-fi
-
-# Three panels are more than the graphics unit drives at once — one stays dark.
-# Docked therefore means the laptop panel is off.
-swaymsg output eDP-1 disable
+count=$(printf '%s' "$externals" | grep -c . || true)
 
 # Left to right in connector order. Physical order may differ; swapping the cables
 # is the fix, since sway has no way to know where a monitor actually stands.
@@ -26,3 +18,12 @@ for name in $externals; do
     swaymsg output "$name" enable mode "$mode" position "$x" 0
     x=$((x + ${mode%%x*}))
 done
+
+# The graphics unit drives two panels, not three — with two externals the laptop
+# panel is the one that gives way. With one it fits and stays on, placed to their
+# right.
+if [ "$count" -ge 2 ]; then
+    swaymsg output eDP-1 disable
+else
+    swaymsg output eDP-1 enable position "$x" 0
+fi

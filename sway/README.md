@@ -176,11 +176,11 @@ manager until both have been checked on the machine.
 
 `scripts/displays` applies the layout from whatever is connected, so no monitor
 name is hardcoded: externals go side by side in connector order, each at the
-highest mode it offers, and the laptop panel is enabled only when it is alone.
+highest mode it offers, and the laptop panel is placed to their right.
 
-That last part is not a preference. Three panels are more than the graphics unit
-drives at once — with both externals and the laptop panel connected, one stays
-dark. Unplugging one proved it.
+With **two** externals the laptop panel is switched off, and that is not a
+preference: the graphics unit drives two panels, not three, so one would stay dark
+anyway. Unplugging one proved it. With a single external both fit and both run.
 
 The script runs on every reload and when the lid opens. Left-to-right follows the
 connector name, which may not match where the monitors physically stand; swapping
