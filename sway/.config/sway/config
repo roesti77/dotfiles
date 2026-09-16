@@ -32,7 +32,9 @@ focus_follows_mouse no
 # Floating windows carry no titlebar, so without this they cannot be dragged or
 # resized with the mouse at all: Super+left drag moves, Super+right drag resizes.
 floating_modifier $mod normal
-output * background $base solid_color
+# Outside the stow tree on purpose: ~/.config/sway is a symlink into a public repo.
+# The colour after the mode is the fallback, so a missing file is not an error.
+output * background ~/.local/share/wallpaper fill $base
 seat seat0 xcursor_theme breeze_cursors 24
 
 # us first so the Corne types correctly without touching anything; caps toggles to
