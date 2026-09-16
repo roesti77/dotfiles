@@ -134,6 +134,16 @@ the same thing.
 No unlock handling is needed here: `pam_kwallet` already runs at the display
 manager, so the wallet is open before sway starts.
 
+## Why waybar is masked in systemd
+
+The waybar package ships a systemd unit bound to `graphical-session.target`. That
+target is not up at login — it gets activated later, when some other service pulls
+it in. The result is a second bar appearing mid-session next to the one sway's
+`exec` already started.
+
+`scripts/bootstrap` masks the unit. The `exec` line stays, because it is the one
+that actually fires when sway does.
+
 ## Corporate tooling
 
 - **Kerberos** is unaffected by the window manager. It hangs off PAM, SSSD and
