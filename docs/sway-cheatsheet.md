@@ -45,8 +45,9 @@ competes for `Super`, so MEH stayed reserved for zellij.
 | Key | Action |
 |---|---|
 | `Super+f` | fullscreen |
-| `Super+w` | tabbed — closest to how windows feel on the mac |
-| `Super+e` | toggle split |
+| `Super+w` | tabbed on/off |
+| `Super+s` | stacking on/off |
+| `Super+a` | focus the parent container |
 | `Super+b` / `Super+v` | split horizontally / vertically |
 | `Super+Shift+space` | floating on/off |
 | `Super+m` | large without fullscreen — 90% of the screen |
@@ -54,6 +55,13 @@ competes for `Super`, so MEH stayed reserved for zellij.
 
 Splits stay shallow on purpose: panes are zellij's job, sway only has to put
 ghostty next to the browser.
+
+`Super+w` and `Super+s` toggle both ways because their lists include the layout
+they switch out of. A bare `layout toggle split` cycles splith/splitv only and does
+nothing at all while the container is tabbed.
+
+Layouts apply to a container, not to the screen. In a nested split, `Super+a` steps
+up one level so the outer container can be changed.
 
 ### Workspaces
 
