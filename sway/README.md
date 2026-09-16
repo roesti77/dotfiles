@@ -212,6 +212,17 @@ An earlier script derived the arrangement from connector names in alphabetical
 order. That is not where monitors physically stand, it only ran on reload, and it
 fought whatever was set through the GUI. Capturing beats guessing.
 
+## Lock screen
+
+swaylock shows the active keyboard layout and keeps the indicator on screen even
+while no key is pressed. Both matter on this keyboard: `Caps` is the layout toggle,
+so the keyboard can sit on `de` while the password is typed in `us`, and home-row
+mods occasionally send a modifier instead of a letter.
+
+What it cannot do is show the characters or how many were typed — swaylock has no
+password field, only the ring. `gtklock` is the alternative if that is a
+dealbreaker; it draws a real input field, at the cost of pulling in GTK.
+
 ## Window list
 
 Tiling has no minimise — the scratchpad is the equivalent, `Super+Shift+z` parks a

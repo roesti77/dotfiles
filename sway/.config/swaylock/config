@@ -1,8 +1,18 @@
 ignore-empty-password
 show-failed-attempts
+
+# Caps is the layout toggle here, so the keyboard can sit on de while the password
+# is typed in us — with nothing on screen saying so unless this is on.
+show-keyboard-layout
+# Home-row mods sometimes send a modifier instead of a letter; an indicator that
+# only appears while a key is down makes that impossible to notice.
+indicator
+indicator-idle-visible
+
 font=Hack
-indicator-radius=90
-indicator-thickness=8
+font-size=20
+indicator-radius=110
+indicator-thickness=10
 color=1e1e2e
 inside-color=1e1e2e
 inside-clear-color=1e1e2e
