@@ -7,13 +7,11 @@ set -eu
 
 title='^Zscaler'
 
-# sway re-runs exec_always on every reload, so end the previous watcher. Matching
-# by process name would risk killing this one too.
-pidfile="${XDG_RUNTIME_DIR:-/tmp}/park-vpn.pid"
-if [ -f "$pidfile" ]; then
-    kill "$(cat "$pidfile")" 2>/dev/null || true
-fi
-echo $$ >"$pidfile"
+# sway re-runs exec_always on every reload. Killed by command line rather than by
+# pid: the loop below runs in a subshell, so $$ is not the process holding the
+# subscription, and killing that would leave this one running. The pattern is a
+# regex, so it stops before the bracket of -m '["window"]'.
+pkill -f 'swaymsg -t subscribe' 2>/dev/null || true
 
 park() {
     while read -r id; do
