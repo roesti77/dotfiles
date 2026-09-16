@@ -31,13 +31,8 @@ window#waybar {
   color: #f9e2af;
 }
 
-#taskbar button {
-  padding: 0 4px;
-  background: transparent;
-}
-
-#taskbar button.active {
-  box-shadow: inset 0 -2px #89b4fa;
+#window {
+  color: #a6adc8;
 }
 
 #language,

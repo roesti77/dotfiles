@@ -240,10 +240,11 @@ symlink into a public repo.
 
 ## Window list
 
-Tiling has no minimise — the scratchpad is the equivalent, `Super+Shift+z` parks a
-window and `Super+z` brings one back. Since that list is otherwise invisible, the
-bar carries `wlr/taskbar`: every open window as an icon, click to focus, middle
-click to close.
+Tiling has no minimise — the scratchpad is the equivalent: `Super+Shift+z` parks a
+window, `Super+z` brings one back, cycling through what is parked.
+
+`wlr/taskbar` was tried as the visible counterpart and removed again — waybar
+stopped starting with it. The list stays invisible.
 
 ## Laptop specifics
 
