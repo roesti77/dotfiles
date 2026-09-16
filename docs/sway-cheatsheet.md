@@ -53,6 +53,9 @@ competes for `Super`, so MEH stayed reserved for zellij.
 | `Super+m` | large without fullscreen — 90% of the screen |
 | `Super`+drag | move a floating window (right button resizes) |
 
+Three-finger swipes move left and right between workspaces; swiping up opens the
+window switcher.
+
 Splits stay shallow on purpose: panes are zellij's job, sway only has to put
 ghostty next to the browser.
 
@@ -82,7 +85,8 @@ Corne just reaches them from layer 2.
 |---|---|
 | `Hyper+l` | lock — Tab-hold then `l` on the Corne |
 | `Super+d` / `Super+Shift+d` | dismiss one / all notifications |
-| `Super+z` | bring zscaler back from the scratchpad |
+| `Super+Shift+z` | park the focused window in the scratchpad |
+| `Super+z` | bring a parked window back (cycles) |
 | `Super+Shift+s` | screenshot a region to the clipboard |
 | `Print` | whole screen to the clipboard |
 | `Super+Shift+c` | reload the config |
