@@ -1,40 +1,41 @@
 * {
-  font-family: Hack, monospace;
-  font-size: 13px;
   border: none;
   border-radius: 0;
   min-height: 0;
+  font-family: "JetBrainsMono Nerd Font", monospace;
+  font-size: 13px;
 }
 
 window#waybar {
-  background: #181825;
+  background-color: #181825;
   color: #cdd6f4;
 }
 
+/* all: initial strips the GTK theme's own button styling, which otherwise adds
+   padding and a background no rule here can override. */
 #workspaces button {
-  padding: 0 8px;
-  color: #6c7086;
-  background: transparent;
+  all: initial;
+  min-width: 0;
+  padding: 4px 14px;
+  margin: 5px 3px;
+  border-radius: 4px;
+  background-color: #1e1e2e;
+  color: #cdd6f4;
 }
 
 #workspaces button.focused,
-#workspaces button.visible {
-  color: #89b4fa;
-  box-shadow: inset 0 -2px #89b4fa;
+#workspaces button.visible,
+#workspaces button:hover {
+  background-color: #cdd6f4;
+  color: #1e1e2e;
 }
 
 #workspaces button.urgent {
-  color: #f38ba8;
+  background-color: #f38ba8;
+  color: #1e1e2e;
 }
 
-#mode {
-  color: #f9e2af;
-}
-
-#window {
-  color: #a6adc8;
-}
-
+#mode,
 #language,
 #idle_inhibitor,
 #pulseaudio,
@@ -42,18 +43,67 @@ window#waybar {
 #battery,
 #clock,
 #tray {
-  padding: 0 6px;
-  color: #cdd6f4;
+  border-radius: 4px;
+  margin: 5px 3px;
+  padding: 4px 12px;
+  color: #181825;
 }
 
-#battery.warning {
-  color: #fab387;
+#mode {
+  background-color: #f9e2af;
 }
 
-#battery.critical {
-  color: #f38ba8;
+#language {
+  background-color: #b4befe;
+}
+
+#idle_inhibitor {
+  background-color: #fab387;
+}
+
+#pulseaudio {
+  background-color: #f9e2af;
+}
+
+#network {
+  background-color: #94e2d5;
 }
 
 #network.disconnected {
-  color: #f38ba8;
+  background-color: #6c7086;
+  color: #cdd6f4;
+}
+
+#battery {
+  background-color: #f38ba8;
+}
+
+#battery.charging {
+  background-color: #a6e3a1;
+}
+
+#battery.warning {
+  background-color: #fab387;
+}
+
+#battery.critical {
+  background-color: #f38ba8;
+  color: #11111b;
+}
+
+#clock {
+  background-color: #cba6f7;
+}
+
+#tray {
+  background-color: #313244;
+  color: #cdd6f4;
+  margin-right: 6px;
+}
+
+tooltip {
+  border-radius: 8px;
+  padding: 12px;
+  background-color: #11111b;
+  color: #cdd6f4;
 }

@@ -1,11 +1,11 @@
 {
   "layer": "top",
   "position": "top",
-  "height": 28,
-  "spacing": 10,
+  "height": 34,
+  "spacing": 0,
   "modules-left": ["sway/workspaces", "sway/mode"],
-  "modules-center": ["sway/window"],
-  "modules-right": ["sway/language", "idle_inhibitor", "pulseaudio", "network", "battery", "clock", "tray"],
+  "modules-center": ["clock"],
+  "modules-right": ["tray", "sway/language", "idle_inhibitor", "pulseaudio", "network", "battery"],
 
   "sway/workspaces": {
     "disable-scroll": true,
@@ -14,45 +14,58 @@
   "sway/mode": {
     "format": "{}"
   },
-  "sway/window": {
-    "max-length": 70,
-    "tooltip": false
-  },
   "sway/language": {
-    "format": "{short}",
+    "format": "󰌌 {short}",
     "tooltip-format": "{long}"
   },
   "idle_inhibitor": {
     "format": "{icon}",
     "format-icons": {
-      "activated": "awake",
-      "deactivated": "idle"
-    }
+      "activated": "󰅶",
+      "deactivated": "󰾪"
+    },
+    "tooltip-format-activated": "Idle inhibited",
+    "tooltip-format-deactivated": "Idle allowed"
   },
   "pulseaudio": {
-    "format": "vol {volume}%",
-    "format-muted": "muted",
-    "format-bluetooth": "bt {volume}%",
-    "on-click": "pavucontrol"
+    "format": "{icon}",
+    "format-bluetooth": "󰂰",
+    "format-muted": "󰝟",
+    "format-icons": {
+      "headphone": "",
+      "default": ["󰖀", "󰕾", ""]
+    },
+    "tooltip-format": "{volume}%",
+    "on-click": "pavucontrol",
+    "scroll-step": 5
   },
   "network": {
-    "format-wifi": "{essid} {signalStrength}%",
-    "format-ethernet": "eth",
-    "format-disconnected": "offline",
-    "tooltip-format": "{ifname}  {ipaddr}"
+    "format-wifi": "{icon}",
+    "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+    "format-ethernet": "󰀂",
+    "format-disconnected": "󰖪",
+    "tooltip-format-wifi": "{essid} {signalStrength}%\n{ipaddr}",
+    "tooltip-format-ethernet": "{ifname}\n{ipaddr}",
+    "tooltip-format-disconnected": "Disconnected",
+    "interval": 5
   },
   "battery": {
+    "format": "{capacity}% {icon}",
+    "format-charging": "{capacity}% {icon}",
+    "format-icons": {
+      "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
+      "default": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    },
+    "format-full": "󰂅",
     "states": {
       "warning": 30,
       "critical": 15
     },
-    "format": "bat {capacity}%",
-    "format-charging": "chg {capacity}%",
-    "format-plugged": "ac {capacity}%",
+    "interval": 5,
     "tooltip-format": "{timeTo}"
   },
   "clock": {
-    "format": "{:%a %d.%m.  %H:%M}",
+    "format": "󰥔  {:%a %d.%m.  %H:%M}",
     "tooltip-format": "<tt>{calendar}</tt>"
   },
   "tray": {
