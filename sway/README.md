@@ -194,34 +194,27 @@ than move files around.
 ## Displays
 
 Arrange the monitors and put the workspaces where they belong — `wdisplays` is
-handy for the dragging — then capture it once:
+handy for the dragging — then capture it, **once per location**:
 
 ```sh
 ~/.config/sway/scripts/save-displays
 ```
 
-That writes `output` and `workspace ... output` lines to
-`~/.local/share/sway-outputs.conf`, which the config includes. Output lines are
-rules rather than one-off commands, so sway re-applies them whenever a monitor
-appears — docking included.
+It writes to `~/.local/share/sway-outputs.conf`, which the config includes. Output
+lines are rules rather than one-off commands, so sway re-applies them whenever a
+monitor appears — docking included. Nothing to run when arriving somewhere.
 
-The file lives outside the stow tree because it is per machine, and `~/.config/sway`
-is a symlink into a public repo.
+Two details make switching between office and home work:
 
-An earlier script derived the arrangement from connector names in alphabetical
-order. That is not where monitors physically stand, it only ran on reload, and it
-fought whatever was set through the GUI. Capturing beats guessing.
+- Monitors are addressed by **make, model and serial**, not by connector. `DP-2` is
+  a different screen in each place; the identifier is not.
+- Running it somewhere else **keeps** the lines for monitors that are elsewhere, so
+  both locations accumulate in one file. Workspaces end up with a fallback list —
+  `workspace 1 output "A" "B"` takes whichever is attached, so a workspace follows
+  its screen.
 
-## Lock screen
-
-swaylock shows the active keyboard layout and keeps the indicator on screen even
-while no key is pressed. Both matter on this keyboard: `Caps` is the layout toggle,
-so the keyboard can sit on `de` while the password is typed in `us`, and home-row
-mods occasionally send a modifier instead of a letter.
-
-What it cannot do is show the characters or how many were typed — swaylock has no
-password field, only the ring. `gtklock` is the alternative if that is a
-dealbreaker; it draws a real input field, at the cost of pulling in GTK.
+The file is per machine and lives outside the stow tree, since `~/.config/sway` is a
+symlink into a public repo.
 
 ## Window list
 
