@@ -32,6 +32,11 @@ else
     echo "WARNING: no kwalletd found, nothing will store credentials"
 fi
 
+# The packaged waybar.service hangs off graphical-session.target, which is not up
+# at login but gets pulled in later by another service — so it would run a second
+# bar next to the one sway's exec starts. The exec is the reliable one.
+systemctl --user mask waybar.service >/dev/null
+
 command -v ghostty >/dev/null || echo "WARNING: ghostty missing, it has no apt package"
 command -v cliphist >/dev/null || echo "WARNING: cliphist missing, no clipboard history"
 
