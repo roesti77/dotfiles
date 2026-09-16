@@ -59,19 +59,21 @@ so MEH stays entirely with zellij and Hyper is left free.
 
 On the Corne, `Super` is the home-row mod on `s` / `e`, plus layer 3.
 
-Two things the Corne needs from the input config:
+Each keyboard gets exactly one layout, no group lists. Sway merges the type block
+and a device block field by field rather than as a set, so a list in one and a
+different order in the other can pair `de` with `usmac`'s variant — a combination
+that does not exist. `sway --validate` does not catch it; it never compiles a
+keymap.
 
-- `xkb_layout us,de` — the Corne sends US HID codes, so US has to be the first
-  group. `Caps` toggles to `de` for the built-in keyboard. Not `Alt+Shift`: that
-  chord is part of every MEH and Hyper press.
-- `xkb_numlock enabled` — the Corne's number layer emits keypad codes, which only
-  resolve to `KP_1`..`KP_9` with numlock on. Without it the workspace bindings are
-  dead on that keyboard.
+- **The Corne** runs `usmac` — it sends US HID codes, so anything else mistypes.
+- **The built-in keyboard** runs `de` through its own block,
+  `1:1:AT_Translated_Set_2_keyboard`.
+- **`xkb_numlock enabled`** — the Corne's number layer emits keypad codes, which
+  only resolve to `KP_1`..`KP_9` with numlock on. Without it the workspace bindings
+  are dead on that keyboard.
 
-The built-in keyboard has its own block and starts on `de`; `1:1:AT_Translated_Set_2_keyboard`
-is its identifier. Layout, variant and options are spelled out there rather than
-merged in from the type block — they only work as a set. `Caps` toggles on both
-keyboards, just from opposite ends.
+There is no layout toggle any more: each keyboard has the layout it needs, so there
+is nothing to switch between.
 
 ## Umlauts
 

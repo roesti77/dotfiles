@@ -206,12 +206,15 @@ sway collides with neither layer. That is the reason the window manager sits on
 | Key | Action |
 |---|---|
 | `AltGr+u`, then the vowel | ä ö ü — same gesture as the mac's `alt+u` |
-| `Caps` | switch layout — the Corne starts on us, the built-in keyboard on de |
 | home row `a r s t` | hold for Ctrl Alt Super Shift |
 | home row `n e i o` | hold for Shift Super Alt Ctrl |
 
 Layer 2 carries the digits as keypad codes, layer 3 the F-keys, arrows and media
 keys.
+
+Each keyboard has one fixed layout and there is nothing to toggle: the Corne runs
+`usmac`, the built-in keyboard `de`. On `de` the umlauts sit on their own keys, so
+the dead key is a Corne matter.
 
 The umlaut dead key comes from `.config/xkb/symbols/usmac`, a local variant on top
 of `us(altgr-intl)` — no linux layout ships that gesture. On the Corne, AltGr is the

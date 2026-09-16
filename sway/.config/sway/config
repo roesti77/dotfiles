@@ -41,33 +41,29 @@ output * background ~/.local/share/wallpaper fill $base
 include ~/.local/share/sway-outputs.conf
 seat seat0 xcursor_theme breeze_cursors 24
 
-# us first so the Corne types correctly without touching anything; caps toggles to
-# de because Alt+Shift would fire on every Hyper/MEH chord the Corne sends.
+# One layout per keyboard, no group lists: sway merges type and device blocks field
+# by field, so a list here and a different one below can pair de with usmac's
+# variant — a combination that does not exist. sway --validate never notices, it
+# does not compile keymaps.
 # usmac is ours, from .config/xkb/symbols: altgr-intl plus AltGr+u as the umlaut
-# dead key, so ä ö ü work with the same gesture as on the mac. No compose key is
-# configured — every candidate xkb offers is either absent on both keyboards or a
-# home-row mod on the Corne.
-# numlock is forced on because the Corne's number layer emits keypad codes, which
-# only resolve to KP_1..KP_9 with numlock active.
+# dead key, so ä ö ü work with the same gesture as on the mac.
 input type:keyboard {
-    xkb_layout usmac,de
-    xkb_variant umlaut,nodeadkeys
-    xkb_options grp:caps_toggle,lv3:ralt_switch
+    xkb_layout usmac
+    xkb_variant umlaut
+    xkb_options lv3:ralt_switch
+    # The Corne's number layer emits keypad codes, which only resolve to KP_1..KP_9
+    # with numlock active.
     xkb_numlock enabled
     repeat_delay 250
     repeat_rate 40
 }
 
-# The built-in keyboard is a german one, the Corne is not. Layout, variant and
-# options are repeated rather than merged in: they only work as a set, and losing
-# lv3:ralt_switch would take the umlaut dead key with it.
+# The built-in keyboard is a german one; the Corne is not and keeps the block above.
 input "1:1:AT_Translated_Set_2_keyboard" {
-    xkb_layout de,usmac
-    xkb_variant nodeadkeys,umlaut
-    xkb_options grp:caps_toggle,lv3:ralt_switch
+    xkb_layout de
+    xkb_variant nodeadkeys
 }
-# Covers the built-in touchpad and the external apple one, which libinput also
-# reports as a touchpad (1452:613:Apple_Inc._Magic_Trackpad).
+
 input type:touchpad {
     tap enabled
     natural_scroll enabled
