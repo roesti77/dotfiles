@@ -179,6 +179,18 @@ that actually fires when sway does.
 Keep the old desktop installed and pick sway as a second session in the display
 manager until both have been checked on the machine.
 
+## Wallpaper
+
+Drop any image at `~/.local/share/wallpaper` — no extension, swaybg reads the
+format itself. Without it the background stays the flat Catppuccin base; the colour
+after `fill` is swaybg's fallback, so a missing file is not an error.
+
+That path is deliberately outside the stow tree. `~/.config/sway` is a symlink into
+this repo, so a file dropped there would land in a public repository.
+
+`azote` or `waypaper` are worth a look if you would rather click through candidates
+than move files around.
+
 ## Displays
 
 `scripts/displays` applies the layout from whatever is connected, so no monitor
