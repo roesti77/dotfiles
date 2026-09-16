@@ -252,6 +252,19 @@ Two details make switching between office and home work:
 The file is per machine and lives outside the stow tree, since `~/.config/sway` is a
 symlink into a public repo.
 
+## Bar
+
+Each module is a rounded pill in its own Catppuccin colour, with nerd font icons
+instead of text labels. The styling follows
+[sameemul-haque/dotfiles](https://github.com/sameemul-haque/dotfiles) (Unlicense);
+that is a Hyprland setup, so only the waybar part carries over and
+`hyprland/workspaces` becomes `sway/workspaces`.
+
+The icons are copied from there rather than picked by hand — they are private-use
+glyphs, and choosing them from memory produces boxes. `bootstrap` installs
+JetBrainsMono Nerd Font from the upstream `releases/latest` URL, which avoids
+pinning a version. Without that font every module shows a box.
+
 ## Window list
 
 Tiling has no minimise — the scratchpad is the equivalent: `Super+Shift+z` parks a

@@ -6,7 +6,7 @@ sudo apt install -y \
     sway swayidle swaylock swaybg waybar fuzzel mako-notifier \
     grim slurp wl-clipboard jq brightnessctl playerctl wireplumber pavucontrol \
     network-manager-gnome xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
-    breeze-gtk-theme fonts-hack qalc
+    breeze-gtk-theme fonts-hack qalc curl unzip
 
 kwalletd=""
 for candidate in /usr/bin/kwalletd6 /usr/bin/kwalletd5; do
@@ -36,6 +36,24 @@ fi
 # at login but gets pulled in later by another service — so it would run a second
 # bar next to the one sway's exec starts. The exec is the reliable one.
 systemctl --user mask waybar.service >/dev/null
+
+# The bar renders nerd font glyphs; without them every module shows a box. Not in
+# apt, and releases/latest avoids pinning a version that would go stale.
+if ! fc-list | grep -qi 'JetBrainsMono Nerd Font'; then
+    fonts="${XDG_DATA_HOME:-$HOME/.local/share}/fonts"
+    mkdir -p "$fonts"
+    tmp=$(mktemp -d)
+    if curl -fsSL -o "$tmp/font.zip" \
+        https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip
+    then
+        unzip -qo "$tmp/font.zip" -d "$fonts" '*.ttf'
+        fc-cache -f >/dev/null
+        echo "installed JetBrainsMono Nerd Font"
+    else
+        echo "WARNING: could not download the nerd font, the bar will show boxes"
+    fi
+    rm -rf "$tmp"
+fi
 
 # The config includes this; without the file sway warns on every start.
 touch "${XDG_DATA_HOME:-$HOME/.local/share}/sway-outputs.conf"
