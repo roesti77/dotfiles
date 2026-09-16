@@ -57,6 +57,13 @@ input type:keyboard {
 #     xkb_variant nodeadkeys,
 # }
 
+# The touchpad block below does not reach the external apple trackpad, so pointers
+# get the same inversion. A plain mouse would be inverted too — split this per
+# device once one shows up.
+input type:pointer {
+    natural_scroll enabled
+}
+
 input type:touchpad {
     tap enabled
     natural_scroll enabled
