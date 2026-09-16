@@ -68,9 +68,10 @@ Two things the Corne needs from the input config:
   resolve to `KP_1`..`KP_9` with numlock on. Without it the workspace bindings are
   dead on that keyboard.
 
-To give the built-in keyboard `de` as its default while the Corne stays on `us`,
-fill in the commented `input` block with the identifier from
-`swaymsg -t get_inputs`.
+The built-in keyboard has its own block and starts on `de`; `1:1:AT_Translated_Set_2_keyboard`
+is its identifier. Layout, variant and options are spelled out there rather than
+merged in from the type block — they only work as a set. `Caps` toggles on both
+keyboards, just from opposite ends.
 
 ## Umlauts
 
