@@ -1,19 +1,66 @@
 #!/bin/sh
 # Captures the current arrangement so it survives a restart. Arrange the monitors
-# and put the workspaces where they belong first — with wdisplays or by hand — then
-# run this once. Output lines in a config are rules, so sway re-applies them on
-# every hotplug, which a script reacting to reloads cannot do.
+# and put the workspaces where they belong first, then run this once per location.
+#
+# Monitors are addressed by make, model and serial rather than by connector: DP-2
+# means a different screen at the office than at home. Lines for monitors that are
+# not attached right now are kept, so both locations accumulate in one file and
+# sway applies whichever is actually there.
 set -eu
 
 out="${XDG_DATA_HOME:-$HOME/.local/share}/sway-outputs.conf"
 mkdir -p "$(dirname "$out")"
+[ -f "$out" ] || : >"$out"
+
+outputs=$(swaymsg -t get_outputs)
+workspaces=$(swaymsg -t get_workspaces)
+
+# A panel without a serial (the built-in one) keeps its connector name — there is
+# only ever one of it, and an empty serial makes for a fragile identifier.
+new_outputs=$(printf '%s' "$outputs" | jq -r '
+    .[] | select(.active)
+    | (if (.serial // "") == "" then .name else "\(.make) \(.model) \(.serial)" end) as $id
+    | "output \"\($id)\" mode \(.current_mode.width)x\(.current_mode.height)@\(.current_mode.refresh/1000)Hz position \(.rect.x) \(.rect.y)"')
+
+current_ids=$(printf '%s' "$outputs" | jq -r '
+    .[] | select(.active)
+    | if (.serial // "") == "" then .name else "\(.make) \(.model) \(.serial)" end')
+
+new_ws=$(printf '%s' "$outputs" | jq -r --argjson ws "$workspaces" '
+    . as $outs | $ws[] | . as $w | $outs[] | select(.name == $w.output)
+    | (if (.serial // "") == "" then .name else "\(.make) \(.model) \(.serial)" end) as $id
+    | "workspace \($w.name) output \"\($id)\""')
+
+# Keep the lines describing monitors that are somewhere else right now.
+kept=$(grep '^output ' "$out" | while IFS= read -r line; do
+    id=${line#output \"}
+    id=${id%%\"*}
+    printf '%s\n' "$current_ids" | grep -qxF "$id" || printf '%s\n' "$line"
+done || true)
 
 {
-    swaymsg -t get_outputs | jq -r '.[] | select(.active) |
-        "output \(.name) mode \(.current_mode.width)x\(.current_mode.height)@\(.current_mode.refresh / 1000)Hz position \(.rect.x) \(.rect.y)"'
-    swaymsg -t get_workspaces | jq -r '.[] | "workspace \(.name) output \(.output)"'
-} >"$out"
+    printf '%s\n' "$new_outputs"
+    [ -n "$kept" ] && printf '%s\n' "$kept"
+    # Several outputs per workspace act as a fallback list: sway takes the first
+    # one attached, so a workspace follows its screen between locations.
+    { printf '%s\n' "$new_ws"; grep '^workspace ' "$out" || true; } | awk '
+        NF {
+            ws = $2
+            rest = substr($0, index($0, "output ") + 7)
+            n = split(rest, parts, "\" \"")
+            for (p = 1; p <= n; p++) {
+                id = parts[p]
+                gsub(/^"|"$/, "", id)
+                if (!((ws SUBSEP id) in seen)) {
+                    seen[ws SUBSEP id] = 1
+                    list[ws] = list[ws] (list[ws] == "" ? "" : " ") "\"" id "\""
+                    if (!(ws in known)) { known[ws] = 1; order[++c] = ws }
+                }
+            }
+        }
+        END { for (k = 1; k <= c; k++) print "workspace " order[k] " output " list[order[k]] }'
+} >"$out.tmp"
 
+mv "$out.tmp" "$out"
 swaymsg reload
-echo "saved to $out"
 cat "$out"
