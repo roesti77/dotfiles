@@ -201,12 +201,15 @@ sway collides with neither layer. That is the reason the window manager sits on
 
 | Key | Action |
 |---|---|
-| `AltGr+q/p/y/s` | ä ö ü ß — AltGr is the `i` home-row mod |
-| `Menu`, `"`, vowel | compose, for everything else |
+| `AltGr+u`, then the vowel | ä ö ü — same gesture as the mac's `alt+u` |
 | `Caps` | switch layout us ⇄ de |
 | home row `a r s t` | hold for Ctrl Alt Super Shift |
 | home row `n e i o` | hold for Shift Super Alt Ctrl |
 
 Layer 2 carries the digits as keypad codes, layer 3 the F-keys, arrows and media
-keys. The mac's `alt+u` umlaut dead key has no linux equivalent; `TD(10)` still
-sends it and does nothing here.
+keys.
+
+The umlaut dead key comes from `.config/xkb/symbols/usmac`, a local variant on top
+of `us(altgr-intl)` — no linux layout ships that gesture. On the Corne, AltGr is the
+`i` home-row mod. `TD(10)` still sends the mac's `LALT(KC_U)`, which does nothing
+here and is free to be remapped.
