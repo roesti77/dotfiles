@@ -27,6 +27,9 @@ font pango:Hack 11
 default_border pixel 2
 default_floating_border pixel 2
 gaps inner 6
+# Both apply only while a workspace holds more than one window, so a lone window
+# sits flush instead of showing a strip of background around it.
+smart_gaps on
 smart_borders on
 focus_follows_mouse no
 # Floating windows carry no titlebar, so without this they cannot be dragged or
