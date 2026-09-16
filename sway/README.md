@@ -163,6 +163,11 @@ that actually fires when sway does.
 - **Kerberos** is unaffected by the window manager. It hangs off PAM, SSSD and
   `krb5.conf`, so a session started from the same display manager gets the same
   ticket. `klist` after login is the whole test.
+- **The VPN client window** is parked on sight by `scripts/park-vpn`, which watches
+  sway's event stream and matches the window title. Two attempts at an `app_id` or
+  `class` rule missed, and the title is the one thing that is known. `Super+z`
+  brings it back. A floating window always stacks above tiled ones in sway, so
+  moving it out of the way is the only real fix.
 - **Tray-based VPN and proxy clients** are the part to verify before relying on
   this session. Waybar's tray implements StatusNotifierItem; clients that still use
   the legacy XEmbed tray show no icon — under any wayland session, GNOME included.

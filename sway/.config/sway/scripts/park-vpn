@@ -1,0 +1,14 @@
+#!/bin/sh
+# The VPN client has no tray icon and stacks above everything, and neither app_id
+# nor class could be guessed — but the title is known when the window appears.
+# Matches only on creation, so bringing it back with Super+z keeps it visible.
+set -eu
+
+swaymsg -t subscribe -m '["window"]' \
+    | jq --unbuffered -r 'select(.change == "new")
+        | .container
+        | select(.name != null and (.name | test("^Zscaler")))
+        | .id' \
+    | while read -r id; do
+        swaymsg "[con_id=$id] move scratchpad"
+    done
