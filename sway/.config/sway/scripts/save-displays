@@ -1,0 +1,19 @@
+#!/bin/sh
+# Captures the current arrangement so it survives a restart. Arrange the monitors
+# and put the workspaces where they belong first — with wdisplays or by hand — then
+# run this once. Output lines in a config are rules, so sway re-applies them on
+# every hotplug, which a script reacting to reloads cannot do.
+set -eu
+
+out="${XDG_DATA_HOME:-$HOME/.local/share}/sway-outputs.conf"
+mkdir -p "$(dirname "$out")"
+
+{
+    swaymsg -t get_outputs | jq -r '.[] | select(.active) |
+        "output \(.name) mode \(.current_mode.width)x\(.current_mode.height)@\(.current_mode.refresh / 1000)Hz position \(.rect.x) \(.rect.y)"'
+    swaymsg -t get_workspaces | jq -r '.[] | "workspace \(.name) output \(.output)"'
+} >"$out"
+
+swaymsg reload
+echo "saved to $out"
+cat "$out"

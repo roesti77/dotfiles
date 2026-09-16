@@ -4,7 +4,7 @@
   "height": 28,
   "spacing": 10,
   "modules-left": ["sway/workspaces", "sway/mode"],
-  "modules-center": ["sway/window"],
+  "modules-center": ["wlr/taskbar"],
   "modules-right": ["sway/language", "idle_inhibitor", "pulseaudio", "network", "battery", "clock", "tray"],
 
   "sway/workspaces": {
@@ -14,9 +14,13 @@
   "sway/mode": {
     "format": "{}"
   },
-  "sway/window": {
-    "max-length": 70,
-    "tooltip": false
+  "wlr/taskbar": {
+    "format": "{icon}",
+    "icon-size": 16,
+    "spacing": 6,
+    "tooltip-format": "{title}",
+    "on-click": "activate",
+    "on-click-middle": "close"
   },
   "sway/language": {
     "format": "{short}",
