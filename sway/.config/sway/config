@@ -37,17 +37,16 @@ seat seat0 xcursor_theme breeze_cursors 24
 
 # us first so the Corne types correctly without touching anything; caps toggles to
 # de because Alt+Shift would fire on every Hyper/MEH chord the Corne sends.
-# altgr-intl keeps the base layer free of dead keys and puts the umlauts on AltGr,
-# which is the closest thing to the mac's alt+u — the linux equivalent of that
-# dead key does not exist outside macOS.
-# Compose sits on the menu key (swap to compose:rwin on a keyboard without one);
-# do not put it on rctrl/rwin, those are home-row mods on the Corne.
+# usmac is ours, from .config/xkb/symbols: altgr-intl plus AltGr+u as the umlaut
+# dead key, so ä ö ü work with the same gesture as on the mac. No compose key is
+# configured — every candidate xkb offers is either absent on both keyboards or a
+# home-row mod on the Corne.
 # numlock is forced on because the Corne's number layer emits keypad codes, which
 # only resolve to KP_1..KP_9 with numlock active.
 input type:keyboard {
-    xkb_layout us,de
-    xkb_variant altgr-intl,nodeadkeys
-    xkb_options grp:caps_toggle,lv3:ralt_switch,compose:menu
+    xkb_layout usmac,de
+    xkb_variant umlaut,nodeadkeys
+    xkb_options grp:caps_toggle,lv3:ralt_switch
     xkb_numlock enabled
     repeat_delay 250
     repeat_rate 40

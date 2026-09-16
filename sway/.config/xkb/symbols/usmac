@@ -1,0 +1,10 @@
+// AltGr+u is the umlaut dead key, the way alt+u is on macOS. Everything else comes
+// from altgr-intl unchanged; only the third level of <AD07> is overridden.
+// The left alt cannot serve here — it is part of MEH and Hyper.
+partial alphanumeric_keys
+xkb_symbols "umlaut" {
+    include "us(altgr-intl)"
+    name[Group1] = "English (US, macOS umlaut)";
+
+    key <AD07> { [ u, U, dead_diaeresis, dead_diaeresis ] };
+};

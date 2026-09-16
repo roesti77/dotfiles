@@ -74,20 +74,34 @@ fill in the commented `input` block with the identifier from
 
 ## Umlauts
 
-The mac's `alt+u` dead key is a macOS feature of the US layout — it has no linux
-equivalent, which is why KDE could not reproduce it. Three ways out, all wired up:
+The mac types them with `alt+u` followed by the vowel. No linux layout offers that
+dead key, which is why KDE could not reproduce it either — and the keyboard cannot
+fix it, because QMK has only HID codes and no keycode for `ä`.
 
-- **AltGr** — the `altgr-intl` variant puts `ä ö ü ß` on `AltGr+q/p/y/s`. Two keys,
-  no layout switch, and the base layer keeps its dead-key-free `'` and `"` for
-  writing code. On the Corne AltGr is the `i` home-row mod.
-- **Compose** — `Menu`, then `"`, then the vowel. Slower, but it covers every
-  accent, dash and `€` in any layout.
-- **`Caps`** — switches the whole keyboard to `de`, where the umlauts sit on their
-  own keys.
+So the layout provides it: `.config/xkb/symbols/usmac` is a variant that includes
+`us(altgr-intl)` and overrides a single key, putting `dead_diaeresis` on the third
+level of `u`.
 
-The Corne's `TD(10)` hold still sends `LALT(KC_U)`, which does nothing on linux.
-Remapping it to `KC_RALT` in Vial puts AltGr under the same key the umlaut
-modifier had on the mac.
+```
+AltGr+u, then a / o / u   ->   ä ö ü
+```
+
+Same gesture as on the mac, with the right Alt instead of the left. The left one is
+part of MEH and Hyper and cannot be spent on this.
+
+xkbcommon reads `~/.config/xkb/symbols/` without root, so the variant ships through
+this package like everything else. After a reload the keyboard should report it:
+
+```sh
+swaymsg -t get_inputs | jq -r '.[] | select(.type=="keyboard") | .xkb_active_layout_name'
+# English (US, macOS umlaut)
+```
+
+If it says anything else the variant did not load, and sway silently fell back.
+
+`Caps` still switches the whole keyboard to `de`, where the umlauts sit on their own
+keys. No compose key is configured: every key xkb offers for it is either missing on
+both keyboards or a home-row mod on the Corne.
 
 ## Bindings
 
