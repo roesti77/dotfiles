@@ -41,15 +41,11 @@ output * background ~/.local/share/wallpaper fill $base
 include ~/.local/share/sway-outputs.conf
 seat seat0 xcursor_theme breeze_cursors 24
 
-# One layout per keyboard, no group lists: sway merges type and device blocks field
-# by field, so a list here and a different one below can pair de with usmac's
-# variant — a combination that does not exist. sway --validate never notices, it
-# does not compile keymaps.
-# usmac is ours, from .config/xkb/symbols: altgr-intl plus AltGr+u as the umlaut
-# dead key, so ä ö ü work with the same gesture as on the mac.
+# No layout in the type block on purpose. Sway merges type and device settings
+# field by field, so a layout here and a variant in a device block can pair into a
+# combination that does not exist — twice fixed, twice wrong. Only the shared
+# settings live here; every real keyboard names its layout itself.
 input type:keyboard {
-    xkb_layout usmac
-    xkb_variant umlaut
     xkb_options lv3:ralt_switch
     # The Corne's number layer emits keypad codes, which only resolve to KP_1..KP_9
     # with numlock active.
@@ -58,7 +54,29 @@ input type:keyboard {
     repeat_rate 40
 }
 
-# The built-in keyboard is a german one; the Corne is not and keeps the block above.
+# usmac is ours, from .config/xkb/symbols: altgr-intl plus AltGr+u as the umlaut
+# dead key, so ä ö ü work with the same gesture as on the mac. The Corne registers
+# as four devices, hence four blocks.
+input "36125:13370:splitkb.com_Aurora_Corne_rev1" {
+    xkb_layout usmac
+    xkb_variant umlaut
+}
+
+input "36125:13370:splitkb.com_Aurora_Corne_rev1_Keyboard" {
+    xkb_layout usmac
+    xkb_variant umlaut
+}
+
+input "36125:13370:splitkb.com_Aurora_Corne_rev1_Consumer_Control" {
+    xkb_layout usmac
+    xkb_variant umlaut
+}
+
+input "36125:13370:splitkb.com_Aurora_Corne_rev1_System_Control" {
+    xkb_layout usmac
+    xkb_variant umlaut
+}
+
 input "1:1:AT_Translated_Set_2_keyboard" {
     xkb_layout de
     xkb_variant nodeadkeys

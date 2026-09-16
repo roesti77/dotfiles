@@ -59,13 +59,18 @@ so MEH stays entirely with zellij and Hyper is left free.
 
 On the Corne, `Super` is the home-row mod on `s` / `e`, plus layer 3.
 
-Each keyboard gets exactly one layout, no group lists. Sway merges the type block
-and a device block field by field rather than as a set, so a list in one and a
-different order in the other can pair `de` with `usmac`'s variant — a combination
-that does not exist. `sway --validate` does not catch it; it never compiles a
-keymap.
+The type block sets **no layout at all**. Sway merges type and device settings field
+by field, so a layout there and a variant in a device block can pair into a
+combination that does not exist. Only the shared settings live in the type block;
+every real keyboard names its own layout, which makes a wrong pairing impossible
+rather than merely unlikely.
 
-- **The Corne** runs `usmac` — it sends US HID codes, so anything else mistypes.
+`sway --validate` does not catch any of this — it never compiles a keymap. The only
+real test is `swaymsg reload` on the machine.
+
+- **The Corne** runs `usmac` — it sends US HID codes, so anything else mistypes. It
+  registers as four devices, so it needs four blocks; a rule on one of them alone
+  would only half apply.
 - **The built-in keyboard** runs `de` through its own block,
   `1:1:AT_Translated_Set_2_keyboard`.
 - **`xkb_numlock enabled`** — the Corne's number layer emits keypad codes, which
