@@ -29,6 +29,9 @@ default_floating_border pixel 2
 gaps inner 6
 smart_borders on
 focus_follows_mouse no
+# Floating windows carry no titlebar, so without this they cannot be dragged or
+# resized with the mouse at all: Super+left drag moves, Super+right drag resizes.
+floating_modifier $mod normal
 output * background $base solid_color
 seat seat0 xcursor_theme breeze_cursors 24
 
@@ -124,6 +127,8 @@ bindsym $mod+v splitv
 bindsym $mod+e layout toggle split
 bindsym $mod+w layout tabbed
 bindsym $mod+Shift+space floating toggle
+# Large without going fullscreen — mostly meant for floating windows.
+bindsym $mod+m resize set width 90 ppt height 90 ppt
 
 # Tab switches windows, not workspaces: that is where the cmd+tab reflex lands.
 bindsym $mod+Tab exec ~/.config/sway/scripts/winjump

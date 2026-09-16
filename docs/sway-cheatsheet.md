@@ -49,6 +49,8 @@ competes for `Super`, so MEH stayed reserved for zellij.
 | `Super+e` | toggle split |
 | `Super+b` / `Super+v` | split horizontally / vertically |
 | `Super+Shift+space` | floating on/off |
+| `Super+m` | large without fullscreen — 90% of the screen |
+| `Super`+drag | move a floating window (right button resizes) |
 
 Splits stay shallow on purpose: panes are zellij's job, sway only has to put
 ghostty next to the browser.
