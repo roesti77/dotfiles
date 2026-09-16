@@ -172,6 +172,21 @@ that actually fires when sway does.
 Keep the old desktop installed and pick sway as a second session in the display
 manager until both have been checked on the machine.
 
+## Displays
+
+`scripts/displays` applies the layout from whatever is connected, so no monitor
+name is hardcoded: externals go side by side in connector order, each at the
+highest mode it offers, and the laptop panel is enabled only when it is alone.
+
+That last part is not a preference. Three panels are more than the graphics unit
+drives at once — with both externals and the laptop panel connected, one stays
+dark. Unplugging one proved it.
+
+The script runs on every reload and when the lid opens. Left-to-right follows the
+connector name, which may not match where the monitors physically stand; swapping
+the cables is the fix, since sway cannot know. `wdisplays` is useful for trying an
+arrangement out live, but it does not persist anything.
+
 ## Laptop specifics
 
 - Idle: lock after 5 min, screens off after 10, lock before sleep.
