@@ -1,0 +1,28 @@
+#!/bin/sh
+# Applies a display layout from whatever is connected, so no monitor name is
+# hardcoded. Runs on every reload and when the lid changes.
+set -eu
+
+outputs=$(swaymsg -t get_outputs)
+externals=$(printf '%s' "$outputs" | jq -r '.[] | select(.name != "eDP-1") | .name' | sort)
+
+if [ -z "$externals" ]; then
+    swaymsg output eDP-1 enable position 0 0
+    exit 0
+fi
+
+# Three panels are more than the graphics unit drives at once — one stays dark.
+# Docked therefore means the laptop panel is off.
+swaymsg output eDP-1 disable
+
+# Left to right in connector order. Physical order may differ; swapping the cables
+# is the fix, since sway has no way to know where a monitor actually stands.
+x=0
+for name in $externals; do
+    mode=$(printf '%s' "$outputs" | jq -r --arg n "$name" '
+        .[] | select(.name == $n) | .modes
+        | sort_by(.width * .height, .refresh) | last
+        | "\(.width)x\(.height)@\(.refresh / 1000)Hz"')
+    swaymsg output "$name" enable mode "$mode" position "$x" 0
+    x=$((x + ${mode%%x*}))
+done

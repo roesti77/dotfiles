@@ -84,7 +84,9 @@ bindgesture swipe:3:right workspace prev_on_output
 bindgesture swipe:3:up exec ~/.config/sway/scripts/winjump
 
 bindswitch --reload --locked lid:on output eDP-1 disable
-bindswitch --reload --locked lid:off output eDP-1 enable
+# Opening the lid re-applies the layout rather than forcing the panel on, which
+# would exceed what the graphics unit drives while both externals are connected.
+bindswitch --reload --locked lid:off exec ~/.config/sway/scripts/displays
 
 for_window [app_id="$quickterm"] floating enable, resize set 1100 650, move scratchpad, scratchpad show
 for_window [app_id="$calc"] floating enable, resize set 700 420
@@ -214,6 +216,8 @@ exec_always gsettings set org.gnome.desktop.interface gtk-theme 'Breeze-Dark'
 exec_always gsettings set org.gnome.desktop.interface icon-theme 'breeze-dark'
 # The trailing colon puts every button on the left, the way macOS has them.
 exec_always gsettings set org.gnome.desktop.wm.preferences button-layout 'close,minimize,maximize:'
+
+exec_always ~/.config/sway/scripts/displays
 
 exec wl-paste --watch cliphist store
 exec waybar
