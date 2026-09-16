@@ -35,6 +35,10 @@ floating_modifier $mod normal
 # Outside the stow tree on purpose: ~/.config/sway is a symlink into a public repo.
 # The colour after the mode is the fallback, so a missing file is not an error.
 output * background ~/.local/share/wallpaper fill $base
+
+# Written by scripts/save-displays, kept out of the repo because it is per machine.
+# Output lines are rules, so sway re-applies them on hotplug.
+include ~/.local/share/sway-outputs.conf
 seat seat0 xcursor_theme breeze_cursors 24
 
 # us first so the Corne types correctly without touching anything; caps toggles to
@@ -86,9 +90,7 @@ bindgesture swipe:3:right workspace prev_on_output
 bindgesture swipe:3:up exec ~/.config/sway/scripts/winjump
 
 bindswitch --reload --locked lid:on output eDP-1 disable
-# Opening the lid re-applies the layout rather than forcing the panel on, which
-# would exceed what the graphics unit drives while both externals are connected.
-bindswitch --reload --locked lid:off exec ~/.config/sway/scripts/displays
+bindswitch --reload --locked lid:off output eDP-1 enable
 
 for_window [app_id="$quickterm"] floating enable, resize set 1100 650, move scratchpad, scratchpad show
 for_window [app_id="$calc"] floating enable, resize set 700 420
@@ -221,8 +223,6 @@ exec_always gsettings set org.gnome.desktop.interface gtk-theme 'Breeze-Dark'
 exec_always gsettings set org.gnome.desktop.interface icon-theme 'breeze-dark'
 # The trailing colon puts every button on the left, the way macOS has them.
 exec_always gsettings set org.gnome.desktop.wm.preferences button-layout 'close,minimize,maximize:'
-
-exec_always ~/.config/sway/scripts/displays
 
 exec_always ~/.config/sway/scripts/park-vpn
 exec wl-paste --watch cliphist store

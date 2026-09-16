@@ -88,6 +88,9 @@ Corne just reaches them from layer 2.
 | `Super+d` / `Super+Shift+d` | dismiss one / all notifications |
 | `Super+Shift+z` | park the focused window in the scratchpad |
 | `Super+z` | bring a parked window back (cycles) |
+
+The bar lists open windows — click one to focus it. Tiling has no minimise; the
+scratchpad is what stands in for it.
 | `Super+Shift+s` | screenshot a region to the clipboard |
 | `Print` | whole screen to the clipboard |
 | `Super+Shift+c` | reload the config |

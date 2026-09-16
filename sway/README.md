@@ -193,18 +193,31 @@ than move files around.
 
 ## Displays
 
-`scripts/displays` applies the layout from whatever is connected, so no monitor
-name is hardcoded: externals go side by side in connector order, each at the
-highest mode it offers, and the laptop panel is placed to their right.
+Arrange the monitors and put the workspaces where they belong — `wdisplays` is
+handy for the dragging — then capture it once:
 
-With **two** externals the laptop panel is switched off, and that is not a
-preference: the graphics unit drives two panels, not three, so one would stay dark
-anyway. Unplugging one proved it. With a single external both fit and both run.
+```sh
+~/.config/sway/scripts/save-displays
+```
 
-The script runs on every reload and when the lid opens. Left-to-right follows the
-connector name, which may not match where the monitors physically stand; swapping
-the cables is the fix, since sway cannot know. `wdisplays` is useful for trying an
-arrangement out live, but it does not persist anything.
+That writes `output` and `workspace ... output` lines to
+`~/.local/share/sway-outputs.conf`, which the config includes. Output lines are
+rules rather than one-off commands, so sway re-applies them whenever a monitor
+appears — docking included.
+
+The file lives outside the stow tree because it is per machine, and `~/.config/sway`
+is a symlink into a public repo.
+
+An earlier script derived the arrangement from connector names in alphabetical
+order. That is not where monitors physically stand, it only ran on reload, and it
+fought whatever was set through the GUI. Capturing beats guessing.
+
+## Window list
+
+Tiling has no minimise — the scratchpad is the equivalent, `Super+Shift+z` parks a
+window and `Super+z` brings one back. Since that list is otherwise invisible, the
+bar carries `wlr/taskbar`: every open window as an icon, click to focus, middle
+click to close.
 
 ## Laptop specifics
 
