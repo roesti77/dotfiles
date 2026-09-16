@@ -163,8 +163,10 @@ that actually fires when sway does.
 - **Kerberos** is unaffected by the window manager. It hangs off PAM, SSSD and
   `krb5.conf`, so a session started from the same display manager gets the same
   ticket. `klist` after login is the whole test.
-- **The VPN client window** is parked on sight by `scripts/park-vpn`, which watches
-  sway's event stream and matches the window title. Two attempts at an `app_id` or
+- **The VPN client window** is parked by `scripts/park-vpn`, which matches the
+  window title — it scans the tree once at startup and then watches sway's event
+  stream, so the order in which the client and the session come up does not matter.
+  Sway runs no XDG autostart entries, so that order is not fixed. Two attempts at an `app_id` or
   `class` rule missed, and the title is the one thing that is known. `Super+z`
   brings it back. A floating window always stacks above tiled ones in sway, so
   moving it out of the way is the only real fix.
