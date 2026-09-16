@@ -137,6 +137,9 @@ bindsym $mod+v splitv
 bindsym $mod+w layout toggle split tabbed
 bindsym $mod+s layout toggle split stacking
 bindsym $mod+a focus parent
+# Flips an existing container; splith/splitv below only set the direction for the
+# next window. On g rather than e, which is a home-row mod on the Corne.
+bindsym $mod+g layout toggle splitv splith
 bindsym $mod+Shift+space floating toggle
 # Large without going fullscreen — mostly meant for floating windows.
 bindsym $mod+m resize set width 90 ppt height 90 ppt

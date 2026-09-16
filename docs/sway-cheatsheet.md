@@ -48,7 +48,8 @@ competes for `Super`, so MEH stayed reserved for zellij.
 | `Super+w` | tabbed on/off |
 | `Super+s` | stacking on/off |
 | `Super+a` | focus the parent container |
-| `Super+b` / `Super+v` | split horizontally / vertically |
+| `Super+g` | flip a container between side by side and stacked |
+| `Super+b` / `Super+v` | direction for the **next** window |
 | `Super+Shift+space` | floating on/off |
 | `Super+m` | large without fullscreen — 90% of the screen |
 | `Super`+drag | move a floating window (right button resizes) |
