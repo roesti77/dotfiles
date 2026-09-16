@@ -89,8 +89,8 @@ Corne just reaches them from layer 2.
 | `Super+Shift+z` | park the focused window in the scratchpad |
 | `Super+z` | bring a parked window back (cycles) |
 
-The bar lists open windows — click one to focus it. Tiling has no minimise; the
-scratchpad is what stands in for it.
+Tiling has no minimise; the scratchpad stands in for it. What is parked is not
+visible anywhere — `Super+z` cycles through it.
 | `Super+Shift+s` | screenshot a region to the clipboard |
 | `Print` | whole screen to the clipboard |
 | `Super+Shift+c` | reload the config |
