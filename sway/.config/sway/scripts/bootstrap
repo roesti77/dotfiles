@@ -5,7 +5,7 @@ set -eu
 sudo apt install -y \
     sway swayidle swaylock swaybg waybar fuzzel mako-notifier \
     grim slurp wl-clipboard jq brightnessctl playerctl wireplumber pavucontrol \
-    network-manager-gnome xdg-desktop-portal-wlr xdg-desktop-portal-kde \
+    network-manager-gnome xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
     breeze-gtk-theme fonts-hack qalc
 
 kwalletd=""
@@ -36,13 +36,6 @@ fi
 # at login but gets pulled in later by another service — so it would run a second
 # bar next to the one sway's exec starts. The exec is the reliable one.
 systemctl --user mask waybar.service >/dev/null
-
-# Electron apps ask the portal for the colour scheme, and xdg-desktop-portal-kde
-# answers from kdeglobals — gsettings does not reach them. Without this they stay
-# light while GTK apps are dark.
-if command -v plasma-apply-colorscheme >/dev/null; then
-    plasma-apply-colorscheme BreezeDark >/dev/null 2>&1 || echo "WARNING: could not set the KDE colour scheme"
-fi
 
 # The config includes this; without the file sway warns on every start.
 touch "${XDG_DATA_HOME:-$HOME/.local/share}/sway-outputs.conf"
