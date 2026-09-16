@@ -55,6 +55,18 @@ services are reused, anything living inside plasmashell or KWin is replaced.
 | Secret service | KWallet | credentials are already in it |
 | Icons, GTK theme | Breeze | already installed, matches the KDE apps |
 | Portal, dialogs | `xdg-desktop-portal-kde` | already installed |
+
+Dark mode takes two separate settings, because two mechanisms are in play: GTK
+applications follow `gsettings`, set by the config itself, while electron ones ask
+the portal — and `xdg-desktop-portal-kde` answers from `kdeglobals`. `bootstrap`
+therefore also runs `plasma-apply-colorscheme BreezeDark`. What the portal actually
+reports:
+
+```sh
+busctl --user call org.freedesktop.portal.Desktop /org/freedesktop/portal/desktop \
+  org.freedesktop.portal.Settings Read ss org.freedesktop.appearance color-scheme
+# 1 dark, 2 light, 0 no preference
+```
 | Portal, screencast | `xdg-desktop-portal-wlr` | the KDE portal screencasts over KWin protocols sway does not speak |
 | Network tray | `nm-applet` | plasma-nm is a plasmashell widget, not a tray program |
 | Notifications | `mako` | plasma notifications come out of plasmashell |
