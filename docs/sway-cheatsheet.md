@@ -58,12 +58,13 @@ ghostty next to the browser.
 | Key | Action |
 |---|---|
 | `Super+1..9` | switch — also from the Corne's keypad layer |
-| `Super+Shift+1..9` | move the window there — number row only |
+| `Super+Shift+1..9` | move the window there — keypad layer works too |
 | `Super+grave` | last workspace |
 | `Super+n` / `Super+p` | next / previous |
 
-`Super+Shift+1..9` has no keypad twin because Shift flips the numlock keysyms:
-`KP_1` becomes `KP_End`.
+Shift flips the numlock keysyms, so the keypad variants are bound under the names
+the keys actually send while shifted — `KP_1` arrives as `KP_End`. Same result, the
+Corne just reaches them from layer 2.
 
 ### System
 
@@ -71,6 +72,7 @@ ghostty next to the browser.
 |---|---|
 | `Hyper+l` | lock — Tab-hold then `l` on the Corne |
 | `Super+d` / `Super+Shift+d` | dismiss one / all notifications |
+| `Super+z` | bring zscaler back from the scratchpad |
 | `Super+Shift+s` | screenshot a region to the clipboard |
 | `Print` | whole screen to the clipboard |
 | `Super+Shift+c` | reload the config |

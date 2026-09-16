@@ -71,6 +71,10 @@ bindswitch --reload --locked lid:off output eDP-1 enable
 
 for_window [app_id="$quickterm"] floating enable, resize set 1100 650, move scratchpad, scratchpad show
 for_window [app_id="$calc"] floating enable, resize set 700 420
+# Identifier unverified: app_id applies when it runs natively, class under
+# XWayland. Both are listed so one of them takes.
+for_window [app_id="(?i)zscaler"] floating enable, move scratchpad
+for_window [class="(?i)zscaler"] floating enable, move scratchpad
 for_window [app_id="pavucontrol"] floating enable, resize set 900 600
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="dialog"] floating enable
@@ -82,6 +86,7 @@ bindsym $mod+Shift+v exec ~/.config/sway/scripts/clip
 bindsym $mod+c exec $term --class=$calc -e qalc
 bindsym $mod+q kill
 bindsym $hyper+l exec $lock
+bindsym $mod+z exec swaymsg '[app_id="(?i)zscaler"] scratchpad show'; swaymsg '[class="(?i)zscaler"] scratchpad show'
 bindsym $mod+d exec makoctl dismiss
 bindsym $mod+Shift+d exec makoctl dismiss --all
 bindsym $mod+Shift+c reload
@@ -139,8 +144,9 @@ bindsym $mod+KP_7 workspace number 7
 bindsym $mod+KP_8 workspace number 8
 bindsym $mod+KP_9 workspace number 9
 
-# No keypad twins for moving containers: Shift flips the numlock keysyms
-# (KP_1 becomes KP_End), so that stays on the number row.
+# The Corne has no number row, so moving a container has to work from its keypad
+# layer too. Shift flips the numlock keysyms, which is why these are bound under
+# the names the keypad actually sends while shifted: KP_1 arrives as KP_End.
 bindsym $mod+Shift+1 move container to workspace number 1
 bindsym $mod+Shift+2 move container to workspace number 2
 bindsym $mod+Shift+3 move container to workspace number 3
@@ -150,6 +156,16 @@ bindsym $mod+Shift+6 move container to workspace number 6
 bindsym $mod+Shift+7 move container to workspace number 7
 bindsym $mod+Shift+8 move container to workspace number 8
 bindsym $mod+Shift+9 move container to workspace number 9
+
+bindsym $mod+Shift+KP_End move container to workspace number 1
+bindsym $mod+Shift+KP_Down move container to workspace number 2
+bindsym $mod+Shift+KP_Next move container to workspace number 3
+bindsym $mod+Shift+KP_Left move container to workspace number 4
+bindsym $mod+Shift+KP_Begin move container to workspace number 5
+bindsym $mod+Shift+KP_Right move container to workspace number 6
+bindsym $mod+Shift+KP_Home move container to workspace number 7
+bindsym $mod+Shift+KP_Up move container to workspace number 8
+bindsym $mod+Shift+KP_Prior move container to workspace number 9
 
 bindsym $mod+Shift+s exec grim -g "$(slurp -d)" - | wl-copy
 bindsym Print exec grim - | wl-copy
