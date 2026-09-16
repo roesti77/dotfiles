@@ -219,7 +219,7 @@ exec_always gsettings set org.gnome.desktop.wm.preferences button-layout 'close,
 
 exec_always ~/.config/sway/scripts/displays
 
-exec ~/.config/sway/scripts/park-vpn
+exec_always ~/.config/sway/scripts/park-vpn
 exec wl-paste --watch cliphist store
 exec waybar
 exec mako
