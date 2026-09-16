@@ -206,7 +206,7 @@ sway collides with neither layer. That is the reason the window manager sits on
 | Key | Action |
 |---|---|
 | `AltGr+u`, then the vowel | ä ö ü — same gesture as the mac's `alt+u` |
-| `Caps` | switch layout us ⇄ de |
+| `Caps` | switch layout — the Corne starts on us, the built-in keyboard on de |
 | home row `a r s t` | hold for Ctrl Alt Super Shift |
 | home row `n e i o` | hold for Shift Super Alt Ctrl |
 

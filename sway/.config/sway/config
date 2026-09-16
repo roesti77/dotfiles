@@ -58,13 +58,14 @@ input type:keyboard {
     repeat_rate 40
 }
 
-# Uncomment and fill the identifier from `swaymsg -t get_inputs` to make the
-# built-in keyboard default to de while the Corne stays on us.
-# input "1234:5678:AT_Translated_Set_2_keyboard" {
-#     xkb_layout de,us
-#     xkb_variant nodeadkeys,
-# }
-
+# The built-in keyboard is a german one, the Corne is not. Layout, variant and
+# options are repeated rather than merged in: they only work as a set, and losing
+# lv3:ralt_switch would take the umlaut dead key with it.
+input "1:1:AT_Translated_Set_2_keyboard" {
+    xkb_layout de,usmac
+    xkb_variant nodeadkeys,umlaut
+    xkb_options grp:caps_toggle,lv3:ralt_switch
+}
 # Covers the built-in touchpad and the external apple one, which libinput also
 # reports as a touchpad (1452:613:Apple_Inc._Magic_Trackpad).
 input type:touchpad {
