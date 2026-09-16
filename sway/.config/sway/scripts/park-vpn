@@ -4,6 +4,14 @@
 # Matches only on creation, so bringing it back with Super+z keeps it visible.
 set -eu
 
+# sway re-runs exec_always on every reload, so end the previous watcher. Matching
+# by process name would risk killing this one too.
+pidfile="${XDG_RUNTIME_DIR:-/tmp}/park-vpn.pid"
+if [ -f "$pidfile" ]; then
+    kill "$(cat "$pidfile")" 2>/dev/null || true
+fi
+echo $$ >"$pidfile"
+
 swaymsg -t subscribe -m '["window"]' \
     | jq --unbuffered -r 'select(.change == "new")
         | .container
