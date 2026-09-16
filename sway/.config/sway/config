@@ -73,18 +73,22 @@ input type:touchpad {
     dwt enabled
     scroll_method two_finger
     click_method clickfinger
+    tap_button_map lrm
+    middle_emulation enabled
 }
 
 # Output name varies per machine, check with `swaymsg -t get_outputs`.
+# Three fingers move between workspaces the way they moved between spaces on the
+# mac; swiping up opens the window switcher.
+bindgesture swipe:3:left workspace next_on_output
+bindgesture swipe:3:right workspace prev_on_output
+bindgesture swipe:3:up exec ~/.config/sway/scripts/winjump
+
 bindswitch --reload --locked lid:on output eDP-1 disable
 bindswitch --reload --locked lid:off output eDP-1 enable
 
 for_window [app_id="$quickterm"] floating enable, resize set 1100 650, move scratchpad, scratchpad show
 for_window [app_id="$calc"] floating enable, resize set 700 420
-# Identifier unverified: app_id applies when it runs natively, class under
-# XWayland. Both are listed so one of them takes.
-for_window [app_id="(?i)zscaler"] floating enable, move scratchpad
-for_window [class="(?i)zscaler"] floating enable, move scratchpad
 for_window [app_id="pavucontrol"] floating enable, resize set 900 600
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="dialog"] floating enable
@@ -96,7 +100,10 @@ bindsym $mod+Shift+v exec ~/.config/sway/scripts/clip
 bindsym $mod+c exec $term --class=$calc -e qalc
 bindsym $mod+q kill
 bindsym $hyper+l exec $lock
-bindsym $mod+z exec swaymsg '[app_id="(?i)zscaler"] scratchpad show'; swaymsg '[class="(?i)zscaler"] scratchpad show'
+# Parks whatever is focused, so an intrusive window needs no rule of its own.
+# Super+z cycles back through everything parked, the quickterm included.
+bindsym $mod+Shift+z move scratchpad
+bindsym $mod+z scratchpad show
 bindsym $mod+d exec makoctl dismiss
 bindsym $mod+Shift+d exec makoctl dismiss --all
 bindsym $mod+Shift+c reload
