@@ -25,7 +25,7 @@ competes for `Super`, so MEH stayed reserved for zellij.
 | Key | Action |
 |---|---|
 | `Super+Return` | ghostty — starts zellij with it |
-| `Super+space` | launcher (fuzzel) |
+| `Super+space` | launcher |
 | `Super+c` | calculator (qalc) |
 | `Super+Shift+v` | clipboard history |
 

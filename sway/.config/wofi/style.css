@@ -1,0 +1,56 @@
+/* Same palette, radii and spacing as waybar's style.css — the point of wofi over
+   fuzzel is that both take CSS, so the launcher can actually match the bar. */
+window {
+  background-color: #181825;
+  border-radius: 8px;
+  font-family: "JetBrainsMono Nerd Font", monospace;
+  font-size: 13px;
+}
+
+#outer-box {
+  margin: 10px;
+}
+
+#input {
+  margin-bottom: 8px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: #313244;
+  color: #cdd6f4;
+}
+
+#input image {
+  color: #6c7086;
+}
+
+#scroll {
+  margin: 0;
+}
+
+#inner-box {
+  background-color: transparent;
+}
+
+#entry {
+  padding: 6px 12px;
+  margin: 2px 0;
+  border-radius: 4px;
+  background-color: #1e1e2e;
+  color: #cdd6f4;
+}
+
+/* Inverted like the focused workspace pill, so the selection reads the same way in
+   both places. */
+#entry:selected {
+  background-color: #cdd6f4;
+  color: #1e1e2e;
+}
+
+#text:selected {
+  color: #1e1e2e;
+}
+
+#img {
+  margin-right: 10px;
+}
