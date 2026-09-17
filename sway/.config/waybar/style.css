@@ -36,6 +36,10 @@ window#waybar {
 }
 
 #mode,
+#privacy,
+#cpu,
+#memory,
+#bluetooth,
 #language,
 #idle_inhibitor,
 #pulseaudio,
@@ -93,12 +97,42 @@ window#waybar {
 
 #clock {
   background-color: #cba6f7;
+  margin-right: 6px;
+}
+
+#cpu {
+  background-color: #a6e3a1;
+}
+
+#memory {
+  background-color: #fab387;
+}
+
+#bluetooth {
+  background-color: #89b4fa;
+}
+
+#bluetooth.disabled,
+#bluetooth.off {
+  background-color: #6c7086;
+  color: #cdd6f4;
+}
+
+/* Its own colour on purpose: a screen capture or a live microphone should not
+   blend in with the rest of the bar. */
+#privacy {
+  background-color: #f38ba8;
+  color: #11111b;
+}
+
+#pulseaudio.source-muted {
+  background-color: #6c7086;
+  color: #cdd6f4;
 }
 
 #tray {
   background-color: #313244;
   color: #cdd6f4;
-  margin-right: 6px;
 }
 
 tooltip {
