@@ -298,6 +298,16 @@ Scroll over the module to adjust, left click mutes, right click opens `pavucontr
 The mixer is also where a bluetooth headset switches between A2DP and the headset
 profile — without that switch the microphone does not appear at all.
 
+## Workspace levels
+
+Three workspaces per level: 1-3 and 4-6. Swiping up with three fingers toggles
+between them — from 1 to 4, from 4 back to 1. `Super+1..9` still reaches every
+workspace directly.
+
+A gesture has to be finished by the swipe itself, which is why the window switcher
+is not bound to one: it opens a picker that needs the keyboard. That stays on
+`Super+Tab`.
+
 ## Known gaps
 
 - The `privacy` module needs waybar 0.9.25; ubuntu 24.04 ships 0.9.24, where it

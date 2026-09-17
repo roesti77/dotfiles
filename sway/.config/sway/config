@@ -108,10 +108,11 @@ input type:touchpad {
 
 # Output name varies per machine, check with `swaymsg -t get_outputs`.
 # Three fingers move between workspaces the way they moved between spaces on the
-# mac; swiping up opens the window switcher.
+# mac. Up toggles between the two levels, 1-3 and 4-6 — a gesture has to finish with
+# the swipe, which is why the window switcher is not here: it needs the keyboard.
 bindgesture swipe:3:left workspace next_on_output
 bindgesture swipe:3:right workspace prev_on_output
-bindgesture swipe:3:up exec ~/.config/sway/scripts/winjump
+bindgesture swipe:3:up exec ~/.config/sway/scripts/workspace-level
 
 bindswitch --reload --locked lid:on output eDP-1 disable
 bindswitch --reload --locked lid:off output eDP-1 enable
