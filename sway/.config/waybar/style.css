@@ -40,7 +40,6 @@ window#waybar {
 #cpu,
 #memory,
 #bluetooth,
-#language,
 #idle_inhibitor,
 #pulseaudio,
 #network,
@@ -55,10 +54,6 @@ window#waybar {
 
 #mode {
   background-color: #f9e2af;
-}
-
-#language {
-  background-color: #b4befe;
 }
 
 #idle_inhibitor {
@@ -123,6 +118,12 @@ window#waybar {
 #privacy {
   background-color: #f38ba8;
   color: #11111b;
+}
+
+/* Same module as the volume, so without its own colour the two are one click apart
+   and indistinguishable. */
+#pulseaudio.microphone {
+  background-color: #f5c2e7;
 }
 
 #pulseaudio.source-muted {

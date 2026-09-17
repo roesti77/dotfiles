@@ -5,7 +5,7 @@
   "spacing": 0,
   "modules-left": ["sway/workspaces", "sway/mode"],
   "modules-center": ["sway/window"],
-  "modules-right": ["tray", "privacy", "cpu", "memory", "bluetooth", "pulseaudio#microphone", "sway/language", "idle_inhibitor", "pulseaudio", "network", "battery", "clock"],
+  "modules-right": ["tray", "privacy", "cpu", "memory", "bluetooth", "pulseaudio#microphone", "idle_inhibitor", "pulseaudio", "network", "battery", "clock"],
 
   "sway/workspaces": {
     "disable-scroll": true,
@@ -48,10 +48,6 @@
     "format-source-muted": "󰍭",
     "tooltip-format": "{source_desc}  {source_volume}%",
     "on-click": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-  },
-  "sway/language": {
-    "format": "󰌌 {short}",
-    "tooltip-format": "{long}"
   },
   "idle_inhibitor": {
     "format": "{icon}",
