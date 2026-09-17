@@ -21,7 +21,7 @@ idempotent — re-run it whenever something changed.
 For the packages alone, after adding one to the list:
 
 ```sh
-task deps
+task sway:deps
 ```
 
 Same list, just an earlier exit — `bootstrap --deps` stops after the install.

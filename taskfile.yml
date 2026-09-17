@@ -2,6 +2,7 @@ version: '3'
 
 tasks:
   setup:
+    desc: stow the shared config (run this on macOS and linux alike)
     cmds:
       - stow zsh
       - stow p10k
@@ -20,7 +21,7 @@ tasks:
       - stow sway
       - ./sway/.config/sway/scripts/bootstrap
 
-  deps:
+  sway:deps:
     desc: install the apt packages the sway session needs
     preconditions:
       - sh: command -v apt-get >/dev/null
@@ -37,6 +38,7 @@ tasks:
       - if command -v shellcheck >/dev/null; then for f in claude/.claude/hooks/*.sh claude/.claude/statusline-command.sh zsh/bin/*; do if [ -f "$f" ]; then shellcheck "$f"; fi; done; fi
 
   clone-plugins:
+    desc: fetch the oh-my-zsh plugins that are not vendored
     vars:
       ZSH_CUSTOM:
         sh: echo "$HOME/.config/ohmyzsh/custom"
