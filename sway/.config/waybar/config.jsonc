@@ -4,8 +4,8 @@
   "height": 34,
   "spacing": 0,
   "modules-left": ["sway/workspaces", "sway/mode"],
-  "modules-center": ["clock"],
-  "modules-right": ["tray", "sway/language", "idle_inhibitor", "pulseaudio", "network", "battery"],
+  "modules-center": ["sway/window"],
+  "modules-right": ["tray", "privacy", "cpu", "memory", "bluetooth", "pulseaudio#microphone", "sway/language", "idle_inhibitor", "pulseaudio", "network", "battery", "clock"],
 
   "sway/workspaces": {
     "disable-scroll": true,
@@ -13,6 +13,41 @@
   },
   "sway/mode": {
     "format": "{}"
+  },
+  "sway/window": {
+    "max-length": 40,
+    "tooltip": false
+  },
+  "privacy": {
+    "icon-size": 14,
+    "icon-spacing": 6,
+    "modules": [
+      { "type": "screenshare" },
+      { "type": "audio-in" }
+    ]
+  },
+  "cpu": {
+    "format": "󰻠 {usage}%",
+    "interval": 5
+  },
+  "memory": {
+    "format": "󰍛 {percentage}%",
+    "interval": 5
+  },
+  "bluetooth": {
+    "format": "󰂯",
+    "format-disabled": "󰂲",
+    "format-off": "󰂲",
+    "format-connected": "󰂱",
+    "tooltip-format-connected": "{device_alias}",
+    "on-click": "blueman-manager"
+  },
+  "pulseaudio#microphone": {
+    "format": "{format_source}",
+    "format-source": "󰍬",
+    "format-source-muted": "󰍭",
+    "tooltip-format": "{source_desc}  {source_volume}%",
+    "on-click": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
   },
   "sway/language": {
     "format": "󰌌 {short}",
