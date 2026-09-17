@@ -1,27 +1,36 @@
-/* Same palette, radii and spacing as waybar's style.css — the point of wofi over
-   fuzzel is that both take CSS, so the launcher can actually match the bar. */
+/* Catppuccin Mocha like the bar, but not the bar's proportions: 4px radii and 6px
+   padding read fine on a 20px pill and like a windows dialog in a list. */
 window {
   background-color: #181825;
-  border-radius: 8px;
+  border: 1px solid #313244;
+  border-radius: 16px;
   font-family: "JetBrainsMono Nerd Font", monospace;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 #outer-box {
-  margin: 10px;
+  margin: 18px;
 }
 
+/* No box around the search field — a large, quiet line reads as a prompt, a framed
+   input reads as a form. */
 #input {
-  margin-bottom: 8px;
-  padding: 6px 12px;
+  margin-bottom: 14px;
+  padding: 10px 14px;
   border: none;
-  border-radius: 4px;
-  background-color: #313244;
+  border-radius: 10px;
+  background-color: #1e1e2e;
   color: #cdd6f4;
+  font-size: 17px;
 }
 
 #input image {
   color: #6c7086;
+}
+
+#input:focus {
+  border: none;
+  outline: none;
 }
 
 #scroll {
@@ -33,24 +42,24 @@ window {
 }
 
 #entry {
-  padding: 6px 12px;
-  margin: 2px 0;
-  border-radius: 4px;
-  background-color: #1e1e2e;
+  padding: 11px 14px;
+  margin: 3px 0;
+  border-radius: 10px;
+  background-color: transparent;
   color: #cdd6f4;
 }
 
-/* Inverted like the focused workspace pill, so the selection reads the same way in
-   both places. */
+/* Highlighted, not inverted: black on white is a hard edge to read down a list,
+   and the accent carries the selection well enough on its own. */
 #entry:selected {
-  background-color: #cdd6f4;
-  color: #1e1e2e;
+  background-color: #313244;
+  color: #89b4fa;
 }
 
 #text:selected {
-  color: #1e1e2e;
+  color: #89b4fa;
 }
 
 #img {
-  margin-right: 10px;
+  margin-right: 14px;
 }
