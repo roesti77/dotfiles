@@ -25,7 +25,6 @@ competes for `Super`, so MEH stayed reserved for zellij.
 | Key | Action |
 |---|---|
 | `Super+Return` | ghostty — starts zellij with it |
-| `Super+F12` | drop-down terminal, same key as the mac quick terminal |
 | `Super+space` | launcher (fuzzel) |
 | `Super+c` | calculator (qalc) |
 | `Super+Shift+v` | clipboard history |
