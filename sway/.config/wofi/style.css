@@ -3,7 +3,7 @@
    measurements sit between the bar's pill values and a full-size list. */
 window {
   background-color: #181825;
-  border: 1px solid #313244;
+  border: 2px solid #89b4fa;
   border-radius: 12px;
   font-family: "JetBrainsMono Nerd Font", monospace;
   font-size: 13px;
@@ -20,13 +20,13 @@ window {
   padding: 7px 12px;
   border: none;
   border-radius: 8px;
-  background-color: #1e1e2e;
-  color: #cdd6f4;
+  background-color: #313244;
+  color: #89b4fa;
   font-size: 14px;
 }
 
 #input image {
-  color: #6c7086;
+  color: #89b4fa;
 }
 
 #input:focus {
@@ -50,15 +50,15 @@ window {
   color: #cdd6f4;
 }
 
-/* Highlighted, not inverted: black on white is a hard edge to read down a list,
-   and the accent carries the selection well enough on its own. */
+/* Filled with the accent, the way the bar's pills are — not with near-white, which
+   was the hard edge in the first version. */
 #entry:selected {
-  background-color: #313244;
-  color: #89b4fa;
+  background-color: #89b4fa;
+  color: #11111b;
 }
 
 #text:selected {
-  color: #89b4fa;
+  color: #11111b;
 }
 
 #img {
