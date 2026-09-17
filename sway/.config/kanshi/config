@@ -1,0 +1,3 @@
+# Profiles live one per file outside this repo: they carry monitor serials, and this
+# repo is public. The glob is kanshi's own, no shell involved.
+include "~/.local/share/kanshi/*"

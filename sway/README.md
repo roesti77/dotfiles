@@ -256,47 +256,30 @@ than move files around.
 
 ## Displays
 
-Arrange the monitors and put the workspaces where they belong — `wdisplays` is
-handy for the dragging — then capture it, **once per location**:
+Arrange the monitors and put the workspaces where they belong, then capture it once
+per location:
 
 ```sh
-~/.config/sway/scripts/save-displays
+~/.config/sway/scripts/save-displays office
+~/.config/sway/scripts/save-displays home
 ```
 
-It writes to `~/.local/share/sway-outputs.conf`, which the config includes. Output
-lines are rules rather than one-off commands, so sway re-applies them whenever a
-monitor appears — docking included. Nothing to run when arriving somewhere.
+**kanshi** does the rest. It watches for monitor changes and applies the matching
+profile on hotplug — arriving and docking needs nothing, no reload, no command. That
+is the difference to capturing into the sway config, which only took effect on
+reload.
 
-Two details make switching between office and home work:
+Profiles live one per file in `~/.local/share/kanshi/`, outside this repo: they
+carry monitor serials, and this repo is public. `.config/kanshi/config` pulls them
+in with a glob, so the two sites cannot overwrite each other.
 
-- Monitors are addressed by **make, model and serial**, not by connector. `DP-2` is
-  a different screen in each place; the identifier is not.
-- Running it somewhere else **keeps** the lines for monitors that are elsewhere, so
-  both locations accumulate in one file. Workspaces end up with a fallback list —
-  `workspace 1 output "A" "B"` takes whichever is attached, so a workspace follows
-  its screen.
+Monitors are matched by make, model and serial rather than by connector, since
+`DP-2` is a different screen at each site. The built-in panel keeps its connector
+name — it has no serial and there is only one of it.
 
-The file is per machine and lives outside the stow tree, since `~/.config/sway` is a
-symlink into a public repo.
-
-## Bar
-
-Each module is a rounded pill in its own Catppuccin colour, with nerd font icons
-instead of text labels. The styling follows
-[sameemul-haque/dotfiles](https://github.com/sameemul-haque/dotfiles) (Unlicense);
-that is a Hyprland setup, so only the waybar part carries over and
-`hyprland/workspaces` becomes `sway/workspaces`.
-
-The icons are copied from there rather than picked by hand — they are private-use
-glyphs, and choosing them from memory produces boxes. `bootstrap` installs
-JetBrainsMono Nerd Font from the upstream `releases/latest` URL, which avoids
-pinning a version. Without that font every module shows a box.
-
-## Volume
-
-Scroll over the module to adjust, left click mutes, right click opens `pavucontrol`.
-The mixer is also where a bluetooth headset switches between A2DP and the headset
-profile — without that switch the microphone does not appear at all.
+kanshi assigns no workspaces, so each profile carries `exec swaymsg` lines for that.
+Watch the syntax if you edit a profile by hand: kanshi writes `position 1920,0` with
+a comma, sway `position 1920 0` with a space.
 
 ## Workspace levels
 
