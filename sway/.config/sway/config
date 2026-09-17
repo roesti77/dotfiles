@@ -236,12 +236,15 @@ bindsym $mod+Shift+s exec grimshot --notify copy area
 bindsym Print exec grimshot --notify copy screen
 bindsym Shift+Print exec grimshot --notify save area
 
-bindsym --locked XF86AudioRaiseVolume exec wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+
-bindsym --locked XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
-bindsym --locked XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-bindsym --locked XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
-bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
-bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+# Through swayosd rather than wpctl directly: it changes the same values and draws
+# an overlay, which is the point — the bar is the wrong place to look while pressing
+# a key.
+bindsym --locked XF86AudioRaiseVolume exec swayosd-client --output-volume raise
+bindsym --locked XF86AudioLowerVolume exec swayosd-client --output-volume lower
+bindsym --locked XF86AudioMute exec swayosd-client --output-volume mute-toggle
+bindsym --locked XF86AudioMicMute exec swayosd-client --input-volume mute-toggle
+bindsym --locked XF86MonBrightnessUp exec swayosd-client --brightness raise
+bindsym --locked XF86MonBrightnessDown exec swayosd-client --brightness lower
 bindsym --locked XF86AudioPlay exec playerctl play-pause
 bindsym --locked XF86AudioNext exec playerctl next
 bindsym --locked XF86AudioPrev exec playerctl previous
@@ -264,6 +267,13 @@ exec_always ~/.config/sway/scripts/park-vpn
 # kanshi applies a display profile when the monitors change — no reload needed, and
 # nothing to run on arrival.
 exec kanshi
+
+# The overlay for volume and brightness; the bindings above talk to it.
+exec swayosd-server
+
+# Splits by window shape — wide goes vertical, tall horizontal. Super+b and Super+v
+# still work, this only decides when neither was pressed.
+exec autotiling
 
 exec wl-paste --watch cliphist store
 # A second watcher: the first one only sees text selections, so without this a
