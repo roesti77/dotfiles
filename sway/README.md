@@ -183,7 +183,8 @@ to place ghostty next to the browser.
 Raycast has no linux counterpart, so its parts are split across wofi and two
 scripts:
 
-- `Super+space` — app launcher, styled from the same CSS as the bar.
+- `Super+space` — one list of open windows and applications; picking a window
+  jumps to it, across workspaces.
 - `Super+Shift+v` — clipboard history through `cliphist`. The daemon that fills it
   is the `wl-paste --watch` line in the config.
 - `Super+Tab` — fuzzy-jump to a window, the same move `room` makes inside zellij,
