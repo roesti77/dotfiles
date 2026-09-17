@@ -55,6 +55,9 @@ services are reused, anything living inside plasmashell or KWin is replaced.
 | Secret service | KWallet | credentials are already in it |
 | Icons, GTK theme | Breeze | already installed, matches the KDE apps |
 | Portal, dialogs and appearance | `xdg-desktop-portal-gtk` | backends are picked by `XDG_CURRENT_DESKTOP`, and the KDE one only answers for KDE |
+| Portal, screencast | `xdg-desktop-portal-wlr` | the KDE portal screencasts over KWin protocols sway does not speak |
+| Network tray | `nm-applet` | plasma-nm is a plasmashell widget, not a tray program |
+| Notifications | `mako` | plasma notifications come out of plasmashell |
 
 Dark mode runs through `gsettings`, set by the config itself. GTK applications read
 it directly, electron ones ask the portal — and the portal backend reads the same
@@ -69,9 +72,6 @@ busctl --user call org.freedesktop.portal.Desktop /org/freedesktop/portal/deskto
   org.freedesktop.portal.Settings Read ss org.freedesktop.appearance color-scheme
 # 1 dark, 2 light, 0 no preference — 0 means no backend answered
 ```
-| Portal, screencast | `xdg-desktop-portal-wlr` | the KDE portal screencasts over KWin protocols sway does not speak |
-| Network tray | `nm-applet` | plasma-nm is a plasmashell widget, not a tray program |
-| Notifications | `mako` | plasma notifications come out of plasmashell |
 
 ## Keyboard
 
@@ -297,6 +297,16 @@ pinning a version. Without that font every module shows a box.
 Scroll over the module to adjust, left click mutes, right click opens `pavucontrol`.
 The mixer is also where a bluetooth headset switches between A2DP and the headset
 profile — without that switch the microphone does not appear at all.
+
+## Known gaps
+
+- The `privacy` module needs waybar 0.9.25; ubuntu 24.04 ships 0.9.24, where it
+  never appears and waybar says nothing. `waybar --version` tells you which you have.
+- `bindswitch` fires on lid *events*, not at startup. Booting docked with the lid
+  already closed leaves `eDP-1` enabled behind it until the lid is toggled once.
+- `scripts/park-vpn` misses a window that maps between its initial scan and its
+  subscription, and its `pkill` would hit any other tool subscribing to sway events.
+  Nothing else does here.
 
 ## Window list
 

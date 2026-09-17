@@ -56,7 +56,7 @@ if ! fc-list | grep -qi 'JetBrainsMono Nerd Font'; then
 fi
 
 # The config includes this; without the file sway warns on every start.
-touch "${XDG_DATA_HOME:-$HOME/.local/share}/sway-outputs.conf"
+touch "$HOME/.local/share/sway-outputs.conf"
 
 command -v ghostty >/dev/null || echo "WARNING: ghostty missing, it has no apt package"
 command -v cliphist >/dev/null || echo "WARNING: cliphist missing, no clipboard history"
