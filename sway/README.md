@@ -1,8 +1,8 @@
 # sway — wayland session for the linux work laptop
 
 The sway counterpart to the mac setup: same dark palette as ghostty (Catppuccin
-Mocha), same `Super+F12` drop-down terminal, and a keyboard config that handles the
-Corne and the built-in keyboard at the same time.
+Mocha) and a keyboard config that handles the Corne and the built-in keyboard at
+the same time.
 
 One stow package holds sway, waybar, mako, fuzzel and swaylock. They only work as
 one session — splitting them into five packages would mean five `stow` calls for a
