@@ -11,22 +11,34 @@ title='^Zscaler'
 # pid: the loop below runs in a subshell, so $$ is not the process holding the
 # subscription, and killing that would leave this one running. The pattern is a
 # regex, so it stops before the bracket of -m '["window"]'.
+# Accepted limit: this would also hit another tool's subscription. Nothing else
+# subscribes here.
 pkill -f 'swaymsg -t subscribe' 2>/dev/null || true
 
+# Moving an already-parked window fails, and under set -e that would kill the
+# watcher before it ever subscribes — which is what happens on every reload while
+# the client sits in the scratchpad.
 park() {
     while read -r id; do
-        swaymsg "[con_id=$id] move scratchpad"
+        swaymsg "[con_id=$id] move scratchpad" >/dev/null 2>&1 || true
     done
 }
 
+# Accepted limit: a window mapping between this scan and the subscription below is
+# missed. Subscribing first would need the scan to run concurrently, which is more
+# machinery than the gap is worth.
 swaymsg -t get_tree \
     | jq -r --arg t "$title" 'recurse(.nodes[]?, .floating_nodes[]?)
         | select(.pid? and .name? and (.name | test($t)))
         | .id' \
     | park
 
+# Title too, not just new: electron windows map with a placeholder and set their
+# real title afterwards, which a new-only filter never sees. The cost is that a
+# window pulled out with Super+z is parked again if its title changes while
+# visible.
 swaymsg -t subscribe -m '["window"]' \
-    | jq --unbuffered -r --arg t "$title" 'select(.change == "new")
+    | jq --unbuffered -r --arg t "$title" 'select(.change == "new" or .change == "title")
         | .container
         | select(.name != null and (.name | test($t)))
         | .id' \
