@@ -1,5 +1,6 @@
 // AltGr+u is the umlaut dead key, the way alt+u is on macOS. Everything else comes
-// from altgr-intl unchanged; only the third level of <AD07> is overridden.
+// from altgr-intl unchanged; levels three and four of <AD07> are overridden, so
+// Shift+AltGr+u no longer types Uacute.
 // The left alt cannot serve here — it is part of MEH and Hyper.
 partial alphanumeric_keys
 xkb_symbols "umlaut" {

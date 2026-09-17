@@ -8,7 +8,9 @@
 # sway applies whichever is actually there.
 set -eu
 
-out="${XDG_DATA_HOME:-$HOME/.local/share}/sway-outputs.conf"
+# Not XDG_DATA_HOME: sway cannot expand variables in an include path, so the config
+# names this file literally and the two have to agree.
+out="$HOME/.local/share/sway-outputs.conf"
 mkdir -p "$(dirname "$out")"
 [ -f "$out" ] || : >"$out"
 
@@ -17,10 +19,13 @@ workspaces=$(swaymsg -t get_workspaces)
 
 # A panel without a serial (the built-in one) keeps its connector name — there is
 # only ever one of it, and an empty serial makes for a fragile identifier.
+# scale and transform are captured too: without them a hand-tuned or HiDPI
+# arrangement cannot survive a capture, and a saved position would pair with the
+# default scale afterwards.
 new_outputs=$(printf '%s' "$outputs" | jq -r '
     .[] | select(.active)
     | (if (.serial // "") == "" then .name else "\(.make) \(.model) \(.serial)" end) as $id
-    | "output \"\($id)\" mode \(.current_mode.width)x\(.current_mode.height)@\(.current_mode.refresh/1000)Hz position \(.rect.x) \(.rect.y)"')
+    | "output \"\($id)\" mode \(.current_mode.width)x\(.current_mode.height)@\(.current_mode.refresh/1000)Hz position \(.rect.x) \(.rect.y) scale \(.scale) transform \(.transform)"')
 
 current_ids=$(printf '%s' "$outputs" | jq -r '
     .[] | select(.active)

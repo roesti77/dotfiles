@@ -87,13 +87,13 @@ Corne just reaches them from layer 2.
 | `Super+d` / `Super+Shift+d` | dismiss one / all notifications |
 | `Super+Shift+z` | park the focused window in the scratchpad |
 | `Super+z` | bring a parked window back (cycles) |
-
-Tiling has no minimise; the scratchpad stands in for it. What is parked is not
-visible anywhere — `Super+z` cycles through it.
 | `Super+Shift+s` | screenshot a region to the clipboard |
 | `Print` | whole screen to the clipboard |
 | `Super+Shift+c` | reload the config |
 | `Super+Shift+e` | exit sway, asks first |
+
+Tiling has no minimise; the scratchpad stands in for it. What is parked is not
+visible anywhere — `Super+z` cycles through it.
 
 Volume, brightness and media keys work from their own keys, and from the Corne's
 layer 3. Closing the lid disables the internal display.
@@ -205,11 +205,11 @@ sway collides with neither layer. That is the reason the window manager sits on
 | Key | Action |
 |---|---|
 | `AltGr+u`, then the vowel | ä ö ü — same gesture as the mac's `alt+u` |
+| home row `a r s t` | hold for Ctrl Alt Super Shift |
+| home row `n e i o` | hold for Shift Super Alt Ctrl |
 
 In the terminal this needs `GTK_IM_MODULE=simple` in `~/.profile` — GTK stopped
 composing dead keys by itself in 4.20.
-| home row `a r s t` | hold for Ctrl Alt Super Shift |
-| home row `n e i o` | hold for Shift Super Alt Ctrl |
 
 Layer 2 carries the digits as keypad codes, layer 3 the F-keys, arrows and media
 keys.

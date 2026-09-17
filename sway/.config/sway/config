@@ -248,10 +248,16 @@ exec_always gsettings set org.gnome.desktop.wm.preferences button-layout 'close,
 
 exec_always ~/.config/sway/scripts/park-vpn
 exec wl-paste --watch cliphist store
+# A second watcher: the first one only sees text selections, so without this a
+# copied image never reaches the history.
+exec wl-paste --type image --watch cliphist store
 exec waybar
 exec mako
 exec nm-applet --indicator
+# The lock event is what loginctl lock-session triggers; without it that does
+# nothing at all.
 exec swayidle -w \
+    lock '$lock' \
     timeout 300 '$lock' \
     timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
     before-sleep '$lock'
