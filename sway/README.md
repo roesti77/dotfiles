@@ -300,9 +300,14 @@ profile — without that switch the microphone does not appear at all.
 
 ## Workspace levels
 
-Three workspaces per level: 1-3 and 4-6. Swiping up with three fingers toggles
-between them — from 1 to 4, from 4 back to 1. `Super+1..9` still reaches every
-workspace directly.
+Three workspaces per level: 1-3 and 4-6. Swiping left or right with **four**
+fingers toggles between them — from 1 to 4, from 4 back to 1 — while three fingers
+walk the workspaces within a level. `Super+1..9` still reaches every workspace
+directly.
+
+Both four-finger directions run the same toggle: with two levels there is nowhere
+else to go, and a gesture that does different things depending on direction would
+have to be remembered.
 
 A gesture has to be finished by the swipe itself, which is why the window switcher
 is not bound to one: it opens a picker that needs the keyboard. That stays on
