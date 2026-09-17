@@ -38,9 +38,6 @@ floating_modifier $mod normal
 # The colour after the mode is the fallback, so a missing file is not an error.
 output * background ~/.local/share/wallpaper fill $base
 
-# Written by scripts/save-displays, kept out of the repo because it is per machine.
-# Output lines are rules, so sway re-applies them on hotplug.
-include ~/.local/share/sway-outputs.conf
 seat seat0 xcursor_theme breeze_cursors 24
 
 # No layout in the type block on purpose. Sway merges type and device settings
@@ -249,6 +246,10 @@ exec_always gsettings set org.gnome.desktop.interface icon-theme 'breeze-dark'
 exec_always gsettings set org.gnome.desktop.wm.preferences button-layout 'close,minimize,maximize:'
 
 exec_always ~/.config/sway/scripts/park-vpn
+# kanshi applies a display profile when the monitors change — no reload needed, and
+# nothing to run on arrival.
+exec kanshi
+
 exec wl-paste --watch cliphist store
 # A second watcher: the first one only sees text selections, so without this a
 # copied image never reaches the history.
