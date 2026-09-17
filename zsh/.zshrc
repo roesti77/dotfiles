@@ -134,3 +134,8 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# An idle TMOUT ends the shell, which takes the zellij pane, zellij and finally the
+# terminal window with it. Last in the file so it outlives anything that sets it;
+# silent because a readonly TMOUT is a policy that stays.
+unset TMOUT 2>/dev/null || true
