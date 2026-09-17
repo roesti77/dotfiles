@@ -1,27 +1,28 @@
-/* Catppuccin Mocha like the bar, but not the bar's proportions: 4px radii and 6px
-   padding read fine on a 20px pill and like a windows dialog in a list. */
+/* Catppuccin Mocha like the bar. The rounded corners and the soft selection are
+   what keep this from looking like a windows dialog — the size is not, so the
+   measurements sit between the bar's pill values and a full-size list. */
 window {
   background-color: #181825;
   border: 1px solid #313244;
-  border-radius: 16px;
+  border-radius: 12px;
   font-family: "JetBrainsMono Nerd Font", monospace;
-  font-size: 15px;
+  font-size: 13px;
 }
 
 #outer-box {
-  margin: 18px;
+  margin: 12px;
 }
 
 /* No box around the search field — a large, quiet line reads as a prompt, a framed
    input reads as a form. */
 #input {
-  margin-bottom: 14px;
-  padding: 10px 14px;
+  margin-bottom: 10px;
+  padding: 7px 12px;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   background-color: #1e1e2e;
   color: #cdd6f4;
-  font-size: 17px;
+  font-size: 14px;
 }
 
 #input image {
@@ -42,9 +43,9 @@ window {
 }
 
 #entry {
-  padding: 11px 14px;
-  margin: 3px 0;
-  border-radius: 10px;
+  padding: 7px 12px;
+  margin: 2px 0;
+  border-radius: 8px;
   background-color: transparent;
   color: #cdd6f4;
 }
@@ -61,5 +62,5 @@ window {
 }
 
 #img {
-  margin-right: 14px;
+  margin-right: 10px;
 }
