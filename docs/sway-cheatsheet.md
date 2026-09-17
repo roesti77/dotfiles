@@ -119,7 +119,7 @@ layer 3. Closing the lid disables the internal display.
 | `Ctrl h/j/k/l` | focus, and at an edge the neighbouring tab |
 | `Ctrl i` / `Alt o` | move the tab left / right |
 | `Ctrl Shift t` | fuzzy jump (`room`) |
-| `Ctrl o` then `w` | session tree |
+| `Ctrl o` then `w` | sessions and their tabs |
 
 ### Panes and tabs
 

@@ -68,7 +68,7 @@ The essentials:
 | Panes | `Alt n` / `Alt f` | new pane / toggle floating |
 | Layouts | `Ctrl a` / `Alt a` | next / previous swap layout |
 | Jump | `Ctrl Shift t` | fuzzy jump to pane/tab (`room`) |
-| Tree | `Ctrl o` then `w` | session/tab tree (`choose-tree`) |
+| Tree | `Ctrl o` then `w` | sessions and their tabs (built-in session manager) |
 | Quit | `Ctrl q` | quit zellij |
 
 Within a mode: pane mode `n/d/r` new panes, `f` fullscreen, `w` float, `x` close;

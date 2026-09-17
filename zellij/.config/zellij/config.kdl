@@ -117,8 +117,11 @@ keybinds clear-defaults=true {
             }
             SwitchToMode "normal"
         }
+        // The built-in one rather than a vendored wasm: zellij's plugin API is
+        // versioned, and a third-party plugin shows an empty window once it falls
+        // behind a zellij update.
         bind "w" {
-            LaunchOrFocusPlugin "file:~/.config/zellij/plugins/zellij-choose-tree.wasm" {
+            LaunchOrFocusPlugin "session-manager" {
                 floating true
                 move_to_focused_tab true
             }
