@@ -157,9 +157,14 @@ swaymsg -t get_inputs | jq -r '.[] | select(.type=="keyboard") | .xkb_active_lay
 
 If it says anything else the variant did not load, and sway silently fell back.
 
-`Caps` still switches the whole keyboard to `de`, where the umlauts sit on their own
-keys. No compose key is configured: every key xkb offers for it is either missing on
-both keyboards or a home-row mod on the Corne.
+On the built-in keyboard the umlauts sit on their own keys anyway — it runs `de`,
+so the dead key is a Corne matter. There is no layout toggle: each keyboard has the
+one layout it needs. No compose key either, since every key xkb offers for it is
+either missing on both keyboards or a home-row mod on the Corne.
+
+Only options that upstream swaylock knows belong in `swaylock/config`. A bare
+`indicator` is swaylock-effects, and upstream exits on it **without locking** —
+silently, because `swaylock -f` returns before drawing anything.
 
 ## Bindings
 
