@@ -28,16 +28,18 @@
     "tooltip-format-deactivated": "Idle allowed"
   },
   "pulseaudio": {
-    "format": "{icon}",
-    "format-bluetooth": "󰂰",
+    "format": "{icon} {volume}%",
+    "format-bluetooth": "󰂰 {volume}%",
     "format-muted": "󰝟",
     "format-icons": {
       "headphone": "",
       "default": ["󰖀", "󰕾", ""]
     },
-    "tooltip-format": "{volume}%",
-    "on-click": "pavucontrol",
-    "scroll-step": 5
+    "tooltip-format": "{desc}",
+    "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+    "on-click-right": "pavucontrol",
+    "scroll-step": 5,
+    "max-volume": 100
   },
   "network": {
     "format-wifi": "{icon}",

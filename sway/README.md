@@ -265,6 +265,12 @@ glyphs, and choosing them from memory produces boxes. `bootstrap` installs
 JetBrainsMono Nerd Font from the upstream `releases/latest` URL, which avoids
 pinning a version. Without that font every module shows a box.
 
+## Volume
+
+Scroll over the module to adjust, left click mutes, right click opens `pavucontrol`.
+The mixer is also where a bluetooth headset switches between A2DP and the headset
+profile — without that switch the microphone does not appear at all.
+
 ## Window list
 
 Tiling has no minimise — the scratchpad is the equivalent: `Super+Shift+z` parks a
