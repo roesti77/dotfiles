@@ -88,14 +88,17 @@ input "1:1:AT_Translated_Set_2_keyboard" {
 # not in practice — an identifier rule is more specific and matches regardless of
 # how libinput classifies the device.
 input "1452:613:Apple_Inc._Magic_Trackpad" {
-    natural_scroll enabled
+    natural_scroll disabled
     tap enabled
     click_method clickfinger
 }
 
+# natural_scroll off is deliberate, not an oversight: this hardware already reports
+# its axes the way macOS presents them, so enabling the option inverts them a second
+# time and scrolling ends up backwards.
 input type:touchpad {
     tap enabled
-    natural_scroll enabled
+    natural_scroll disabled
     dwt enabled
     scroll_method two_finger
     click_method clickfinger
