@@ -84,6 +84,15 @@ input "1:1:AT_Translated_Set_2_keyboard" {
     xkb_variant nodeadkeys
 }
 
+# By identifier, not by type: the type block below should cover this one, but does
+# not in practice — an identifier rule is more specific and matches regardless of
+# how libinput classifies the device.
+input "1452:613:Apple_Inc._Magic_Trackpad" {
+    natural_scroll enabled
+    tap enabled
+    click_method clickfinger
+}
+
 input type:touchpad {
     tap enabled
     natural_scroll enabled
