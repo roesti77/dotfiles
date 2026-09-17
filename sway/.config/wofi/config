@@ -1,12 +1,12 @@
 show=drun
 prompt=
-width=680
-height=500
-lines=8
+width=560
+height=380
+lines=9
 location=center
 insensitive=true
 allow_images=true
-image_size=30
+image_size=22
 no_actions=true
 hide_scroll=true
 term=ghostty
