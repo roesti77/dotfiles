@@ -102,6 +102,28 @@ real test is `swaymsg reload` on the machine.
 There is no layout toggle any more: each keyboard has the layout it needs, so there
 is nothing to switch between.
 
+## No drop-down terminal
+
+Ghostty has a quick terminal and since 1.2 it works on linux too, over
+`wlr-layer-shell-v1`, which sway speaks. What is missing is a way to trigger it
+without ghostty being focused:
+
+- `global:` keybinds are macOS-only. Ghostty's own docs say so — *"This feature is
+  only supported on macOS"* — and it drops the prefix silently rather than
+  complaining, which is why it behaves the same under KDE.
+- The IPC action sway could call, `+toggle-quick-terminal`, is merged (PR #12661)
+  but sits on milestone **1.4.0**. The newest tag is v1.3.1.
+
+A scratchpad imitation lived here until then and was removed: it was a stand-in for
+something that already exists and is one release away. With 1.4.0 this becomes a
+single line and nothing else:
+
+```
+bindsym $mod+F12 exec ghostty +toggle-quick-terminal
+```
+
+Until then, `Super+Return` opens a normal window.
+
 ## Umlauts
 
 The mac types them with `alt+u` followed by the vowel. No linux layout offers that
