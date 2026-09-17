@@ -281,6 +281,13 @@ kanshi assigns no workspaces, so each profile carries `exec swaymsg` lines for t
 Watch the syntax if you edit a profile by hand: kanshi writes `position 1920,0` with
 a comma, sway `position 1920 0` with a space.
 
+## Audio output
+
+`Super+o` rotates through the outputs — headset, laptop, dock — and a middle click
+on the volume pill does the same. Switching the default sink alone would leave
+anything already playing on the old device, so the script moves the running streams
+along with it.
+
 ## Workspace levels
 
 Three workspaces per level: 1-3 and 4-6. Swiping left or right with **four**

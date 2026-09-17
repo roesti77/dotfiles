@@ -68,6 +68,7 @@
     },
     "tooltip-format": "{desc}",
     "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+    "on-click-middle": "~/.config/sway/scripts/audio-output",
     "on-click-right": "pavucontrol",
     "scroll-step": 5,
     "max-volume": 100
