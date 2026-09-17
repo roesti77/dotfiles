@@ -281,6 +281,26 @@ kanshi assigns no workspaces, so each profile carries `exec swaymsg` lines for t
 Watch the syntax if you edit a profile by hand: kanshi writes `position 1920,0` with
 a comma, sway `position 1920 0` with a space.
 
+## On-screen display
+
+Volume, brightness and caps lock draw an overlay through **swayosd**, the way macOS
+shows them. The bindings call `swayosd-client` instead of `wpctl` directly — it
+changes the same values and draws while doing it. `swayosd-server` runs from the
+config.
+
+Should an overlay stop appearing, check the server first: without it the client
+changes nothing at all, and the keys go dead rather than silent.
+
+## Automatic splits
+
+**autotiling** picks the split direction from the window shape — wide splits
+vertically, tall horizontally. `Super+b` and `Super+v` still force a direction; this
+only decides when neither was pressed.
+
+One consequence worth knowing: autotiling resets the direction on focus changes, so
+a container flipped with `Super+g` may flip back when focus moves. The manual
+command still works, it is no longer permanent.
+
 ## Audio output
 
 `Super+o` rotates through the outputs — headset, laptop, dock — and a middle click
