@@ -73,6 +73,7 @@ up one level so the outer container can be changed.
 |---|---|
 | `Super+1..9` | switch — also from the Corne's keypad layer |
 | `Super+Shift+1..9` | move the window there — keypad layer works too |
+| `Super+Shift+,` / `Super+Shift+.` | move the whole workspace to the other monitor |
 | `Super+grave` | last workspace |
 | `Super+n` / `Super+p` | next / previous |
 
