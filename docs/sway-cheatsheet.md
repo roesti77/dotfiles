@@ -91,6 +91,7 @@ Corne just reaches them from layer 2.
 | `Super+z` | bring a parked window back (cycles) |
 | `Super+Shift+s` | screenshot a region to the clipboard |
 | `Print` | whole screen to the clipboard |
+| `Shift+Print` | region saved as a file |
 | `Super+Shift+c` | reload the config |
 | `Super+Shift+e` | exit sway, asks first |
 
