@@ -50,6 +50,7 @@ competes for `Super`, so MEH stayed reserved for zellij.
 | `Super+g` | flip a container between side by side and stacked |
 | `Super+b` / `Super+v` | direction for the **next** window |
 | `Super+Shift+space` | floating on/off |
+| `Super+Shift+Tab` | focus between tiled and floating windows |
 | `Super+m` | large without fullscreen — 90% of the screen |
 | `Super`+drag | move a floating window (right button resizes) |
 

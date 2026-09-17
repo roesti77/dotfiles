@@ -166,6 +166,9 @@ bindsym $mod+a focus parent
 # next window. On g rather than e, which is a home-row mod on the Corne.
 bindsym $mod+g layout toggle splitv splith
 bindsym $mod+Shift+space floating toggle
+# Focus walks the tiling tree, which a floating window is not part of — without this
+# the only way back to one is the mouse.
+bindsym $mod+Shift+Tab focus mode_toggle
 # Large without going fullscreen — mostly meant for floating windows.
 bindsym $mod+m resize set width 90 ppt height 90 ppt
 
