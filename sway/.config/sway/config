@@ -1,6 +1,6 @@
 set $mod Mod4
 set $term ghostty
-set $menu wofi --show drun
+set $menu ~/.config/sway/scripts/launcher
 set $lock swaylock -f
 set $calc com.mitchellh.ghostty.calc
 

@@ -1,0 +1,43 @@
+#!/bin/sh
+# One list for open windows and applications. rofi does this natively, but debian
+# ships only the x11 build, whose window mode cannot see native wayland windows —
+# which would leave out everything worth jumping to.
+set -eu
+
+list=$(mktemp)
+trap 'rm -f "$list"' EXIT
+
+# Windows first: jumping to something open beats starting something new.
+swaymsg -t get_tree | jq -r '
+    recurse(.nodes[]?, .floating_nodes[]?)
+    | select(.pid? and .name?)
+    | "win\t\(.id)\t󰖯  \(.name)"' >"$list"
+
+for dir in "$HOME/.local/share/applications" /usr/share/applications; do
+    [ -d "$dir" ] || continue
+    for file in "$dir"/*.desktop; do
+        [ -f "$file" ] || continue
+        grep -qi '^NoDisplay=true' "$file" && continue
+        name=$(awk -F= '/^Name=/ { print $2; exit }' "$file")
+        [ -n "$name" ] || continue
+        printf 'app\t%s\t  %s\n' "$file" "$name" >>"$list"
+    done
+done
+
+choice=$(cut -f3 "$list" | wofi --dmenu --prompt '') || exit 0
+[ -n "$choice" ] || exit 0
+
+# Matched back by label, so identical titles collapse onto the first. Super+Tab has
+# the window-only picker when that matters.
+line=$(cut -f3 "$list" | grep -n -m1 -Fx -- "$choice" | cut -d: -f1)
+[ -n "$line" ] || exit 0
+
+kind=$(sed -n "${line}p" "$list" | cut -f1)
+ref=$(sed -n "${line}p" "$list" | cut -f2)
+
+case "$kind" in
+    win) swaymsg "[con_id=$ref] focus" >/dev/null ;;
+    # gio rather than parsing Exec: it handles placeholders like %U instead of
+    # handing them to the shell.
+    app) gio launch "$ref" >/dev/null 2>&1 & ;;
+esac

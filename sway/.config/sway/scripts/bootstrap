@@ -7,7 +7,7 @@ sudo apt install -y \
     grim slurp wl-clipboard jq brightnessctl playerctl wireplumber pavucontrol \
     network-manager-gnome xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
     breeze-gtk-theme fonts-hack qalc curl unzip blueman kanshi grimshot \
-    swayosd autotiling
+    swayosd autotiling libglib2.0-bin
 
 kwalletd=""
 for candidate in /usr/bin/kwalletd6 /usr/bin/kwalletd5; do
