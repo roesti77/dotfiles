@@ -53,8 +53,8 @@ competes for `Super`, so MEH stayed reserved for zellij.
 | `Super+m` | large without fullscreen — 90% of the screen |
 | `Super`+drag | move a floating window (right button resizes) |
 
-Three-finger swipes move left and right between workspaces; swiping up opens the
-window switcher.
+Three fingers left and right walk the workspaces, four fingers jump between the
+levels 1-3 and 4-6.
 
 Splits stay shallow on purpose: panes are zellij's job, sway only has to put
 ghostty next to the browser.
