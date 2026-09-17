@@ -1,6 +1,6 @@
 set $mod Mod4
 set $term ghostty
-set $menu fuzzel
+set $menu wofi --show drun
 set $lock swaylock -f
 set $calc com.mitchellh.ghostty.calc
 

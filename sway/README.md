@@ -4,7 +4,7 @@ The sway counterpart to the mac setup: same dark palette as ghostty (Catppuccin
 Mocha) and a keyboard config that handles the Corne and the built-in keyboard at
 the same time.
 
-One stow package holds sway, waybar, mako, fuzzel and swaylock. They only work as
+One stow package holds sway, waybar, mako, wofi and swaylock. They only work as
 one session — splitting them into five packages would mean five `stow` calls for a
 single desktop.
 
@@ -180,10 +180,10 @@ to place ghostty next to the browser.
 
 ## The raycast pieces
 
-Raycast has no linux counterpart, so its parts are split across fuzzel and two
+Raycast has no linux counterpart, so its parts are split across wofi and two
 scripts:
 
-- `Super+space` — app launcher.
+- `Super+space` — app launcher, styled from the same CSS as the bar.
 - `Super+Shift+v` — clipboard history through `cliphist`. The daemon that fills it
   is the `wl-paste --watch` line in the config.
 - `Super+Tab` — fuzzy-jump to a window, the same move `room` makes inside zellij,
@@ -191,9 +191,9 @@ scripts:
   lands; `back_and_forth` moved to `Super+grave`.
 
 The calculator is the exception: it opens `qalc` in a floating ghostty rather than
-in fuzzel. Fuzzel's dmenu mode only returns entries that exist in its list, so a
-calculator prompt would need a live-eval hook it does not have — and an interactive
-qalc keeps its history and unit conversions on top.
+in the launcher: a dmenu prompt only returns entries that exist in its list, so a
+calculator would need a live-eval hook, and an interactive qalc keeps its history
+and unit conversions on top.
 
 ## Secret service
 
