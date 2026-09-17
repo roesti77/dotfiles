@@ -20,6 +20,14 @@ tasks:
       - stow sway
       - ./sway/.config/sway/scripts/bootstrap
 
+  deps:
+    desc: install the apt packages the sway session needs
+    preconditions:
+      - sh: command -v apt-get >/dev/null
+        msg: no apt here — this task is for debian-based systems
+    cmds:
+      - ./sway/.config/sway/scripts/bootstrap --deps
+
   check:
     desc: validate claude + cursor config (JSON + shell syntax)
     cmds:

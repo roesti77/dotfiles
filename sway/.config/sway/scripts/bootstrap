@@ -1,5 +1,7 @@
 #!/bin/sh
 # Idempotent: re-run it after a config change or on a second machine.
+# With --deps it installs the packages and stops there — one list, two entry points,
+# so adding a package does not have to be remembered in two files.
 set -eu
 
 sudo apt install -y \
@@ -8,6 +10,8 @@ sudo apt install -y \
     network-manager-gnome xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
     breeze-gtk-theme fonts-hack qalc curl unzip blueman kanshi grimshot \
     swayosd autotiling libglib2.0-bin
+
+[ "${1:-}" = "--deps" ] && exit 0
 
 kwalletd=""
 for candidate in /usr/bin/kwalletd6 /usr/bin/kwalletd5; do

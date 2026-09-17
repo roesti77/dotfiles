@@ -18,6 +18,14 @@ That stows the package and runs `scripts/bootstrap`, which installs the apt
 packages, wires KWallet up as the secret service and validates the config. It is
 idempotent — re-run it whenever something changed.
 
+For the packages alone, after adding one to the list:
+
+```sh
+task deps
+```
+
+Same list, just an earlier exit — `bootstrap --deps` stops after the install.
+
 `task setup` deliberately leaves this out; on the mac it would only create dead
 symlinks.
 
