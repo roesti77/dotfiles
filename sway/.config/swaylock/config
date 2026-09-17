@@ -1,12 +1,13 @@
 ignore-empty-password
 show-failed-attempts
 
-# Caps is the layout toggle here, so the keyboard can sit on de while the password
-# is typed in us — with nothing on screen saying so unless this is on.
+# The two keyboards start on different layouts — us on the Corne, de on the
+# built-in one — so which is active decides what a password even types.
 show-keyboard-layout
-# Home-row mods sometimes send a modifier instead of a letter; an indicator that
-# only appears while a key is down makes that impossible to notice.
-indicator
+# Home-row mods sometimes send a modifier instead of a letter; a ring that only
+# appears while a key is down makes that impossible to notice.
+# No bare `indicator` here: that one belongs to swaylock-effects, and upstream
+# swaylock rejects it and exits without locking.
 indicator-idle-visible
 
 font=Hack
