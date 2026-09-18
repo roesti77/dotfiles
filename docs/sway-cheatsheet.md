@@ -36,7 +36,7 @@ competes for `Super`, so MEH stayed reserved for zellij.
 | `Super+Tab` | window switcher — the cmd+tab reflex |
 | `Super+h/j/k/l` | move focus (arrow keys work too) |
 | `Super+Shift+h/j/k/l` | move the window |
-| `Super+Control+h/j/k/l` | resize |
+| `Super+Control+h/j/k/l` | resize in steps |
 | `Super+q` | close, without asking |
 
 ### Layout
@@ -48,7 +48,8 @@ competes for `Super`, so MEH stayed reserved for zellij.
 | `Super+s` | stacking on/off |
 | `Super+a` | focus the parent container |
 | `Super+g` | flip a container between side by side and stacked |
-| `Super+b` / `Super+v` | direction for the **next** window |
+| `Super+b` | direction for the **next** window |
+| `Super+v` | cycle size: a half / third / quarter of the container |
 | `Super+Shift+space` | floating on/off |
 | `Super+Shift+Tab` | focus between tiled and floating windows |
 | `Super+m` | large without fullscreen — 90% of the screen |
