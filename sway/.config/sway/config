@@ -160,7 +160,10 @@ bindsym $mod+Control+l resize grow width 40px
 
 bindsym $mod+f fullscreen
 bindsym $mod+b splith
-bindsym $mod+v splitv
+# Walks the focused window through a half, a third and a quarter. Replaces splitv
+# here, which autotiling overrides on the next focus change anyway; $mod+g still
+# flips an existing container. Next to g on the Corne.
+bindsym $mod+v exec ~/.config/sway/scripts/resize-cycle
 # Both lists include the layout they toggle out of — "toggle split" alone cycles
 # splith/splitv only, which is a no-op while the container is tabbed.
 bindsym $mod+w layout toggle split tabbed
