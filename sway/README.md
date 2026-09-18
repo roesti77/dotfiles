@@ -331,6 +331,19 @@ config.
 Should an overlay stop appearing, check the server first: without it the client
 changes nothing at all, and the keys go dead rather than silent.
 
+## Resize mode
+
+`Super+r` enters it; inside, keys carry no modifier at all. `h/j/k/l` nudge in
+steps, `2`, `3` and `4` set a half, a third or a quarter outright, `v` walks the
+full cycle including 2/3 and 3/4, and `Escape` or `Return` leaves.
+
+It replaced `Super+Control+h/j/k/l`. Two home-row mods at once is the awkward part
+on the Corne, and a mode needs none — which is also why the ratios can sit on bare
+digits here while outside they have to share one key and cycle.
+
+Waybar shows the active mode on the left. That module was configured all along but
+never displayed anything, because the config had no modes: `default` shows as empty.
+
 ## Splits stay flat
 
 New windows split in the direction of the container they join; `Super+b` and

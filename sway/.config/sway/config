@@ -153,10 +153,36 @@ bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
-bindsym $mod+Control+h resize shrink width 40px
-bindsym $mod+Control+j resize grow height 40px
-bindsym $mod+Control+k resize shrink height 40px
-bindsym $mod+Control+l resize grow width 40px
+# A mode instead of $mod+Control+h/j/k/l: inside one, keys carry no modifier at all,
+# and two home-row mods at once is the awkward part on the Corne. Waybar's sway/mode
+# module already shows which mode is active.
+mode "resize" {
+    # Same direction keys as focus and move, one step at a time.
+    bindsym h resize shrink width 40px
+    bindsym j resize grow height 40px
+    bindsym k resize shrink height 40px
+    bindsym l resize grow width 40px
+    bindsym Left resize shrink width 40px
+    bindsym Down resize grow height 40px
+    bindsym Up resize shrink height 40px
+    bindsym Right resize grow width 40px
+
+    # Ratios straight off the digit, which is the denominator. Outside the mode this
+    # has to cycle on one key; here each has its own. The keypad twins are what the
+    # Corne's number layer actually sends.
+    bindsym 2 exec ~/.config/sway/scripts/resize-cycle 50
+    bindsym 3 exec ~/.config/sway/scripts/resize-cycle 33
+    bindsym 4 exec ~/.config/sway/scripts/resize-cycle 25
+    bindsym KP_2 exec ~/.config/sway/scripts/resize-cycle 50
+    bindsym KP_3 exec ~/.config/sway/scripts/resize-cycle 33
+    bindsym KP_4 exec ~/.config/sway/scripts/resize-cycle 25
+    # Two thirds and three quarters have no single digit, so they stay on the cycle.
+    bindsym v exec ~/.config/sway/scripts/resize-cycle
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
 
 bindsym $mod+f fullscreen
 # Direction for the next window: b horizontal, Shift+b vertical — one key position,
