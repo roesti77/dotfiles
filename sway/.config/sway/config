@@ -137,7 +137,6 @@ bindsym $mod+z scratchpad show
 bindsym $mod+d exec makoctl dismiss
 bindsym $mod+Shift+d exec makoctl dismiss --all
 bindsym $mod+Shift+c reload
-bindsym $mod+Shift+e exec swaynag -t warning -m 'Exit sway?' -B 'Yes' 'swaymsg exit'
 
 bindsym $mod+h focus left
 bindsym $mod+j focus down
@@ -203,6 +202,22 @@ mode "display" {
     bindsym Escape mode "default"
 }
 bindsym $mod+p mode "display"
+
+# Everything that ends a session or the machine, behind one key. swaynag confirms
+# the three that lose unsaved work in every open window; lock and suspend need no
+# confirmation, since neither throws anything away.
+mode "system" {
+    bindsym l mode "default", exec $lock
+    # No lock before suspending: swayidle's before-sleep handler below does it.
+    bindsym s mode "default", exec systemctl suspend
+    bindsym e mode "default", exec swaynag -t warning -m 'Exit sway?' -B 'Exit' 'swaymsg exit'
+    bindsym r mode "default", exec swaynag -t warning -m 'Reboot?' -B 'Reboot' 'systemctl reboot'
+    bindsym p mode "default", exec swaynag -t warning -m 'Power off?' -B 'Power off' 'systemctl poweroff'
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+Escape mode "system"
 
 bindsym $mod+f fullscreen
 # Direction for the next window: b horizontal, Shift+b vertical — one key position,
