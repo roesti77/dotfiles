@@ -9,7 +9,7 @@ sudo apt install -y \
     grim slurp wl-clipboard jq brightnessctl playerctl wireplumber pavucontrol \
     network-manager-gnome xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
     breeze-gtk-theme fonts-hack qalc curl unzip blueman kanshi grimshot \
-    swayosd autotiling libglib2.0-bin
+    swayosd libglib2.0-bin
 
 [ "${1:-}" = "--deps" ] && exit 0
 

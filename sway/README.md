@@ -300,15 +300,17 @@ config.
 Should an overlay stop appearing, check the server first: without it the client
 changes nothing at all, and the keys go dead rather than silent.
 
-## Automatic splits
+## Splits stay flat
 
-**autotiling** picks the split direction from the window shape — wide splits
-vertically, tall horizontally. `Super+b` and `Super+v` still force a direction; this
-only decides when neither was pressed.
+New windows split in the direction of the container they join; `Super+b` and
+`Super+Shift+b` set it for the next one, `Super+g` flips an existing container.
 
-One consequence worth knowing: autotiling resets the direction on focus changes, so
-a container flipped with `Super+g` may flip back when focus moves. The manual
-command still works, it is no longer permanent.
+Nothing picks the direction automatically, and that is deliberate. **autotiling**
+used to, but it nests the tree: windows end up inside sub-containers rather than as
+direct children of the workspace. `layout` acts on the focused container, so
+`Super+w` then tabbed a subtree and left the rest split — with three windows that
+looks like a stubborn 50/50 split. The same reset also undid `Super+g` on the next
+focus change. A flat tree keeps both commands acting on the whole workspace.
 
 ## Audio output
 

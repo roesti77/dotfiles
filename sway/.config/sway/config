@@ -159,13 +159,17 @@ bindsym $mod+Control+k resize shrink height 40px
 bindsym $mod+Control+l resize grow width 40px
 
 bindsym $mod+f fullscreen
+# Direction for the next window: b horizontal, Shift+b vertical — one key position,
+# which the Corne has few of.
 bindsym $mod+b splith
-# Walks the focused window through a half, a third and a quarter. Replaces splitv
-# here, which autotiling overrides on the next focus change anyway; $mod+g still
-# flips an existing container. Next to g on the Corne.
+bindsym $mod+Shift+b splitv
+# Walks the focused window through a half, a third and a quarter. Sits where splitv
+# used to, next to g on the Corne.
 bindsym $mod+v exec ~/.config/sway/scripts/resize-cycle
 # Both lists include the layout they toggle out of — "toggle split" alone cycles
-# splith/splitv only, which is a no-op while the container is tabbed.
+# splith/splitv only, which is a no-op while the container is tabbed. These act on the
+# focused container, which is the workspace itself as long as windows are its direct
+# children — autotiling used to nest them, leaving these two to catch a subtree.
 bindsym $mod+w layout toggle split tabbed
 bindsym $mod+s layout toggle split stacking
 bindsym $mod+a focus parent
@@ -273,10 +277,6 @@ exec kanshi
 
 # The overlay for volume and brightness; the bindings above talk to it.
 exec swayosd-server
-
-# Splits by window shape — wide goes vertical, tall horizontal. Super+b and Super+v
-# still work, this only decides when neither was pressed.
-exec autotiling
 
 exec wl-paste --watch cliphist store
 # A second watcher: the first one only sees text selections, so without this a
