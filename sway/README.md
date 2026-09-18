@@ -220,15 +220,34 @@ the same thing.
 No unlock handling is needed here: `pam_kwallet` already runs at the display
 manager, so the wallet is open before sway starts.
 
-## Why waybar is masked in systemd
+## Why the bar runs as a systemd unit
 
-The waybar package ships a systemd unit bound to `graphical-session.target`. That
-target is not up at login — it gets activated later, when some other service pulls
-it in. The result is a second bar appearing mid-session next to the one sway's
-`exec` already started.
+`exec waybar` starts the bar exactly once and unsupervised. If it fails during the
+cold-boot window — tray, bluetooth, pulseaudio and network all coming up in
+parallel — nothing restarts it and nothing records why. That is what a reboot
+eventually produced: no bar at all, no trace.
 
-`scripts/bootstrap` masks the unit. The `exec` line stays, because it is the one
-that actually fires when sway does.
+`.config/systemd/user/waybar.service` in this package replaces the packaged unit; a
+user unit in `~/.config` wins over the one in `/usr/lib`. It sets `Restart=always`,
+so a lost race costs two seconds instead of the session, and failures land in
+`journalctl --user -u waybar`.
+
+The duplicate bar this used to cause is gone structurally, not by masking: systemd
+runs at most one instance per unit name, and the second bar came from sway's `exec`
+running a loose process *beside* the packaged service. The unit here deliberately
+has no `[Install]` section, so `graphical-session.target` cannot pull it up on its
+own — sway starts it explicitly, chained onto
+`dbus-update-activation-environment` so `WAYLAND_DISPLAY` and `SWAYSOCK` are in the
+systemd environment first. Without them the bar starts blind and exits.
+
+Because the old fix masked the unit, and a mask is a symlink sitting exactly where
+this file belongs, unmask before stowing:
+
+```sh
+systemctl --user unmask waybar.service
+cd ~/dotfiles && stow -R sway && systemctl --user daemon-reload
+systemctl --user restart waybar.service
+```
 
 ## Corporate tooling
 

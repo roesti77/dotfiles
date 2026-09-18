@@ -37,10 +37,13 @@ else
     echo "WARNING: no kwalletd found, nothing will store credentials"
 fi
 
-# The packaged waybar.service hangs off graphical-session.target, which is not up
-# at login but gets pulled in later by another service — so it would run a second
-# bar next to the one sway's exec starts. The exec is the reliable one.
-systemctl --user mask waybar.service >/dev/null
+# The bar runs as a supervised user unit (.config/systemd/user/waybar.service in
+# this package), which overrides the packaged one. Masking it — the earlier fix for
+# the duplicate bar — would block that override too, so it has to go. Unmasking
+# also has to happen before stow, since the mask is a symlink sitting exactly where
+# the unit file belongs.
+systemctl --user unmask waybar.service >/dev/null 2>&1 || true
+systemctl --user daemon-reload >/dev/null 2>&1 || true
 
 # kanshi expands its include with wordexp: with no profile saved yet the glob stays
 # literal, the include fails and kanshi exits at startup — silently, because sway's

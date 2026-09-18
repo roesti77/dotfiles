@@ -1,0 +1,21 @@
+# Overrides the packaged unit: a user unit in ~/.config/systemd/user wins over the
+# one in /usr/lib. Two bars can no longer happen, because systemd runs at most one
+# instance per unit name — the old duplicate came from sway's `exec waybar` running
+# a loose process *beside* the packaged service.
+[Unit]
+Description=Waybar for the sway session
+# No [Install] section on purpose. The packaged unit is WantedBy=graphical-session
+# .target, which something activates later in the session; sway starts this one
+# explicitly instead, after pushing WAYLAND_DISPLAY and SWAYSOCK into the systemd
+# environment — without those the bar starts blind and exits.
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/waybar
+# Why a unit rather than sway's exec: exec starts the bar once and unsupervised.
+# One failed start during the cold-boot window — tray, bluetooth, pulseaudio and
+# network all come up in parallel — left no bar at all and no log to say why.
+Restart=always
+RestartSec=2
+ExecReload=/bin/kill -SIGUSR2 $MAINPID
