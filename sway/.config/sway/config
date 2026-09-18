@@ -257,8 +257,11 @@ bindsym --locked XF86AudioNext exec playerctl next
 bindsym --locked XF86AudioPrev exec playerctl previous
 
 # Portals read XDG_CURRENT_DESKTOP from the activation environment; without it
-# screen sharing in meeting apps picks the wrong backend.
-exec dbus-update-activation-environment --systemd XDG_CURRENT_DESKTOP=sway WAYLAND_DISPLAY SWAYSOCK DISPLAY
+# screen sharing in meeting apps picks the wrong backend. waybar.service is chained
+# onto it rather than started from its own exec line: sway fires exec entries in
+# parallel without waiting, so a separate line would race this one and the bar would
+# start without WAYLAND_DISPLAY.
+exec dbus-update-activation-environment --systemd XDG_CURRENT_DESKTOP=sway WAYLAND_DISPLAY SWAYSOCK DISPLAY && systemctl --user start waybar.service
 
 # No keyring exec: kwalletd is dbus-activated through the service file that
 # scripts/bootstrap writes, and pam_kwallet already unlocked it at the display
@@ -282,7 +285,6 @@ exec wl-paste --watch cliphist store
 # A second watcher: the first one only sees text selections, so without this a
 # copied image never reaches the history.
 exec wl-paste --type image --watch cliphist store
-exec waybar
 exec mako
 exec nm-applet --indicator
 # The lock event is what loginctl lock-session triggers; without it that does
