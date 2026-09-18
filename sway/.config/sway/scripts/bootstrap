@@ -42,6 +42,16 @@ fi
 # bar next to the one sway's exec starts. The exec is the reliable one.
 systemctl --user mask waybar.service >/dev/null
 
+# kanshi expands its include with wordexp: with no profile saved yet the glob stays
+# literal, the include fails and kanshi exits at startup — silently, because sway's
+# exec reports nothing. This file is not stowed on purpose; stow would symlink the
+# directory into the repo and save-displays would write monitor serials into it.
+mkdir -p "$HOME/.local/share/kanshi"
+if [ ! -e "$HOME/.local/share/kanshi/00-placeholder" ]; then
+    echo "# Keeps kanshi's include glob matching. Profiles from save-displays land here." \
+        >"$HOME/.local/share/kanshi/00-placeholder"
+fi
+
 # The bar renders nerd font glyphs; without them every module shows a box. Not in
 # apt, and releases/latest avoids pinning a version that would go stale.
 if ! fc-list | grep -qi 'JetBrainsMono Nerd Font'; then

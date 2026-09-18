@@ -17,6 +17,10 @@ fi
 dir="$HOME/.local/share/kanshi"
 mkdir -p "$dir"
 
+# Without at least one file the include glob in ~/.config/kanshi/config stays
+# literal and kanshi exits at startup, so keep the placeholder around.
+[ -e "$dir/00-placeholder" ] || echo "# Keeps kanshi's include glob matching." >"$dir/00-placeholder"
+
 outputs=$(swaymsg -t get_outputs)
 workspaces=$(swaymsg -t get_workspaces)
 
@@ -26,10 +30,17 @@ workspaces=$(swaymsg -t get_workspaces)
 {
     printf 'profile %s {\n' "$name"
 
+    # Disabled outputs are written as `disable`, not skipped: kanshi only applies a
+    # profile whose output list covers every CONNECTED output, and a panel switched
+    # off by the lid stays connected. Skipping it made lid-closed profiles unusable.
     printf '%s' "$outputs" | jq -r '
-        .[] | select(.active)
+        .[]
         | (if (.serial // "") == "" then .name else "\(.make) \(.model) \(.serial)" end) as $id
-        | "    output \"\($id)\" mode \(.current_mode.width)x\(.current_mode.height)@\(.current_mode.refresh/1000)Hz position \(.rect.x),\(.rect.y) scale \(.scale) transform \(.transform)"'
+        | if .active then
+            "    output \"\($id)\" mode \(.current_mode.width)x\(.current_mode.height)@\(.current_mode.refresh/1000)Hz position \(.rect.x),\(.rect.y) scale \(.scale) transform \(.transform)"
+          else
+            "    output \"\($id)\" disable"
+          end'
 
     # kanshi does not assign workspaces, so the profile has sway do it. ' is a
     # single quote — writing one literally would end this jq argument.
@@ -42,5 +53,9 @@ workspaces=$(swaymsg -t get_workspaces)
 } >"$dir/$name.tmp"
 
 mv "$dir/$name.tmp" "$dir/$name"
-pkill -HUP kanshi 2>/dev/null || true
 cat "$dir/$name"
+
+# Deliberately no `pkill -HUP kanshi`: reloading makes kanshi apply this profile
+# at once, including the workspace exec lines below, which rearranges the desktop
+# the moment you only meant to record it. The profile takes effect on the next
+# hotplug — or on `pkill -HUP kanshi` by hand, once you want it applied.
