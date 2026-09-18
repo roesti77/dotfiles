@@ -341,8 +341,11 @@ It replaced `Super+Control+h/j/k/l`. Two home-row mods at once is the awkward pa
 on the Corne, and a mode needs none — which is also why the ratios can sit on bare
 digits here while outside they have to share one key and cycle.
 
-Waybar shows the active mode on the left. That module was configured all along but
-never displayed anything, because the config had no modes: `default` shows as empty.
+Waybar shows the active mode on the left, and the key hints come with it: a mode's
+name is what `sway/mode` prints, so the names at the top of the config carry the
+list of keys. There is no second module and nothing to keep in sync beyond those
+three `set` lines — but they are the one place to edit when a binding inside a mode
+changes, since nothing checks that the hint still matches.
 
 ## Display mode
 

@@ -2,6 +2,13 @@ set $mod Mod4
 set $term ghostty
 set $menu ~/.config/sway/scripts/launcher
 set $lock swaylock -f
+
+# A mode's name is what waybar's sway/mode module prints, so the key hints live in
+# the name itself — no second module, and nothing to keep in sync with the bindings
+# beyond this line. Kept terse: the text sits in the bar for as long as the mode is.
+set $mode_resize "resize   h j k l step · 2 3 4 ratio · v cycle · esc"
+set $mode_display "display   a all on · e d panel · r apply · s save · esc"
+set $mode_system "system   l lock · s sleep · e exit · r reboot · p off · esc"
 set $calc com.mitchellh.ghostty.calc
 
 set $hyper Mod4+Control+Mod1+Shift
@@ -155,7 +162,7 @@ bindsym $mod+Shift+l move right
 # A mode instead of $mod+Control+h/j/k/l: inside one, keys carry no modifier at all,
 # and two home-row mods at once is the awkward part on the Corne. Waybar's sway/mode
 # module already shows which mode is active.
-mode "resize" {
+mode $mode_resize {
     # Same direction keys as focus and move, one step at a time.
     bindsym h resize shrink width 40px
     bindsym j resize grow height 40px
@@ -181,11 +188,11 @@ mode "resize" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-bindsym $mod+r mode "resize"
+bindsym $mod+r mode $mode_resize
 
 # Everything display-related in one place; until now all of it was command line
 # only. `output ... enable/disable` is native here, no swaymsg needed.
-mode "display" {
+mode $mode_display {
     # The way back when a profile or a failed mode set left a screen dark.
     bindsym a output * enable
     # The built-in panel, same thing the lid switch does. Two keys rather than
@@ -206,12 +213,12 @@ mode "display" {
     bindsym Escape mode "default"
 }
 # Shift, because bare $mod+p is workspace prev_on_output — the pair to $mod+n.
-bindsym $mod+Shift+p mode "display"
+bindsym $mod+Shift+p mode $mode_display
 
 # Everything that ends a session or the machine, behind one key. swaynag confirms
 # the three that lose unsaved work in every open window; lock and suspend need no
 # confirmation, since neither throws anything away.
-mode "system" {
+mode $mode_system {
     bindsym l mode "default", exec $lock
     # No lock before suspending: swayidle's before-sleep handler below does it.
     bindsym s mode "default", exec systemctl suspend
@@ -222,7 +229,7 @@ mode "system" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-bindsym $mod+Escape mode "system"
+bindsym $mod+Escape mode $mode_system
 
 bindsym $mod+f fullscreen
 # Direction for the next window: b horizontal, Shift+b vertical — one key position,
