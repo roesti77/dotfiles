@@ -10,6 +10,14 @@ set -eu
 # Ascending, so every press grows the window until it wraps around.
 PRESETS="25 33 50 67 75"
 
+# With a percentage, set that outright instead of stepping — the resize mode binds
+# the ratios to bare digits, which needs no cycling. Read before `set --` below
+# replaces the positional parameters.
+want=${1:-}
+case "$want" in
+    ''|*[!0-9]*) [ -z "$want" ] || { echo "usage: resize-cycle [percent]" >&2; exit 2; } ;;
+esac
+
 # A floating or unfocused window has no split parent, so the search can come up
 # empty — jq answers "none" there rather than failing on null.
 # shellcheck disable=SC2046 # the four fields are plain tokens
@@ -33,15 +41,19 @@ layout=${1:-none} own=${2:-0} total=${3:-0} siblings=${4:-0}
 # Comparing against the measured share keeps this stateless: a window resized by
 # mouse joins the cycle where it is. The margin is what makes an even split move —
 # gaps put it at 49%, and without it the step would land on 50% and look like a no-op.
-share=$((own * 100 / total))
-next=""
-for preset in $PRESETS; do
-    if [ "$preset" -gt $((share + 4)) ]; then
-        next=$preset
-        break
-    fi
-done
-[ -n "$next" ] || next=${PRESETS%% *}
+if [ -n "$want" ]; then
+    next=$want
+else
+    share=$((own * 100 / total))
+    next=""
+    for preset in $PRESETS; do
+        if [ "$preset" -gt $((share + 4)) ]; then
+            next=$preset
+            break
+        fi
+    done
+    [ -n "$next" ] || next=${PRESETS%% *}
+fi
 
 case "$layout" in
     splitv) swaymsg "resize set height $next ppt" >/dev/null ;;

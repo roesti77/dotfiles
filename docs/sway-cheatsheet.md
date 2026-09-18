@@ -36,7 +36,7 @@ competes for `Super`, so MEH stayed reserved for zellij.
 | `Super+Tab` | window switcher — the cmd+tab reflex |
 | `Super+h/j/k/l` | move focus (arrow keys work too) |
 | `Super+Shift+h/j/k/l` | move the window |
-| `Super+Control+h/j/k/l` | resize in steps |
+| `Super+r` | **resize mode** — then no modifiers: `h/j/k/l` step, `2`/`3`/`4` set a half/third/quarter, `v` cycles, `Esc` leaves |
 | `Super+q` | close, without asking |
 
 ### Layout
