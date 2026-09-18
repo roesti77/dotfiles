@@ -336,6 +336,14 @@ changes nothing at all, and the keys go dead rather than silent.
 New windows split in the direction of the container they join; `Super+b` and
 `Super+Shift+b` set it for the next one, `Super+g` flips an existing container.
 
+Pressing the same direction again takes it back. A pending split is a container
+holding only the focused window — sway(5) says as much for `split none`, which
+undoes a split "if the current container is the only child of a split parent".
+While it stands, `Super+g` and `Super+v` act on that container instead of the real
+one and appear to do nothing; opening a window resolves it, and so does a second
+press. Pressing the *other* direction switches the pending split over rather than
+nesting a second container inside it.
+
 Nothing picks the direction automatically, and that is deliberate. **autotiling**
 used to, but it nests the tree: windows end up inside sub-containers rather than as
 direct children of the workspace. `layout` acts on the focused container, so

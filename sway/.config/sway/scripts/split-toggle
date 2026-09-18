@@ -1,0 +1,32 @@
+#!/bin/sh
+# Sets the direction for the next window, and takes it back on a second press.
+#
+# `split` wraps the focused window in a container holding only it — sway(5) says as
+# much for `split none`: it undoes a previous split "if the current container is the
+# only child of a split parent". While that container stands, layout commands act on
+# it rather than on the real one, so resize and layout toggle appear to do nothing.
+# Pressing the same direction again clears it.
+set -eu
+
+case "${1:-}" in
+    h|v) dir=$1 ;;
+    *) echo "usage: split-toggle h|v" >&2; exit 2 ;;
+esac
+
+# A workspace with a single window also has one child, but it is not a split
+# container and `split none` does not apply to it — hence the type check.
+state=$(swaymsg -t get_tree | jq -r '
+    [recurse(.nodes[]?, .floating_nodes[]?)
+     | select(any(.nodes[]?; .focused == true))] as $parents
+    | if ($parents | length) == 0 then "none"
+      else ($parents | last) as $p
+         | if ($p.type == "con") and (($p.nodes | length) == 1)
+           then "pending \($p.layout)"
+           else "none" end
+      end')
+
+case "$state" in
+    "pending splith") [ "$dir" = h ] && swaymsg 'split none' >/dev/null || swaymsg 'layout splitv' >/dev/null ;;
+    "pending splitv") [ "$dir" = v ] && swaymsg 'split none' >/dev/null || swaymsg 'layout splith' >/dev/null ;;
+    *) swaymsg "split $dir" >/dev/null ;;
+esac
