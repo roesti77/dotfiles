@@ -365,6 +365,20 @@ overwriting one does not mean retyping it. If `save-displays` refuses — it doe
 while a connected monitor is dark — the reason arrives as a notification; there is
 no terminal to print it to.
 
+## System mode
+
+`Super+Escape` enters it: `l` locks, `s` suspends, `e` ends the sway session, `r`
+reboots, `p` powers off.
+
+The last three go through `swaynag` first — each throws away unsaved work in every
+open window, and a mode is a thin guard against a mistyped key. Lock and suspend
+need no confirmation, since neither loses anything; suspending also needs no
+explicit lock, because swayidle's `before-sleep` handler already does it.
+
+`Hyper+l` stays as the direct way to lock — that happens several times a day and
+earns its own key. Rebooting does not, so it lives only here. The former
+`Super+Shift+e` for exiting is now the mode's `e`.
+
 ## Splits stay flat
 
 New windows split in the direction of the container they join; `Super+b` and
