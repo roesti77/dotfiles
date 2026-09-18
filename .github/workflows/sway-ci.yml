@@ -41,9 +41,14 @@ jobs:
           exit $fail
 
       - name: sway --validate
+        # --validate still brings up a backend, which has no seat or tty on a
+        # runner; the headless one needs neither.
+        env:
+          WLR_BACKENDS: headless
+          WLR_LIBINPUT_NO_DEVICES: '1'
         run: |
           sudo apt-get install -y -qq sway
-          # the config references ~/.config/sway/scripts and ~/.config/kanshi
+          # the config refers to ~/.config/sway/scripts by absolute path
           mkdir -p "$HOME/.config"
           cp -r sway/.config/sway "$HOME/.config/sway"
           sway --validate -c "$HOME/.config/sway/config"
