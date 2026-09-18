@@ -54,4 +54,7 @@ jobs:
           # custom usmac variant has to be where xkbcommon looks for it. That makes
           # this a check on the keymap as well, which nothing else covers.
           cp -r sway/.config/xkb "$HOME/.config/xkb"
+          # --validate checks that the background file exists, and the wallpaper is
+          # not in the repo (it is whatever image the machine has).
+          mkdir -p "$HOME/.local/share" && touch "$HOME/.local/share/wallpaper"
           sway --validate -c "$HOME/.config/sway/config"
