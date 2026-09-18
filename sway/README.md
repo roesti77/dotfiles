@@ -342,6 +342,17 @@ is not bound to one: it opens a picker that needs the keyboard. That stays on
   subscription, and its `pkill` would hit any other tool subscribing to sway events.
   Nothing else does here.
 
+## Manually installed applications
+
+The launcher reads `.desktop` files from `~/.local/share/applications` and
+`/usr/share/applications`. Anything unpacked into `/opt` puts nothing in either and
+stays invisible, so it needs an entry — `.local/share/applications/zen.desktop` is
+the example, versioned here rather than written onto the machine by hand.
+
+`StartupWMClass` matters beyond the icon: it is how sway attributes the window to
+the entry, and what an `assign` rule would match on to give the browser its own
+workspace.
+
 ## Window list
 
 Tiling has no minimise — the scratchpad is the equivalent: `Super+Shift+z` parks a

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Zen Browser
+Comment=Firefox-based browser installed from a tarball under /opt
+Exec=/opt/zen/zen %u
+Icon=/opt/zen/browser/chrome/icons/default/default128.png
+Terminal=false
+Categories=Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml+xml;x-scheme-handler/http;x-scheme-handler/https;
+StartupWMClass=zen
+StartupNotify=true
