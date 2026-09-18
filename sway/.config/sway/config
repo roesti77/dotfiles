@@ -184,6 +184,26 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
+# Everything display-related in one place; until now all of it was command line
+# only. `output ... enable/disable` is native here, no swaymsg needed.
+mode "display" {
+    # The way back when a profile or a failed mode set left a screen dark.
+    bindsym a output * enable
+    # The built-in panel, same thing the lid switch does. `toggle` is enable/disable,
+    # so its windows move off rather than sitting on a black screen — sway-output(5)
+    # keeps them only for `power`.
+    bindsym e output eDP-1 toggle
+    # Re-apply the matching kanshi profile; saving deliberately no longer does this.
+    bindsym r exec pkill -HUP kanshi
+
+    # Leaves the mode first: a mode's bindings would swallow the keys wofi needs.
+    bindsym s mode "default", exec ~/.config/sway/scripts/save-displays-prompt
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+p mode "display"
+
 bindsym $mod+f fullscreen
 # Direction for the next window: b horizontal, Shift+b vertical — one key position,
 # which the Corne has few of. Pressing the same one again takes the split back:

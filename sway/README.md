@@ -344,6 +344,27 @@ digits here while outside they have to share one key and cycle.
 Waybar shows the active mode on the left. That module was configured all along but
 never displayed anything, because the config had no modes: `default` shows as empty.
 
+## Display mode
+
+`Super+p` enters it. Everything display-related lives here; until now all of it was
+command line only.
+
+| key | does |
+|---|---|
+| `a` | switch every output back on — the way out of a dark screen |
+| `e` | toggle the built-in panel, the same thing the lid switch does |
+| `r` | re-apply the matching kanshi profile |
+| `s` | save the current arrangement under a name |
+
+`toggle` is enable/disable, so the panel's windows move off rather than sitting on
+a black screen — sway-output(5) keeps them only for `power`.
+
+`s` leaves the mode before opening the prompt, because a mode's bindings would
+swallow the keys wofi needs for typing. Existing profile names are offered, so
+overwriting one does not mean retyping it. If `save-displays` refuses — it does
+while a connected monitor is dark — the reason arrives as a notification; there is
+no terminal to print it to.
+
 ## Splits stay flat
 
 New windows split in the direction of the container they join; `Super+b` and
