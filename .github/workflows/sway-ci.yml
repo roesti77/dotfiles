@@ -1,0 +1,60 @@
+name: sway-ci
+
+on:
+  pull_request:
+    paths: ['sway/**', '.github/workflows/sway-ci.yml']
+  push:
+    branches: [main]
+    paths: ['sway/**', '.github/workflows/sway-ci.yml']
+
+jobs:
+  config:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: No duplicate key bindings
+        # sway --validate does not reject these, and a duplicate breaks the config
+        # on load — which is how `$mod+p` reached main bound to two commands.
+        # Strips flags (--locked, --no-repeat) so the key combination is compared,
+        # not the flag. Mode-local bindings are indented and belong to their own
+        # namespace, so only column-0 bindsym lines are considered.
+        run: |
+          dupes=$(grep '^bindsym ' sway/.config/sway/config \
+                  | sed 's/^bindsym //' \
+                  | sed -E 's/^(--[a-z-]+ )+//' \
+                  | awk '{print $1}' | sort | uniq -d)
+          if [ -n "$dupes" ]; then
+            printf '::error::key bound more than once: %s\n' $dupes
+            exit 1
+          fi
+
+      - name: Shell scripts parse under dash
+        # the scripts run with /bin/sh, which is dash on debian — not bash
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq dash
+          fail=0
+          for f in sway/.config/sway/scripts/*; do
+            [ -x "$f" ] || continue
+            dash -n "$f" || { echo "::error file=$f::syntax error under dash"; fail=1; }
+          done
+          exit $fail
+
+      - name: sway --validate
+        # --validate still brings up a backend, which has no seat or tty on a
+        # runner; the headless one needs neither.
+        env:
+          WLR_BACKENDS: headless
+          WLR_LIBINPUT_NO_DEVICES: '1'
+        run: |
+          sudo apt-get install -y -qq sway
+          mkdir -p "$HOME/.config"
+          cp -r sway/.config/sway "$HOME/.config/sway"
+          # xkb too, not just the config: --validate compiles the keymap, so the
+          # custom usmac variant has to be where xkbcommon looks for it. That makes
+          # this a check on the keymap as well, which nothing else covers.
+          cp -r sway/.config/xkb "$HOME/.config/xkb"
+          # --validate checks that the background file exists, and the wallpaper is
+          # not in the repo (it is whatever image the machine has).
+          mkdir -p "$HOME/.local/share" && touch "$HOME/.local/share/wallpaper"
+          sway --validate -c "$HOME/.config/sway/config"
