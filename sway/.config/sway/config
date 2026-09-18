@@ -201,7 +201,8 @@ mode "display" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-bindsym $mod+p mode "display"
+# Shift, because bare $mod+p is workspace prev_on_output — the pair to $mod+n.
+bindsym $mod+Shift+p mode "display"
 
 # Everything that ends a session or the machine, behind one key. swaynag confirms
 # the three that lose unsaved work in every open window; lock and suspend need no

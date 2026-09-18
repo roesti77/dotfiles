@@ -346,7 +346,7 @@ never displayed anything, because the config had no modes: `default` shows as em
 
 ## Display mode
 
-`Super+p` enters it. Everything display-related lives here; until now all of it was
+`Super+Shift+p` enters it. Everything display-related lives here; until now all of it was
 command line only.
 
 | key | does |
