@@ -1,36 +1,47 @@
 #!/bin/sh
-# Walks the focused window through a half, a third and a quarter of its container,
-# so a ratio is one keystroke instead of a mouse drag.
+# Walks the focused window through a quarter, a third, a half, two thirds and three
+# quarters of its container, so a ratio is one keystroke instead of a mouse drag.
 #
 # The axis is not fixed: stacked windows resize by height, side-by-side ones by
 # width, so the parent container's layout decides which command to send. Sway
 # hands the space it frees to the siblings on its own.
 set -eu
 
-# shellcheck disable=SC2046 # the three fields are plain tokens
+# Ascending, so every press grows the window until it wraps around.
+PRESETS="25 33 50 67 75"
+
+# A floating or unfocused window has no split parent, so the search can come up
+# empty — jq answers "none" there rather than failing on null.
+# shellcheck disable=SC2046 # the four fields are plain tokens
 set -- $(swaymsg -t get_tree | jq -r '
     [recurse(.nodes[]?, .floating_nodes[]?)
-     | select(any(.nodes[]?; .focused == true))]
-    | last
-    | . as $p
-    | ($p.nodes[] | select(.focused)) as $c
-    | if   $p.layout == "splitv" then "splitv \($c.rect.height) \($p.rect.height)"
-      elif $p.layout == "splith" then "splith \($c.rect.width) \($p.rect.width)"
-      else "none 0 0" end')
-layout=$1 own=$2 total=$3
+     | select(any(.nodes[]?; .focused == true))] as $parents
+    | if ($parents | length) == 0 then "none 0 0 0"
+      else ($parents | last) as $p
+         | ($p.nodes[] | select(.focused)) as $c
+         | (if   $p.layout == "splitv" then "splitv \($c.rect.height) \($p.rect.height)"
+            elif $p.layout == "splith" then "splith \($c.rect.width) \($p.rect.width)"
+            else "none 0 0" end) + " \($p.nodes | length)"
+      end')
+layout=${1:-none} own=${2:-0} total=${3:-0} siblings=${4:-0}
 
-# A tabbed or stacking container shows one window at a time, a lone window has no
-# sibling to take the space — neither has a ratio to set.
-[ "$layout" != none ] && [ "$total" -gt 0 ] || exit 0
+# A tabbed or stacking container shows one window at a time, and a window without a
+# sibling has nobody to hand the freed space to — neither has a ratio to set.
+[ "$layout" != none ] && [ "$total" -gt 0 ] && [ "$siblings" -gt 1 ] || exit 0
 
-# Step to the preset below the one the window sits closest to and wrap around, so
-# repeated presses walk 1/2 -> 1/3 -> 1/4 -> 1/2. Comparing against the measured
-# share keeps this stateless: a window resized by mouse joins the cycle where it is.
+# Step to the next preset above the current share and wrap around at the top.
+# Comparing against the measured share keeps this stateless: a window resized by
+# mouse joins the cycle where it is. The margin is what makes an even split move —
+# gaps put it at 49%, and without it the step would land on 50% and look like a no-op.
 share=$((own * 100 / total))
-if   [ "$share" -ge 42 ]; then next=33
-elif [ "$share" -ge 29 ]; then next=25
-else                          next=50
-fi
+next=""
+for preset in $PRESETS; do
+    if [ "$preset" -gt $((share + 4)) ]; then
+        next=$preset
+        break
+    fi
+done
+[ -n "$next" ] || next=${PRESETS%% *}
 
 case "$layout" in
     splitv) swaymsg "resize set height $next ppt" >/dev/null ;;
