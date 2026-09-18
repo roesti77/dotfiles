@@ -1,0 +1,22 @@
+#!/bin/sh
+# Asks for a profile name, then records the current arrangement under it.
+#
+# Started after leaving the display mode, not from inside it: while a mode is
+# active its bindings swallow the very keys wofi needs for typing.
+set -eu
+
+dir="${XDG_DATA_HOME:-$HOME/.local/share}/kanshi"
+
+# Offer the existing profiles, so overwriting one does not mean retyping its name.
+existing=$(find "$dir" -maxdepth 1 -type f ! -name '00-placeholder' -exec basename {} \; 2>/dev/null | sort || true)
+
+name=$(printf '%s' "$existing" | wofi --dmenu --prompt "save display profile as") || exit 0
+[ -n "$name" ] || exit 0
+
+# save-displays refuses while a connected monitor is dark. There is no terminal
+# here, so its message has to reach the user as a notification or not at all.
+if out=$("$HOME/.config/sway/scripts/save-displays" "$name" 2>&1); then
+    notify-send "Display profile saved" "$name"
+else
+    notify-send -u critical "Display profile not saved" "$out"
+fi

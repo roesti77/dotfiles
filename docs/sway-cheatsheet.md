@@ -37,6 +37,7 @@ competes for `Super`, so MEH stayed reserved for zellij.
 | `Super+h/j/k/l` | move focus (arrow keys work too) |
 | `Super+Shift+h/j/k/l` | move the window |
 | `Super+r` | **resize mode** — then no modifiers: `h/j/k/l` step, `2`/`3`/`4` set a half/third/quarter, `v` cycles, `Esc` leaves |
+| `Super+p` | **display mode** — `a` all outputs on, `e` toggle the laptop panel, `r` re-apply the kanshi profile, `s` save the arrangement, `Esc` leaves |
 | `Super+q` | close, without asking |
 
 ### Layout
