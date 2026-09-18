@@ -352,12 +352,19 @@ command line only.
 | key | does |
 |---|---|
 | `a` | switch every output back on — the way out of a dark screen |
-| `e` | toggle the built-in panel, the same thing the lid switch does |
+| `e` / `d` | built-in panel on / off, the same thing the lid switch does |
 | `r` | re-apply the matching kanshi profile |
 | `s` | save the current arrangement under a name |
 
-`toggle` is enable/disable, so the panel's windows move off rather than sitting on
-a black screen — sway-output(5) keeps them only for `power`.
+Two keys rather than one `toggle`: sway's `toggle` switches an output back on only
+when it finds a stored config with `enabled == 0` and falls through to "off"
+otherwise, which is what happens while no explicit `output eDP-1` line exists — so
+it only ever switched off. `enable`/`disable` rather than `power`, so the panel's
+windows move to a screen that is on instead of sitting on a black one;
+sway-output(5) keeps them only for `power`.
+
+If the panel goes dark again right after `e`, kanshi is applying a profile that has
+`output "eDP-1" disable` in it. `grep -l disable ~/.local/share/kanshi/*` finds it.
 
 `s` leaves the mode before opening the prompt, because a mode's bindings would
 swallow the keys wofi needs for typing. Existing profile names are offered, so

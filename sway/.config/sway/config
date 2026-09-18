@@ -188,10 +188,14 @@ bindsym $mod+r mode "resize"
 mode "display" {
     # The way back when a profile or a failed mode set left a screen dark.
     bindsym a output * enable
-    # The built-in panel, same thing the lid switch does. `toggle` is enable/disable,
-    # so its windows move off rather than sitting on a black screen — sway-output(5)
-    # keeps them only for `power`.
-    bindsym e output eDP-1 toggle
+    # The built-in panel, same thing the lid switch does. Two keys rather than
+    # `toggle`: toggle only switches something back on when it finds a stored config
+    # with enabled == 0, and falls through to "off" otherwise — which it does when no
+    # explicit `output eDP-1` line exists, so it only ever switched off.
+    # enable/disable rather than power, so the panel's windows move to a screen that
+    # is on instead of sitting on a black one; sway-output(5) keeps them for `power`.
+    bindsym e output eDP-1 enable
+    bindsym d output eDP-1 disable
     # Re-apply the matching kanshi profile; saving deliberately no longer does this.
     bindsym r exec pkill -HUP kanshi
 
