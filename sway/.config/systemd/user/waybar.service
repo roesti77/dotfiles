@@ -4,6 +4,11 @@
 # a loose process *beside* the packaged service.
 [Unit]
 Description=Waybar for the sway session
+# Bound explicitly, because Restart=always alone never gives up: a bar that lives
+# longer than the interval resets the counter, so a crash loop would restart every
+# two seconds forever and each start pulls up GTK and every module.
+StartLimitIntervalSec=60
+StartLimitBurst=5
 # No [Install] section on purpose. The packaged unit is WantedBy=graphical-session
 # .target, which something activates later in the session; sway starts this one
 # explicitly instead, after pushing WAYLAND_DISPLAY and SWAYSOCK into the systemd
@@ -16,6 +21,7 @@ ExecStart=/usr/bin/waybar
 # Why a unit rather than sway's exec: exec starts the bar once and unsupervised.
 # One failed start during the cold-boot window — tray, bluetooth, pulseaudio and
 # network all come up in parallel — left no bar at all and no log to say why.
-Restart=always
+# on-failure, not always: a bar that exits cleanly was meant to stop.
+Restart=on-failure
 RestartSec=2
 ExecReload=/bin/kill -SIGUSR2 $MAINPID
