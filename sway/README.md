@@ -242,6 +242,18 @@ that actually fires when sway does.
   `class` rule missed, and the title is the one thing that is known. `Super+z`
   brings it back. A floating window always stacks above tiled ones in sway, so
   moving it out of the way is the only real fix.
+
+  The title pattern names a vendor's client, so it is **not** in this repo — it goes
+  into `~/.local/share/park-vpn-title`, one line, a regex. Without that file the
+  script exits and parks nothing:
+
+  ```sh
+  printf '%s\n' '^Exact Window Title' > ~/.local/share/park-vpn-title
+  ```
+
+  Make the pattern as narrow as the client allows. A bare prefix also matches
+  unrelated windows — a browser tab whose page title starts with the same word gets
+  parked mid-use, and re-parked on every title change.
 - **Tray-based VPN and proxy clients** are the part to verify before relying on
   this session. Waybar's tray implements StatusNotifierItem; clients that still use
   the legacy XEmbed tray show no icon — under any wayland session, GNOME included.

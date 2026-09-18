@@ -5,7 +5,13 @@
 # then events are watched.
 set -eu
 
-title='^Zscaler'
+# The pattern names a vendor's client, so it lives outside this public repo — same
+# reasoning as the kanshi profiles, which carry monitor serials. Without the file
+# there is nothing to park and the script simply does not run.
+pattern_file="${XDG_DATA_HOME:-$HOME/.local/share}/park-vpn-title"
+[ -r "$pattern_file" ] || exit 0
+title=$(head -n 1 "$pattern_file")
+[ -n "$title" ] || exit 0
 
 # sway re-runs exec_always on every reload. Killed by command line rather than by
 # pid: the loop below runs in a subshell, so $$ is not the process holding the
