@@ -24,15 +24,32 @@ mkdir -p "$dir"
 outputs=$(swaymsg -t get_outputs)
 workspaces=$(swaymsg -t get_workspaces)
 
+# Refuse to record an external monitor that is connected but dark. Saving it would
+# write `disable` for it, and kanshi would then switch it off on every hotplug — a
+# temporary fault becomes permanent. Built-in panels are exempt: those are dark
+# because the lid is shut, which is exactly what the profile should capture.
+dark=$(printf '%s' "$outputs" | jq -r '
+    .[] | select(.active | not) | select(.name | test("^(eDP|LVDS|DSI)") | not) | .name')
+if [ -n "$dark" ]; then
+    echo "connected but switched off:" >&2
+    printf '  %s\n' $dark >&2
+    echo "Turn them on (swaymsg output '*' enable) or unplug them, then run again." >&2
+    echo "Saving now would record them as permanently disabled." >&2
+    exit 1
+fi
+
 # A panel without a serial (the built-in one) is matched by connector name — there
 # is only ever one of it, and an empty serial makes for a fragile identifier.
 # The comma in position is kanshi's syntax; sway writes a space there.
 {
     printf 'profile %s {\n' "$name"
 
-    # Disabled outputs are written as `disable`, not skipped: kanshi only applies a
-    # profile whose output list covers every CONNECTED output, and a panel switched
-    # off by the lid stays connected. Skipping it made lid-closed profiles unusable.
+    # An inactive built-in panel is written as `disable` — that is the lid switch,
+    # and kanshi only applies a profile whose output list covers every CONNECTED
+    # output, so leaving it out made lid-closed profiles unusable. An inactive
+    # EXTERNAL monitor is refused above instead of being frozen into the profile:
+    # recording it as `disable` once turned a temporarily dark screen into a
+    # permanently dark one on every hotplug.
     printf '%s' "$outputs" | jq -r '
         .[]
         | (if (.serial // "") == "" then .name else "\(.make) \(.model) \(.serial)" end) as $id
