@@ -163,8 +163,8 @@ bindsym $mod+f fullscreen
 # which the Corne has few of.
 bindsym $mod+b splith
 bindsym $mod+Shift+b splitv
-# Walks the focused window through a half, a third and a quarter. Sits where splitv
-# used to, next to g on the Corne.
+# Walks the focused window up through 1/4, 1/3, 1/2, 2/3, 3/4 of its container and
+# wraps around. Sits where splitv used to, next to g on the Corne.
 bindsym $mod+v exec ~/.config/sway/scripts/resize-cycle
 # Both lists include the layout they toggle out of — "toggle split" alone cycles
 # splith/splitv only, which is a no-op while the container is tabbed. These act on the
