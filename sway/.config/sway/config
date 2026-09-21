@@ -7,7 +7,7 @@ set $lock swaylock -f
 # the name itself — no second module, and nothing to keep in sync with the bindings
 # beyond this line. Kept terse: the text sits in the bar for as long as the mode is.
 set $mode_resize "resize   h j k l step · 2 3 4 ratio · v cycle · esc"
-set $mode_display "display   a all on · e d panel · r apply · s save · esc"
+set $mode_display "display   a all on · e d panel · w order 1-2-3 · r apply · s save · esc"
 set $mode_system "system   l lock · s sleep · e exit · r reboot · p off · esc"
 set $calc com.mitchellh.ghostty.calc
 
@@ -203,6 +203,9 @@ mode $mode_display {
     # is on instead of sitting on a black one; sway-output(5) keeps them for `power`.
     bindsym e output eDP-1 enable
     bindsym d output eDP-1 disable
+    # Workspaces 1 2 3 onto the screens left to right, and every further group of
+    # three the same way. Sets the rule and moves the ones already open.
+    bindsym w exec ~/.config/sway/scripts/workspaces-to-outputs
     # Re-apply the matching kanshi profile; saving deliberately no longer does this.
     bindsym r exec pkill -HUP kanshi
 
