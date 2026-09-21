@@ -356,6 +356,7 @@ command line only.
 |---|---|
 | `a` | switch every output back on — the way out of a dark screen |
 | `e` / `d` | built-in panel on / off, the same thing the lid switch does |
+| `w` | workspaces 1 2 3 onto the screens, left to right |
 | `r` | re-apply the matching kanshi profile |
 | `s` | save the current arrangement under a name |
 
@@ -368,6 +369,17 @@ sway-output(5) keeps them only for `power`.
 
 If the panel goes dark again right after `e`, kanshi is applying a profile that has
 `output "eDP-1" disable` in it. `grep -l disable ~/.local/share/kanshi/*` finds it.
+
+`w` is the deterministic way to sort the workspaces out: it reads the outputs in
+layout order and puts 1 on the leftmost, 2 on the next, 3 on the next, with every
+further group of three following the same order — 4 5 6 land where 1 2 3 do. With
+fewer than three screens the order wraps. It does two things per workspace, because
+they differ: `workspace N output` is the standing rule, which also steers a
+workspace that does not exist yet, while one that is already open has to be moved
+once. `Super+Shift+,` and `Super+Shift+.` remain for shifting a single one by hand.
+
+Neither survives a reconnect on its own — save the arrangement with `s` afterwards,
+which writes the assignment into the kanshi profile.
 
 `s` leaves the mode before opening the prompt, because a mode's bindings would
 swallow the keys wofi needs for typing. Existing profile names are offered, so
