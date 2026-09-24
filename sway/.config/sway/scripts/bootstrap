@@ -4,12 +4,22 @@
 # so adding a package does not have to be remembered in two files.
 set -eu
 
-sudo apt install -y \
-    sway swayidle swaylock swaybg waybar wofi mako-notifier \
-    grim slurp wl-clipboard jq brightnessctl playerctl wireplumber pavucontrol \
-    network-manager-gnome xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
-    breeze-gtk-theme fonts-hack qalc curl unzip blueman kanshi grimshot \
-    swayosd libglib2.0-bin libnotify-bin
+packages="sway swayidle swaylock swaybg waybar wofi mako-notifier
+    grim slurp wl-clipboard jq brightnessctl playerctl wireplumber pavucontrol
+    network-manager-gnome xdg-desktop-portal-wlr xdg-desktop-portal-gtk
+    breeze-gtk-theme fonts-hack qalc curl unzip blueman kanshi grimshot
+    libglib2.0-bin libnotify-bin"
+
+# A package missing from a release used to abort the whole line under set -e, so
+# nothing at all was installed and the reason scrolled past. Retry one by one and
+# name what is unavailable instead of losing the other forty.
+# shellcheck disable=SC2086 # deliberate word splitting over the package list
+if ! sudo apt install -y $packages; then
+    echo "WARNING: installing one by one to find what is unavailable"
+    for p in $packages; do
+        sudo apt install -y "$p" >/dev/null 2>&1 || echo "  UNAVAILABLE: $p"
+    done
+fi
 
 [ "${1:-}" = "--deps" ] && exit 0
 
