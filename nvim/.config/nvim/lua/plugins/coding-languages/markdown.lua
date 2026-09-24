@@ -6,10 +6,6 @@ return {
   ---@module 'render-markdown'
   ---@type render.md.UserConfig
   opts = {
-    -- Der CodeCompanion-Chat ist Markdown, hat aber den Filetype 'codecompanion'
-    -- und lief deshalb ungerendert durch: Rollen-Header als rohe ##-Zeilen,
-    -- Codebloecke als Backticks. Mit aufgenommen trennt der Renderer Frage und
-    -- Antwort sichtbar. Markdown-Dateien selbst aendern sich dadurch nicht.
-    file_types = { 'markdown', 'codecompanion' },
+    file_types = { 'markdown' },
   },
 }
