@@ -66,6 +66,22 @@ return {
     -- Kein Default per has('mac'): das trennt die beiden Ubuntu-Rechner nicht.
     -- Stattdessen einmal pro Rechner `:AvanteSwitchProvider --save` -- die Wahl
     -- ueberlebt Neustarts, und ohne Wahl nimmt avante den zuletzt genutzten.
+    -- avantes _tools-guidelines.avanterules haengt an base.avanterules, und
+    -- legacy wie editing erben davon -- die 4,4 KB Werkzeug-Anleitung gehen also
+    -- auch dorthin, wo gar keine Tools mitgeschickt werden. Schlimmer: sie nennt
+    -- Werkzeuge, die es in avante nicht gibt (`run_command`, `write_file`,
+    -- `thinking`; richtig waeren `bash`, `write_to_file`, `think`) und verlangt
+    -- fuer jede Konversation ohne konkrete Aufgabe einen `attempt_completion`-
+    -- Tool-Call samt JSON-Beispiel. Ein Modell ohne Werkzeuge imitiert daraufhin
+    -- nur noch das Format.
+    --
+    -- avante loest Templates pro Datei auf: erst die eingebauten in den Cache,
+    -- dann die aus diesem Verzeichnis darueber (path.lua:344-380). Dort liegt
+    -- eine leere Fassung; base.avanterules bleibt unangetastet.
+    --
+    -- Zurueck auf `agentic`? Dann gehoert in die Datei eine Anleitung mit den
+    -- echten Werkzeugnamen -- nicht die eingebaute zurueck.
+    override_prompt_dir = vim.fn.stdpath 'config' .. '/avante-prompts',
     -- Legacy statt agentic: keine 27 Tool-Definitionen im Request und kein
     -- Reminder-Loop, der eine Chat-Eingabe zu bis zu vier Anfragen macht.
     -- Preis: keine automatisch ausgefuehrten Aenderungen, Vorschlaege kommen
