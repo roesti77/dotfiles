@@ -14,7 +14,6 @@
   "cmp-nvim-lsp": { "branch": "main", "commit": "cbc7b02bb99fae35cb42f514762b89b5126651ef" },
   "cmp-path": { "branch": "main", "commit": "c642487086dbd9a93160e1679a1327be111cbc25" },
   "cmp_luasnip": { "branch": "master", "commit": "98d9cb5c2c38532bd9bdb481067b20fea8f32e90" },
-  "codecompanion.nvim": { "branch": "main", "commit": "7279bf9486991fae27486ada52aa3336d3bd1069" },
   "codesnap.nvim": { "branch": "main", "commit": "0a0941340376439a25d6cd8a4d1d2b372edbfdbd" },
   "diffview.nvim": { "branch": "main", "commit": "4516612fe98ff56ae0415a259ff6361a89419b0a" },
   "dooing": { "branch": "main", "commit": "4c4ac78088cf462398a0206e79669936a184175f" },

@@ -3,6 +3,11 @@
 -- mit, die ihre Anmeldung und ihre Konfiguration selbst kennen -- `cn` liest
 -- ~/.continue/config.yaml nativ, samt apiBase, Key und Modell. Damit entfaellt
 -- das Nachbauen von Endpoint und Auth in Lua.
+--
+-- Loest CodeCompanion ab und uebernimmt dessen Tasten. Voraussetzung je Rechner
+-- ist nur die jeweilige CLI im PATH: `claude` privat, `cursor-agent` und `cn`
+-- beim Kunden. Fehlt eine, faellt nur sie aus -- `:checkhealth sidekick` zeigt,
+-- welche gefunden werden.
 return {
   'folke/sidekick.nvim',
   -- snacks liefert die Auswahlliste fuer Tools und Prompts; ohne snacks faellt
@@ -12,8 +17,7 @@ return {
   init = function()
     local wk_ok, wk = pcall(require, 'which-key')
     if wk_ok then
-      -- <leader>a gehoert CodeCompanion, solange beide nebeneinander laufen.
-      wk.add { { '<leader>A', group = 'AI / Sidekick' } }
+      wk.add { { '<leader>a', group = 'AI / Sidekick' } }
     end
   end,
   opts = {
@@ -23,71 +27,90 @@ return {
     nes = { enabled = false },
     cli = {
       tools = {
-        -- cursor ist vorkonfiguriert und braucht nur die CLI im PATH.
-        -- Continue liefert `cn` mit, ist aber kein Preset -- eine Zeile genuegt.
+        -- claude und cursor sind vorkonfiguriert und brauchen nur die CLI im
+        -- PATH. Continue liefert `cn` mit, ist aber kein Preset.
         cn = { cmd = { 'cn' } },
       },
     },
   },
   keys = {
+    -- <C-.> war der Toggle von claudecode.nvim und CodeCompanion und bleibt es.
+    -- Ohne Tool-Namen haengt sich sidekick an eine laufende Sitzung oder fragt,
+    -- welche gestartet werden soll.
     {
-      '<leader>AA',
+      '<C-.>',
       function()
         require('sidekick.cli').toggle()
       end,
       desc = 'Sidekick: Toggle CLI',
+      mode = { 'n', 'v', 't' },
     },
     {
-      '<leader>As',
+      '<leader>aa',
+      function()
+        require('sidekick.cli').toggle()
+      end,
+      desc = 'AI: Toggle CLI',
+    },
+    {
+      '<leader>as',
       function()
         require('sidekick.cli').select { filter = { installed = true } }
       end,
-      desc = 'Sidekick: Select CLI',
+      desc = 'AI: Select CLI',
     },
     {
-      '<leader>Ac',
+      '<leader>ac',
       function()
         require('sidekick.cli').toggle { name = 'cursor', focus = true }
       end,
-      desc = 'Sidekick: Cursor',
+      desc = 'AI: Cursor',
     },
     {
-      '<leader>An',
+      '<leader>ai',
       function()
         require('sidekick.cli').toggle { name = 'cn', focus = true }
       end,
-      desc = 'Sidekick: Continue (cn)',
+      desc = 'AI: Continue (cn)',
     },
     {
-      '<leader>Ap',
+      '<leader>ap',
       function()
         require('sidekick.cli').prompt()
       end,
-      desc = 'Sidekick: Prompt',
+      desc = 'AI: Select prompt',
       mode = { 'n', 'x' },
     },
     {
-      '<leader>At',
+      '<leader>at',
       function()
         require('sidekick.cli').send { msg = '{this}' }
       end,
-      desc = 'Sidekick: Send this',
+      desc = 'AI: Send this',
       mode = { 'n', 'x' },
     },
     {
-      '<leader>Af',
+      '<leader>af',
       function()
         require('sidekick.cli').send { msg = '{file}' }
       end,
-      desc = 'Sidekick: Send file',
+      desc = 'AI: Send file',
     },
+    -- war unter CodeCompanion <leader>as; das heisst hier jetzt "Select CLI"
     {
-      '<leader>Av',
+      '<leader>av',
       function()
         require('sidekick.cli').send { msg = '{selection}' }
       end,
-      desc = 'Sidekick: Send selection',
+      desc = 'AI: Send selection',
       mode = 'x',
+    },
+    {
+      '<leader>ad',
+      function()
+        require('sidekick.cli').close()
+      end,
+      desc = 'AI: Detach session',
     },
   },
 }
