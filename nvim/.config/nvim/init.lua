@@ -39,7 +39,7 @@ require('lazy').setup {
   require 'plugins.core.recorder',
   require 'plugins.core.oil',
   --- AI
-  require 'plugins.ai.sidekick',
+  require 'plugins.ai.avante',
   require 'plugins.ai.minuet',
   require 'plugins.ai.vectorcode',
   --- Coding
