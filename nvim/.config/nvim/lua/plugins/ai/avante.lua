@@ -66,18 +66,30 @@ return {
     -- Kein Default per has('mac'): das trennt die beiden Ubuntu-Rechner nicht.
     -- Stattdessen einmal pro Rechner `:AvanteSwitchProvider --save` -- die Wahl
     -- ueberlebt Neustarts, und ohne Wahl nimmt avante den zuletzt genutzten.
+    -- Legacy statt agentic: keine 27 Tool-Definitionen im Request und kein
+    -- Reminder-Loop, der eine Chat-Eingabe zu bis zu vier Anfragen macht.
+    -- Preis: keine automatisch ausgefuehrten Aenderungen, Vorschlaege kommen
+    -- als Diff. Fuer ein Gateway mit engem Limit der tragfaehige Modus.
+    mode = 'legacy',
+    behaviour = {
+      -- haengt sonst den aktuellen Buffer an jeden neuen Chat
+      auto_add_current_file = false,
+    },
     providers = {
       continue = {
         __inherited_from = 'openai',
         endpoint = continue and continue.apiBase or '',
         model = continue and (continue.model or continue.name) or '',
         api_key_name = 'CONTINUE_API_KEY',
-        -- Geerbt wird sonst die Dimensionierung fuer gpt-4o: 128k Kontext und
-        -- 16k reservierte Antwort. Gateways rechnen die Reservierung meist vorab
-        -- aufs Minutenbudget an, dann genuegt eine einzige Anfrage fuer ein 429.
-        -- Beide Werte gehoeren an das Modell hinter dem Gateway angepasst --
-        -- Kontextfenster laut dessen Doku, Antwort so klein wie brauchbar.
-        context_window = 32000,
+        -- Tools kosten pro Anfrage 28 KB an Definitionen. Ohne sie und ohne den
+        -- agentischen Reminder-Loop faellt der Body von 44 KB auf 15 KB.
+        -- `disable_tools` gilt nur pro Provider, global warnt avante.
+        disable_tools = true,
+        -- context_window begrenzt NICHT die ausgehende Groesse: es senkt nur die
+        -- Schwelle, ab der avante den Verlauf komprimiert -- und das kostet
+        -- zusaetzliche Requests. Ein kleiner Wert ist hier also schaedlich.
+        -- Reservierte Antwortgroesse dagegen zaehlen viele Gateways vorab aufs
+        -- Minutenbudget, die bleibt klein.
         extra_request_body = {
           max_completion_tokens = 4096,
         },
