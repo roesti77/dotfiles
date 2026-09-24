@@ -72,6 +72,15 @@ return {
         endpoint = continue and continue.apiBase or '',
         model = continue and (continue.model or continue.name) or '',
         api_key_name = 'CONTINUE_API_KEY',
+        -- Geerbt wird sonst die Dimensionierung fuer gpt-4o: 128k Kontext und
+        -- 16k reservierte Antwort. Gateways rechnen die Reservierung meist vorab
+        -- aufs Minutenbudget an, dann genuegt eine einzige Anfrage fuer ein 429.
+        -- Beide Werte gehoeren an das Modell hinter dem Gateway angepasst --
+        -- Kontextfenster laut dessen Doku, Antwort so klein wie brauchbar.
+        context_window = 32000,
+        extra_request_body = {
+          max_completion_tokens = 4096,
+        },
       },
     },
     -- Skills und Agenten aus ~/.claude/ als `#name` im Chat. Siehe
