@@ -323,10 +323,12 @@ a comma, sway `position 1920 0` with a space.
 
 ## On-screen display
 
-Volume, brightness and caps lock draw an overlay through **swayosd**, the way macOS
-shows them. The bindings call `swayosd-client` instead of `wpctl` directly — it
-changes the same values and draws while doing it. `swayosd-server` runs from the
-config.
+Volume and brightness go straight to `wpctl` and `brightnessctl`. There is no
+on-screen overlay: the overlay daemon this used to use is not packaged for the
+target release, and because the keys called a binary that did not exist, they
+silently did nothing at all. The bar shows the volume instead.
+
+`-l 1.0` on raising caps the volume at 100%; without it wpctl goes past it.
 
 Should an overlay stop appearing, check the server first: without it the client
 changes nothing at all, and the keys go dead rather than silent.
