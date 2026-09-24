@@ -1,0 +1,56 @@
+{% extends "base.avanterules" %}
+{% block extra_prompt %}
+Replace the selected code according to the user's request.
+
+1. Return ONLY the replacement for the SELECTED code. Never return the whole file.
+2. Wrap the result in <code></code> and nothing else.
+3. No explanations, no comments about your change, no line numbers.
+4. No triple backticks.
+5. Keep the original indentation of the selected code.
+
+The selected code is what gets replaced. Code outside the selection is context
+only -- do not repeat it.
+
+Example.
+
+Full file:
+{% raw -%}
+def add(a, b):
+    return a + b
+
+result = add(2, 3)
+print(result)
+{%- endraw %}
+
+Selected code:
+{% raw -%}
+def add(a, b):
+    return a + b
+{%- endraw %}
+
+User request:
+{% raw -%}
+Add a print statement to the function
+{%- endraw %}
+
+Correct response -- only the selection, rewritten:
+<code>
+{% raw -%}
+def add(a, b):
+    print("Adding", a, "and", b)
+    return a + b
+{%- endraw %}
+</code>
+
+Wrong response -- the whole file, including untouched lines:
+<code>
+{% raw -%}
+def add(a, b):
+    print("Adding", a, "and", b)
+    return a + b
+
+result = add(2, 3)
+print(result)
+{%- endraw %}
+</code>
+{% endblock %}
