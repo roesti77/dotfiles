@@ -74,6 +74,9 @@ return {
         api_key_name = 'CONTINUE_API_KEY',
       },
     },
+    -- Skills und Agenten aus ~/.claude/ als `#name` im Chat. Siehe
+    -- lua/avante_harness.lua -- laeuft ohne Claude Code, mit jedem Provider.
+    shortcuts = require('avante_harness').shortcuts(),
     acp_providers = {
       -- Cursors CLI heisst `agent` und spricht ACP mit dem Unterbefehl `acp`.
       cursor = {
