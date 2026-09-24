@@ -76,6 +76,9 @@ return {
     },
     -- Skills und Agenten aus ~/.claude/ als `#name` im Chat. Siehe
     -- lua/avante_harness.lua -- laeuft ohne Claude Code, mit jedem Provider.
+    -- Der eingebaute Auswaehler ist vim.ui.select; telescope liegt ohnehin im
+    -- Stack und macht @file brauchbar.
+    file_selector = { provider = 'telescope' },
     shortcuts = require('avante_harness').shortcuts(),
     acp_providers = {
       -- Cursors CLI heisst `agent` und spricht ACP mit dem Unterbefehl `acp`.
@@ -85,13 +88,12 @@ return {
       },
     },
   },
+  -- Nur, was avante nicht selbst setzt: ask/edit/toggle bringt es als
+  -- <leader>aa/ae/at schon mit (event = 'VeryLazy' laedt es rechtzeitig).
   keys = {
-    { '<leader>aa', '<cmd>AvanteAsk<cr>', desc = 'AI: Ask', mode = { 'n', 'v' } },
     { '<leader>ac', '<cmd>AvanteChat<cr>', desc = 'AI: Chat' },
-    { '<leader>ae', '<cmd>AvanteEdit<cr>', desc = 'AI: Edit selection', mode = 'v' },
     { '<leader>ap', '<cmd>AvanteSwitchProvider<cr>', desc = 'AI: Switch provider' },
     { '<leader>am', '<cmd>AvanteModels<cr>', desc = 'AI: Select model' },
-    { '<leader>at', '<cmd>AvanteToggle<cr>', desc = 'AI: Toggle sidebar' },
     { '<C-.>', '<cmd>AvanteToggle<cr>', desc = 'AI: Toggle sidebar', mode = { 'n', 'v' } },
   },
 }
