@@ -124,6 +124,23 @@ return {
         args = { 'acp' },
       },
     },
+    -- avante legt die Konflikt-Tasten buffer-lokal an, solange ein Diff im
+    -- Buffer steht. Der Default fuer all_theirs ist `ca` -- ein exakter Match,
+    -- den nvim feuert, sobald das `a` kommt. Damit ist `caw`, `ca"`, `cap` genau
+    -- dann unerreichbar, wenn man sie braucht. override_timeoutlen hilft nicht:
+    -- es verbreitert nur das Fenster, es hebt die Verdeckung nicht auf.
+    --
+    -- `A` ist in operator-pending weder Motion noch Textobjekt, `cA` nimmt also
+    -- nichts weg und bleibt neben `co`/`ct` im gleichen Muster. `ct` kostet nur
+    -- `ct<char>` und bleibt, wie es ist.
+    --
+    -- Teil-Tabelle reicht: avante merged mit vim.tbl_deep_extend('force', ...),
+    -- die uebrigen diff-Tasten behalten ihre Defaults.
+    mappings = {
+      diff = {
+        all_theirs = 'cA',
+      },
+    },
   },
   -- Nur, was avante nicht selbst setzt: ask/edit/toggle bringt es als
   -- <leader>aa/ae/at schon mit (event = 'VeryLazy' laedt es rechtzeitig).
