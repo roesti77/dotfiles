@@ -210,37 +210,56 @@ return {
       dapui.close()
     end
 
-    -- Go adapter: connect to Delve that skaffold debug runs
-    dap.adapters.go = {
+    -- Environment first, then the pod annotation, then ask. Shared by the adapter
+    -- and DapSkaffoldAttach so a port is resolved once per session, not twice.
+    local function resolve_dlv_port()
+      local p = os.getenv 'DLV_PORT'
+      if p and #p > 0 then
+        return tonumber(p)
+      end
+      local det = detect_dlv_port()
+      if det then
+        return det
+      end
+      local entered = tonumber(vim.fn.input 'dlv port: ')
+      if not entered then
+        vim.notify('No dlv port found', vim.log.levels.ERROR)
+      end
+      return entered
+    end
+
+    local function remote_substitute_path()
+      local subs, cwd = {}, vim.fn.getcwd()
+      for _, rp in ipairs(REMOTE_PATHS) do
+        table.insert(subs, { from = cwd, to = rp })
+      end
+      return subs
+    end
+
+    -- Go adapter: connect to Delve that skaffold debug runs.
+    --
+    -- Deliberately NOT named `go`. dap-go's setup() assigns dap.adapters.go
+    -- unconditionally (dap-go.lua:84), so whatever stands there beforehand is
+    -- gone -- silently, because dap-go only appends its configurations
+    -- (dap-go.lua:167-181) and the entry below keeps showing up in the picker.
+    -- Its adapter also spawns a LOCAL `dlv dap` in both branches; it never dials
+    -- one that is already listening, which is what a forwarded debug port needs.
+    -- Reordering the two would only move the damage: dap-go's own Debug and
+    -- Debug test entries need that local delve. One name cannot serve both.
+    dap.adapters.go_remote = {
       type = 'server',
       host = '127.0.0.1',
-      port = function()
-        local p = os.getenv 'DLV_PORT'
-        if p and #p > 0 then
-          return tonumber(p)
-        end
-        local det = detect_dlv_port()
-        if det then
-          return det
-        end
-        return tonumber(vim.fn.input 'dlv port: ')
-      end,
+      port = resolve_dlv_port,
     }
 
     -- Base Go configurations
     dap.configurations.go = {
       {
-        type = 'go',
+        type = 'go_remote',
         name = 'Attach (Skaffold)',
         request = 'attach',
         mode = 'remote',
-        substitutePath = (function()
-          local subs, cwd = {}, vim.fn.getcwd()
-          for _, rp in ipairs(REMOTE_PATHS) do
-            table.insert(subs, { from = cwd, to = rp })
-          end
-          return subs
-        end)(),
+        substitutePath = remote_substitute_path(),
       },
       {
         type = 'go',
@@ -259,26 +278,20 @@ return {
     -- Python is available if you need it later
     -- require('dap-python').setup('python')
 
-    -- User command to quickly attach to skaffold/Delve
+    -- User command to quickly attach to skaffold/Delve, skipping the picker.
+    --
+    -- dap.run takes the configuration directly, so there is no adapter to swap in
+    -- and restore. The earlier version restored it on the line right after
+    -- dap.continue() -- which returns before the picker resolves, so the override
+    -- was always undone again before the adapter was ever consulted.
     vim.api.nvim_create_user_command('DapSkaffoldAttach', function()
-      local port = os.getenv 'DLV_PORT' or detect_dlv_port() or vim.fn.input 'dlv port: '
-      if not port or tostring(port) == '' then
-        vim.notify('No dlv port found', vim.log.levels.ERROR)
-        return
-      end
-      -- Force the adapter to use the detected/entered port once
-      local old = dap.adapters.go
-      dap.adapters.go = {
-        type = 'server',
-        host = '127.0.0.1',
-        port = function()
-          return tonumber(port)
-        end,
+      dap.run {
+        type = 'go_remote',
+        name = 'Attach (Skaffold)',
+        request = 'attach',
+        mode = 'remote',
+        substitutePath = remote_substitute_path(),
       }
-      dap.continue()
-      -- Restore the dynamic adapter for future runs
-      dap.adapters.go = old
     end, {})
-
   end,
 }
