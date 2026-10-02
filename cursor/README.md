@@ -74,7 +74,7 @@ have to live in account-synced User Rules, outside of git. So the conventions
 stay in `~/.claude/CLAUDE.md` and get rendered into the project:
 
 ```sh
-cd <project> && agents-md
+cd <project> && ~/bin/agents-md
 ```
 
 The command rewrites only its own marked block, so hand-written project content
