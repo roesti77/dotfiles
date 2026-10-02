@@ -90,6 +90,22 @@ return {
     behaviour = {
       -- haengt sonst den aktuellen Buffer an jeden neuen Chat
       auto_add_current_file = false,
+      -- Der Default ist `true` -- "auto-approve all tools (no prompts)"
+      -- (config.lua:683). Eine ACP-Berechtigungsanfrage laeuft durch
+      -- LLMToolHelpers.confirm (llm.lua:1259), und das steigt bei `true` sofort
+      -- mit callback(true) aus, ohne den Dialog ueberhaupt zu bauen
+      -- (helpers.lua:62-68). Am Gateway war das folgenlos: legacy plus
+      -- disable_tools, es gab nie einen Tool-Call. Mit cursor schriebe der Agent
+      -- unbeaufsichtigt Dateien und fuehrte Kommandos aus.
+      --
+      -- Die Liste traegt ACP-Tool-Kinds, nicht avantes eigene Tool-Namen: der
+      -- ACP-Pfad reicht tool_call.kind als Namen durch (llm.lua:1278). Moegliche
+      -- Werte stehen in acp_client.lua:75. Lesen und Suchen laufen durch, alles
+      -- Schreibende und Ausfuehrende fragt nach.
+      --
+      -- Kein pauschales `false`: das fragt auch bei jedem `read`, und nach zehn
+      -- Minuten klickt man blind "allow always" -- dann ist nichts gewonnen.
+      auto_approve_tool_permissions = { 'read', 'search', 'think' },
     },
     providers = {
       continue = {
@@ -118,9 +134,17 @@ return {
     file_selector = { provider = 'telescope' },
     shortcuts = require('avante_harness').shortcuts(),
     acp_providers = {
-      -- Cursors CLI heisst `agent` und spricht ACP mit dem Unterbefehl `acp`.
+      -- Die CLI heisst `cursor-agent` und spricht ACP mit dem Unterbefehl `acp`.
+      -- Hier stand `agent` -- geschrieben, bevor Cursor auf der Maschine war, nie
+      -- gegen ein echtes Binary gelaufen. avante bringt kein cursor-Preset mit
+      -- (seine ACP-Defaults sind gemini-cli, claude-code, goose, codex, opencode,
+      -- kimi-cli), es faengt den falschen Namen also nicht ab.
+      --
+      -- Die Anmeldung gehoert der CLI: ACP startet sie als Kindprozess und erbt
+      -- deren Login. auth_method bleibt leer, solange der Handshake keine
+      -- Methode verlangt.
       cursor = {
-        command = 'agent',
+        command = 'cursor-agent',
         args = { 'acp' },
       },
     },
