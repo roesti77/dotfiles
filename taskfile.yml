@@ -16,9 +16,16 @@ tasks:
       - stow cursor
 
   setup-linux:
-    desc: install and stow the sway wayland session (linux only)
+    desc: install and stow the linux-only config (sway session, superfile)
     cmds:
       - stow sway
+      # Must exist as a real directory first. superfile ships one file here, so
+      # stow would otherwise fold the package and make ~/.config/superfile a
+      # symlink into this repo -- superfile then writes its own config.toml and
+      # theme/ into the checkout. Same trap the nvim package already sits in, and
+      # the one cursor/README.md warns about for ~/.cursor.
+      - mkdir -p ~/.config/superfile
+      - stow superfile
       - ./sway/.config/sway/scripts/bootstrap
 
   sway:deps:
