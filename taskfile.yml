@@ -41,8 +41,8 @@ tasks:
     cmds:
       - jq -e . claude/.claude/settings.seed.json >/dev/null
       - for f in cursor/.cursor/*.json; do jq -e . "$f" >/dev/null; done
-      - for f in claude/.claude/hooks/*.sh claude/.claude/statusline-command.sh zsh/bin/*; do if [ -f "$f" ]; then bash -n "$f"; fi; done
-      - if command -v shellcheck >/dev/null; then for f in claude/.claude/hooks/*.sh claude/.claude/statusline-command.sh zsh/bin/*; do if [ -f "$f" ]; then shellcheck "$f"; fi; done; fi
+      - for f in claude/.claude/hooks/*.sh claude/.claude/statusline-command.sh zsh/bin/* install-devcontainer.sh; do if [ -f "$f" ]; then bash -n "$f"; fi; done
+      - if command -v shellcheck >/dev/null; then for f in claude/.claude/hooks/*.sh claude/.claude/statusline-command.sh zsh/bin/* install-devcontainer.sh; do if [ -f "$f" ]; then shellcheck "$f"; fi; done; fi
 
   clone-plugins:
     desc: fetch the oh-my-zsh plugins that are not vendored
